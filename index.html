@@ -19,7 +19,7 @@
   <table id="all" class="display" width="100%"></table>
 </body>
 <script>
-  var dict, array, columns = [],count=0;
+  /* var dict, array, columns = [],count=0;
   $.getJSON("data.json", function (json) {
     dict = json;
     array = dict.data[0];
@@ -30,7 +30,23 @@
     }
     console.log(columns);
 
-  });
+  }); */
+  var columns = [
+  {"data":"number",title:"編號"},
+  {"data":"cName",title:"名稱"},
+  {"data":"attr1",title:"特性1"},
+  {"data":"attr2",title:"特性2"},
+  {"data":"hp",title:"名稱"},
+  {"data":"atk",title:"物攻"},
+  {"data":"def",title:"物防"},
+  {"data":"satk",title:"特攻"},
+  {"data":"sdef",title:"特防"},
+  {"data":"speed",title:"速度"},
+  ];
+  for(var key in columns)
+  {
+    document.getElementById("control").innerHTML += `<button id="toggle" data-column="${key}">${columns[key].data}</button>`;
+  }
   $(document).ready(function () {
     var table = $('#all').DataTable({
       "ajax": 'data.json',
