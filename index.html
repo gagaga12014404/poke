@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+
+
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+</head>
+
+<body>
+
+  <div id="control"></div>
+  <table id="all" class="display" width="100%"></table>
+</body>
+<script>
+  var dict, array, columns = [],count=0;
+  $.getJSON("data.json", function (json) {
+    dict = json;
+    array = dict.data[0];
+    for (var key in array) {
+      columns.push({ data: key, title: key });
+      document.getElementById("control").innerHTML += `<button id="toggle" data-column="${count}">${key}</button>`;
+      count++;
+    }
+    console.log(columns);
+
+  });
+  $(document).ready(function () {
+    var table = $('#all').DataTable({
+      "ajax": 'data.json',
+      "columns": columns
+    });
+    $('#toggle').on('click', function (e) {
+      e.preventDefault();
+
+      // Get the column API object
+      var column = table.column($(this).attr('data-column'));
+
+      // Toggle the visibility
+      column.visible(!column.visible());
+    });
+  });
+</script>
+
+</html>
