@@ -2408,8 +2408,8 @@
             "attr2": null,
             "attr2_url": null,
             "hp": "250",
-            "atk": "* 5",
-            "def": "* 5",
+            "atk": " 5",
+            "def": " 5",
             "satk": " 35",
             "sdef": "105",
             "speed": " 50"
@@ -4231,7 +4231,7 @@
             "def": "230",
             "satk": " 10",
             "sdef": "230",
-            "speed": "* 5"
+            "speed": " 5"
         },
         {
             "number": "#214\n",
@@ -4974,12 +4974,12 @@
             "attr1_url": "/wiki/%E7%81%AB%EF%BC%88%E5%B1%9E%E6%80%A7%EF%BC%89",
             "attr2": null,
             "attr2_url": null,
-            "hp": "/91",
-            "atk": "/91",
-            "def": "dex",
-            "satk": "dex",
-            "sdef": "dex",
-            "speed": " 45"
+            "hp": "45",
+            "atk": "60",
+            "def": "40",
+            "satk": "70",
+            "sdef": "50",
+            "speed": "45"
         },
         {
             "number": "#256\n",
@@ -5637,7 +5637,7 @@
             "attr1_url": "/wiki/%E8%99%AB%EF%BC%88%E5%B1%9E%E6%80%A7%EF%BC%89",
             "attr2": "\u5e7d\u7075",
             "attr2_url": "/wiki/%E5%B9%BD%E7%81%B5%EF%BC%88%E5%B1%9E%E6%80%A7%EF%BC%89",
-            "hp": "* 1",
+            "hp": " 1",
             "atk": " 90",
             "def": " 45",
             "satk": " 30",
@@ -8154,8 +8154,8 @@
             "attr2": null,
             "attr2_url": null,
             "hp": "100",
-            "atk": "* 5",
-            "def": "* 5",
+            "atk": " 5",
+            "def": " 5",
             "satk": " 15",
             "sdef": " 65",
             "speed": " 30"
@@ -8260,7 +8260,7 @@
             "def": " 40",
             "satk": " 40",
             "sdef": " 85",
-            "speed": "* 5"
+            "speed": " 5"
         },
         {
             "number": "#447\n",
@@ -14023,7 +14023,7 @@
             "def": "130",
             "satk": " 30",
             "sdef": "130",
-            "speed": "* 5"
+            "speed": " 5"
         },
         {
             "number": "#772\n",
