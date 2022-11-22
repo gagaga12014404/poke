@@ -22,7 +22,7 @@
   <style>
     .inputSearch {
       font-size: 0.5em;
-      width: 50px;
+      width: 100%;
     }
 
     th {
@@ -38,7 +38,7 @@
     }
 
     .th1 {
-      width: 80px;
+      width: 50px;
     }
 
     .th2 {
@@ -83,6 +83,18 @@
       </tr>
     </thead>
     <tfoot>
+      <tr>
+        <th id="nu" style="padding: 0;width: 35px;">編號</th>
+        <th id="na" style="padding: 0;width: 50px;">名稱</th>
+        <th style="padding: 0;height: 10px;width: 45px;text-align: center;">1</th>
+        <th style="padding: 0;height: 10px;width: 45px;text-align: center;">2</th>
+        <th class="thhp"></th>
+        <th class="thhp"></th>
+        <th class="thhp"></th>
+        <th class="thhp"></th>
+        <th class="thhp"></th>
+        <th class="thhp"></th>
+      </tr>
     </tfoot>
   </table>
 </body>
@@ -122,11 +134,47 @@
     { "data": "sdef" },
     { "data": "speed" },
   ];
+  $('#nu,#na').each(function () {
+        var title = $(this).text();
+        $(this).html('<input type="text" class="inputSearch" placeholder="' + title + '" />');
+    });
   $(document).ready(function () {
     var table = $('#all').DataTable({
       "ajax": 'data.json',
       "columns": columns,
       "pagingType": "numbers",
+      initComplete: function () {
+                // Apply the search
+                this.api()
+                    .columns([0, 1])//用column指定
+                    .every(function () {
+                        var that = this
+                        $('input', this.footer()).on('keyup change clear', function () {
+                            if (that.search() !== this.value) {
+                                that.search(this.value).draw();
+                            }
+                        });
+                    });
+                this.api()
+                    .columns([2,3])
+                    .every(function () {
+                        var column = this;
+                        var select = $('<select><option value=""></option></select>')
+                            .appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                column.search(val ? '^' + val + '$' : '', true, false).draw();
+                            });
+
+                        column
+                            .data()
+                            .unique()
+                            .sort()
+                            .each(function (d, j) {
+                                select.append('<option value="' + d + '">' + d + '</option>');
+                            });
+                    });
+            },
       "columnDefs": [
         { targets: [0], responsivePriority: 1 },
         { targets: [1], responsivePriority: 2 },
