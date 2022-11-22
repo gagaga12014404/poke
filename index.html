@@ -21,8 +21,9 @@
   <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
   <style>
     .inputSearch {
-      font-size: 0.5em;
+      font-size: 0.7em;
       width: 100%;
+      height: 100%;
     }
 
     th {
@@ -86,8 +87,8 @@
       <tr>
         <th id="nu" style="padding: 0;width: 35px;">編號</th>
         <th id="na" style="padding: 0;width: 50px;">名稱</th>
-        <th style="padding: 0;height: 10px;width: 45px;text-align: center;">1</th>
-        <th style="padding: 0;height: 10px;width: 45px;text-align: center;">2</th>
+        <th colspan="2" style="padding: 0;height: 10px;width: 45px;text-align: center;">1</th>
+        <!-- <th style="padding: 0;height: 10px;width: 45px;text-align: center;">2</th> -->
         <th class="thhp"></th>
         <th class="thhp"></th>
         <th class="thhp"></th>
@@ -135,46 +136,47 @@
     { "data": "speed" },
   ];
   $('#nu,#na').each(function () {
-        var title = $(this).text();
-        $(this).html('<input type="text" class="inputSearch" placeholder="' + title + '" />');
-    });
+    var title = $(this).text();
+    $(this).html('<input type="text" class="inputSearch" placeholder="' + title + '" />');
+  });
   $(document).ready(function () {
     var table = $('#all').DataTable({
       "ajax": 'data.json',
       "columns": columns,
       "pagingType": "numbers",
       initComplete: function () {
-                // Apply the search
-                this.api()
-                    .columns([0, 1])//用column指定
-                    .every(function () {
-                        var that = this
-                        $('input', this.footer()).on('keyup change clear', function () {
-                            if (that.search() !== this.value) {
-                                that.search(this.value).draw();
-                            }
-                        });
-                    });
-                this.api()
-                    .columns([2,3])
-                    .every(function () {
-                        var column = this;
-                        var select = $('<select><option value=""></option></select>')
-                            .appendTo($(column.footer()).empty())
-                            .on('change', function () {
-                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                column.search(val ? '^' + val + '$' : '', true, false).draw();
-                            });
+        // Apply the search
+        this.api()
+          .columns([0, 1])//用column指定
+          .every(function () {
+            var that = this
+            $('input', this.footer()).on('keyup change clear', function () {
+              if (that.search() !== this.value) {
+                that.search(this.value).draw();
+              }
+            });
+          });
+        this.api()
+          .columns([2, 3])
+          .every(function () {
+            var column = this;
+            var select = $('<select><option value=""></option></select>')
+              .appendTo($(column.footer()).empty())
+              .on('change', function () {
+                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                column.search(val ? '^' + val + '$' : '', true, false).draw();
+              });
 
-                        column
-                            .data()
-                            .unique()
-                            .sort()
-                            .each(function (d, j) {
-                                select.append('<option value="' + d + '">' + d + '</option>');
-                            });
-                    });
-            },
+            column
+              .data()
+              .unique()
+              .sort()
+              .each(function (d, j) {
+                if (typeof (d) == 'string')
+                  select.append('<option value="' + d + '">' + d + '</option>');
+              });
+          });
+      },
       "columnDefs": [
         { targets: [0], responsivePriority: 1 },
         { targets: [1], responsivePriority: 2 },
