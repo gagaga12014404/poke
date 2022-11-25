@@ -64,7 +64,7 @@
         <th rowspan="2" class="th1">名稱</th>
         <th colspan="2" style="width: 90px;text-align: center;height: 10px;padding: 0;">屬性</th>
         <th rowspan="2" class="thhp" id="copy" style="margin:0">
-          <select id="selectAbility" multiple size="1" style="padding: 0; width: auto;z-index:-100;height:max-content;">
+          <select id="selectAbility" size="2">
             <option value="hp" selected>生命</option>
             <option value="atk">物攻</option>
             <option value="def">物防</option>
@@ -72,6 +72,7 @@
             <option value="sdef">特防</option>
             <option value="speed">速度</option>
             <option value="fiveTotal">能力值</option>
+            <option ></option>
           </select>
         </th>
         <th rowspan="2" class="thhp">生命</th>
@@ -146,7 +147,6 @@
 
       // },
       "columns": columns,
-      "dom": 'rtip',
       // "info":     false,
       "pagingType": "numbers",
       initComplete: function () {
@@ -210,7 +210,7 @@
 
     document.getElementById('selectAbility').addEventListener('touchend', function (e) {
       var dg = document.getElementById('selectAbility');
-      var each = dg.scrollHeight / 7;//每個欄位的長度
+      var each = dg.scrollHeight / 8;//每個欄位的長度
       dg.selectedIndex = Math.round(this.scrollTop / each) ;//四捨五入目前未選到第幾個
     });
   });
