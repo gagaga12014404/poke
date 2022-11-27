@@ -162,7 +162,16 @@
   </div>
 
   <div id="moves" class="tabcontent">
-    <h3>開發中</h3>
+    <table id="movesTable" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%;">
+      <thead>
+        <th style="width: 50px;">名稱</th>
+        <th>敘述</th>
+      </thead>
+      <tfoot>
+        <th id="movesThName">名稱</th>
+        <th id="movesThDescription">敘述</th>
+      </tfoot>
+    </table>
   </div>
 </body>
 <script>
@@ -207,6 +216,10 @@
 
 
   $('#nu,#na').each(function () {
+    var title = $(this).text();
+    $(this).html('<input type="text" class="inputSearch" placeholder="' + title + '" />');
+  });
+  $('#movesThName,#movesThDescription').each(function () {
     var title = $(this).text();
     $(this).html('<input type="text" class="inputSearch" placeholder="' + title + '" />');
   });
@@ -270,6 +283,25 @@
         { targets: [9], responsivePriority: 4 },
       ],
     });
+    var table2 = $('#movesTable').DataTable({
+      "ajax": "特性.json",
+      "columns": [{ 'data': '中文名' }, { 'data': '敘述' }],
+      initComplete: function () {
+        // Apply the search
+        //指定欄位搜尋
+        this.api()
+          .columns([0, 1])//用column指定
+          .every(function () {
+            var that = this
+            $('input', this.footer()).on('keyup change clear', function () {
+              if (that.search() !== this.value) {
+                that.search(this.value).draw();
+              }
+            });
+          });
+      },
+    });
+
     //動態新增刪除欄位
     $('button.toggle-vis').on('click', function (e) {
       e.preventDefault();
