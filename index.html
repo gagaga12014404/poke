@@ -183,6 +183,8 @@
         document.getElementsByClassName(allTable[i] + "btn")[0].className = document.getElementsByClassName(allTable[i] + "btn")[0].className.replace(" active", "");
       }
       else {
+        if (document.getElementsByClassName(allTable[i] + "btn")[0].className.includes(" active"))
+          return;
         document.getElementById(allTable[i]).style.display = 'table-row';
         document.getElementsByClassName(allTable[i] + "btn")[0].className += " active";
       }
