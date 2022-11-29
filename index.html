@@ -184,25 +184,62 @@
     </table>
   </div>
   <div id="calculator" class="tabcontent">
-    種族值：<input type="text" style="width: 100px;" value="100" id="race"><br>
-    個體值：<input type="text" style="width: 100px;" value="31" id="personal"><br>
-    努力值：<input type="text" style="width: 100px;" value="255" id="effort"><br>
-    Level：<input type="text" style="width: 100px;" value="50" id="level"><br>
-    HP結果：<input type="text" style="width: 100px;" value="" id="Result"><br>
+    <div style="font-size: 0.8em;">
+      公式：<br>
+      HP：(種*2+個體+努力/4)*Lv/100+Lv+10<br>
+      其他：[(種*2+個體+努力/4)*(Lv/100)+5]*性格<br>
+      傷害計算：[(2*Lv+10)/250*atk/def*威力+2]*加成<br>
+    </div>
+    種族值：<input type="range" id="racerangeInput" min="0" max="200" value="100">
+    <input type="number" style="width: 100px;" value="100" id="race"><br>
+    個體值：<input type="range" id="personalrangeInput" min="0" max="31" value="31">
+    <input type="number" style="width: 100px;" value="31" id="personal"><br>
+    努力值：<input type="range" id="effortrangeInput" min="0" max="255" value="255">
+    <input type="number" style="width: 100px;" value="255" id="effort"><br>
+    Level：<input type="range" id="levelrangeInput" min="0" max="100" value="50">
+    <input type="number" style="width: 100px;" value="50" id="level"><br>
+    HP結果：<input type="text" style="width: 100px;" value="207.375" id="Result"><br>
     性格<select name="" id="character">
       <option value="1.1">1.1</option>
       <option value="1">1</option>
       <option value="0.9">0.9</option>
     </select><br>
-    其他結果：<input type="text" style="width: 100px;" value="" id="otherResult"><br>
+    其他結果：<input type="text" style="width: 100px;" value="167.6125" id="otherResult"><br><br>
 
-    HP：(種*2+個體+努力/4)*Lv/100+Lv+10<br>
-    其他：[(種*2+個體+努力/4)*(Lv/100)+5]*性格<br>
-    傷害計算：[(2*Lv+10)/250*atk/def*威力+2]*加成
+
+    atk：<input type="range" id="atkrangeInput" min="0" max="500" value="100">
+    <input type="number" style="width: 100px;" value="100" id="atk"><br>
+    def：<input type="range" id="defrangeInput" min="0" max="500" value="100">
+    <input type="number" style="width: 100px;" value="100" id="def"><br>
+    威力：<input type="range" id="powerrangeInput" min="0" max="200" value="80">
+    <input type="number" style="width: 100px;" value="80" id="power"><br>
+    加成<select name="" id="plus">
+      <option value="0.25">0.25</option>
+      <option value="0.5">0.5</option>
+      <option value="1" selected>1</option>
+      <option value="1.5">1.5</option>
+      <option value="2">2</option>
+      <option value="2.5">2.5</option>
+      <option value="3">3</option>
+      <option value="3.5">3.5</option>
+      <option value="4">4</option>
+    </select><br>
+    傷害計算：<input type="number" style="width: 100px;" value="37.2" id="damage"><br>
   </div>
 </body>
 <script>
-  $('#race,#personal,#effort,#level').on('input', function (e) {
+  $('#racerangeInput,#personalrangeInput,#effortrangeInput,#levelrangeInput,#atkrangeInput,#defrangeInput,#powerrangeInput').on('input', function () {
+    var id = "#" + $(this).attr("id").replace('rangeInput', '');
+    $(id).val($(this).val());
+  });
+  $('#race,#personal,#effort,#level,#atk,#def,#power').on('input', function () {
+    var rangeInputName = "#" + $(this).attr("id") + "rangeInput";
+    $(rangeInputName).val($(this).val());
+  });
+  // function updateTextInput(val) {
+  //   document.getElementById('race').value = val;
+  // }
+  var calculate = function () {
     var race = parseInt($('#race').val());
     var personal = parseInt($('#personal').val());
     var effort = parseInt($('#effort').val());
@@ -212,7 +249,16 @@
     var otherres = ((race * 2 + personal + effort / 4) * (level / 100) + 5) * charact;
     $('#Result').val(res.toString());
     $('#otherResult').val(otherres.toString());
-  });
+    var atk = parseInt($('#atk').val());
+    var def = parseInt($('#def').val());
+    var power = parseInt($('#power').val());
+    var plus = parseInt($('#plus').val());
+    var calculatedamage = ((2 * level + 10) / 250 * atk / def * power + 2) * plus;
+    $('#damage').val(calculatedamage.toString());
+  }
+
+  $('#race,#personal,#effort,#level,#racerangeInput,#personalrangeInput,#effortrangeInput,#levelrangeInput,#atkrangeInput,#defrangeInput,#powerrangeInput,#atk,#def,#power').on('input', calculate);
+  $('#character,#plus').on('change', calculate);
   function switchTab(id) {
     var allTable = ["guide", "moves", "calculator"];
     for (var i in allTable) {
