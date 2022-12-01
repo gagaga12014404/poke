@@ -248,6 +248,22 @@
           </select></th>
       </tr>
       <tr>
+        <th>能力提升</th>
+        <th><select name="" id="upplus">
+            <option value="0.5" selected>0.5</option>
+            <option value="0.66" selected>0.66</option>
+            <option value="1" selected>1</option>
+            <option value="1.3">古代活性</option>
+            <option value="1.5">1.5</option>
+            <option value="2">2</option>
+            <option value="2.5">2.5</option>
+            <option value="3">3</option>
+            <option value="3.5">3.5</option>
+            <option value="4">4</option>
+          </select>
+        </th>
+      </tr>
+      <tr>
         <th>其他結果：</th>
         <th><input type="text" class="inputnumber" value="167.6125" id="otherResult"></th>
       </tr>
@@ -273,21 +289,6 @@
           <input type="button" class="_btn" value="-" id="power-">
           <input type="number" class="inputnumber" value="80" id="power">
           <input type="button" class="_btn" value="+" id="powerplus"></button>
-        </th>
-      </tr>
-      <tr>
-        <th>能力提升</th>
-        <th><select name="" id="upplus">
-            <option value="0.5" selected>0.5</option>
-            <option value="0.66" selected>0.66</option>
-            <option value="1" selected>1</option>
-            <option value="1.5">1.5</option>
-            <option value="2">2</option>
-            <option value="2.5">2.5</option>
-            <option value="3">3</option>
-            <option value="3.5">3.5</option>
-            <option value="4">4</option>
-          </select>
         </th>
       </tr>
       <tr>
@@ -360,12 +361,12 @@
     calculate();
   });
   //+- end
-  //拖拉改變text值
+  //拖拉同步改變text值
   $('#racerangeInput,#personalrangeInput,#effortrangeInput,#levelrangeInput,#atkrangeInput,#defrangeInput,#powerrangeInput').on('input', function () {
     var id = "#" + $(this).attr("id").replace('rangeInput', '');
     $(id).val($(this).val());
   });
-  //text值改變拖拉長度
+  //text值同步改變拖拉長度
   $('#race,#personal,#effort,#level,#atk,#def,#power').on('input', function () {
     var rangeInputName = "#" + $(this).attr("id") + "rangeInput";
     $(rangeInputName).val($(this).val());
@@ -377,19 +378,19 @@
     var level = parseInt($('#level').val());
     var charact = parseFloat($('#character').val());
     var res = (race * 2 + personal + effort / 4) * (level / 100) + level + 10;
-    var otherres = ((race * 2 + personal + effort / 4) * (level / 100) + 5) * charact;
+    var upplus = parseFloat($('#upplus').val());
+    var otherres = ((race * 2 + personal + effort / 4) * (level / 100) + 5) * charact * upplus;
     $('#Result').val(res.toString());
     $('#otherResult').val(otherres.toString());
     var atk = parseInt($('#atk').val());
     var def = parseInt($('#def').val());
     var power = parseInt($('#power').val());
-    var upplus = parseFloat($('#upplus').val());
     var selfplus = parseFloat($('#selfplus').val());
     var attrplus = parseFloat($('#attrplus').val());
     var weatherplus = parseFloat($('#weatherplus').val());
     var staffplus = parseFloat($('#staffplus').val());
     var characterplus = parseFloat($('#characterplus').val());
-    var calculatedamage = ((2 * level + 10) / 250 * atk / def * power + 2) * upplus * selfplus * attrplus * weatherplus * staffplus * characterplus;
+    var calculatedamage = ((2 * level + 10) / 250 * atk / def * power + 2) * selfplus * attrplus * weatherplus * staffplus * characterplus;
     $('#damage').val(calculatedamage.toString());
   }
   //改變值立刻計算結果
