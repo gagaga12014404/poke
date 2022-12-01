@@ -196,7 +196,7 @@
     </table>
   </div>
   <div id="calculator" class="tabcontent">
-    <div style="font-size: 0.8em;margin-top:10px;margin-left: 10px;">
+    <div style="font-size: 0.8em;" class="col-12">
       公式：<br>
       HP：(種*2+個體+努力/4)*Lv/100+Lv+10<br>
       其他：[(種*2+個體+努力/4)*(Lv/100)+5]*性格<br>
@@ -396,6 +396,7 @@
   //改變值立刻計算結果
   $('#race,#personal,#effort,#level,#racerangeInput,#personalrangeInput,#effortrangeInput,#levelrangeInput,#atkrangeInput,#defrangeInput,#powerrangeInput,#atk,#def,#power').on('input', calculate);
   $('#character,#upplus,#selfplus,#attrplus,#weatherplus,#staffplus,#characterplus').on('change', calculate);
+  //tab switch
   function switchTab(id) {
     var allTable = ["guide", "moves", "calculator"];
     for (var i in allTable) {
@@ -412,6 +413,7 @@
 
     }
   }
+  //table 1的資料表
   var column = ["編號", "名稱", "屬性", "生命", "物攻", "物防", "特攻", "特防", "速度"];
   var GetFiveTotal = function (data) {
     var inthp = parseInt(data["hp"]);
@@ -458,7 +460,7 @@
     { "data": null, render: GetFiveTotal, className: 'none' },
   ];
 
-
+  //tfoot的搜尋功能
   $('#nu,#na').each(function () {
     var title = $(this).text();
     $(this).html('<input type="text" class="inputSearch" placeholder="' + title + '" />');
@@ -467,6 +469,7 @@
     var title = $(this).text();
     $(this).html('<input type="text" class="inputSearch" placeholder="' + title + '" />');
   });
+
   $(document).ready(function () {
     var table = $('#all').DataTable({
       "language": {
@@ -574,9 +577,8 @@
     // $('#selectAbility').change(function(){
     //   console.log($(this).val);
     // });
-    var pre;
     $("#selectAbility").change(function (e) {
-      console.log(table["data"]["hp"]);
+      console.log(table);
 
     });
     // document.getElementById('selectAbility').addEventListener('touchend', function (e) {
