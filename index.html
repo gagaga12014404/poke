@@ -195,14 +195,14 @@
       </tfoot>
     </table>
   </div>
-  <div id="calculator" class="tabcontent" style="margin: 2px;">
-    <div style="font-size: 0.8em;">
+  <div id="calculator" class="tabcontent">
+    <div style="font-size: 0.8em;margin-top:10px;margin-left: 10px;">
       公式：<br>
       HP：(種*2+個體+努力/4)*Lv/100+Lv+10<br>
       其他：[(種*2+個體+努力/4)*(Lv/100)+5]*性格<br>
       傷害計算：[(2*Lv+10)/250*atk/def*威力+2]*加成<br>
     </div>
-    <table>
+    <table style="margin-top:10px;margin-left: 10px;">
       <tr>
         <th>種族值：</th>
         <th><input type="range" id="racerangeInput" min="0" max="200" value="100">
@@ -344,6 +344,7 @@
   </div>
 </body>
 <script>
+  //+- start
   $('#raceplus,#personalplus,#effortplus,#levelplus,#atkplus,#defplus,#powerplus').click(function () {
     var id = "#" + $(this).attr("id").replace('plus', '');
     var value = parseInt($(id).val()) + 1;
@@ -358,10 +359,13 @@
     $(id + "rangeInput").val(value);
     calculate();
   });
+  //+- end
+  //拖拉改變text值
   $('#racerangeInput,#personalrangeInput,#effortrangeInput,#levelrangeInput,#atkrangeInput,#defrangeInput,#powerrangeInput').on('input', function () {
     var id = "#" + $(this).attr("id").replace('rangeInput', '');
     $(id).val($(this).val());
   });
+  //text值改變拖拉長度
   $('#race,#personal,#effort,#level,#atk,#def,#power').on('input', function () {
     var rangeInputName = "#" + $(this).attr("id") + "rangeInput";
     $(rangeInputName).val($(this).val());
@@ -379,16 +383,18 @@
     var atk = parseInt($('#atk').val());
     var def = parseInt($('#def').val());
     var power = parseInt($('#power').val());
+    var upplus = parseFloat($('#upplus').val());
     var selfplus = parseFloat($('#selfplus').val());
     var attrplus = parseFloat($('#attrplus').val());
     var weatherplus = parseFloat($('#weatherplus').val());
     var staffplus = parseFloat($('#staffplus').val());
     var characterplus = parseFloat($('#characterplus').val());
-    var calculatedamage = ((2 * level + 10) / 250 * atk / def * power + 2) * selfplus * attrplus * weatherplus * staffplus * characterplus;
+    var calculatedamage = ((2 * level + 10) / 250 * atk / def * power + 2) * upplus * selfplus * attrplus * weatherplus * staffplus * characterplus;
     $('#damage').val(calculatedamage.toString());
   }
+  //改變值立刻計算結果
   $('#race,#personal,#effort,#level,#racerangeInput,#personalrangeInput,#effortrangeInput,#levelrangeInput,#atkrangeInput,#defrangeInput,#powerrangeInput,#atk,#def,#power').on('input', calculate);
-  $('#character,#selfplus,#attrplus,#weatherplus,#staffplus,#characterplus').on('change', calculate);
+  $('#character,#upplus,#selfplus,#attrplus,#weatherplus,#staffplus,#characterplus').on('change', calculate);
   function switchTab(id) {
     var allTable = ["guide", "moves", "calculator"];
     for (var i in allTable) {
