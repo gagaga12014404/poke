@@ -39,6 +39,15 @@
       table-layout: fixed;
     }
 
+    .calculatorTable {
+      margin-top: 10px;
+      margin-left: 10px;
+    }
+
+    input[type=range] {
+      margin: 10px 0;
+    }
+
     .inputnumber {
       width: 55px;
     }
@@ -47,6 +56,14 @@
       font-size: 0.7em;
       width: 100%;
       height: 25px;
+    }
+
+    ._btn- {
+      width: 20px;
+      height: 20px;
+      padding: 0;
+      line-height: 0;
+      margin-left: 15px;
     }
 
     ._btn {
@@ -171,7 +188,7 @@
           <th id="na" style="padding: 0;width: 50px;">名稱</th>
           <th colspan="2" style="padding: 0;width: 45px;text-align: center;"></th>
           <!-- <th style="padding: 0;height: 10px;width: 45px;text-align: center;">2</th> -->
-          <th colspan="7" ></th>
+          <th colspan="7"></th>
           <th class="thhp"></th>
           <th class="thhp"></th>
         </tr>
@@ -199,11 +216,11 @@
       <p style="margin: 0px 10px;">傷害計算：[(2*Lv+10)/250*atk/def*威力+2]*加成</p>
     </div>
     <!-- 計算器table -->
-    <table style="margin-top:10px;margin-left: 10px;">
+    <table class="calculatorTable">
       <tr>
         <th>種族值</th>
         <th><input type="range" id="racerangeInput" min="0" max="200" value="100">
-          <input type="button" class="_btn" value="-" id="race-">
+          <input type="button" class="_btn-" value="-" id="race-">
           <input type="number" class="inputnumber" value="100" id="race">
           <input type="button" class="_btn" value="+" id="raceplus"></button>
         </th>
@@ -211,7 +228,7 @@
       <tr>
         <th>個體值</th>
         <th><input type="range" id="personalrangeInput" min="0" max="31" value="31">
-          <input type="button" class="_btn" value="-" id="personal-">
+          <input type="button" class="_btn-" value="-" id="personal-">
           <input type="number" class="inputnumber" value="31" id="personal">
           <input type="button" class="_btn" value="+" id="personalplus"></button>
         </th>
@@ -219,7 +236,7 @@
       <tr>
         <th>努力值</th>
         <th><input type="range" id="effortrangeInput" min="0" max="255" value="255">
-          <input type="button" class="_btn" value="-" id="effort-">
+          <input type="button" class="_btn-" value="-" id="effort-">
           <input type="number" class="inputnumber" value="255" id="effort">
           <input type="button" class="_btn" value="+" id="effortplus"></button>
         </th>
@@ -227,7 +244,7 @@
       <tr>
         <th>Level</th>
         <th><input type="range" id="levelrangeInput" min="0" max="100" value="50">
-          <input type="button" class="_btn" value="-" id="level-">
+          <input type="button" class="_btn-" value="-" id="level-">
           <input type="number" class="inputnumber" value="50" id="level">
           <input type="button" class="_btn" value="+" id="levelplus"></button>
         </th>
@@ -267,7 +284,7 @@
       <tr>
         <th>atk</th>
         <th><input type="range" id="atkrangeInput" min="0" max="1000" value="100">
-          <input type="button" class="_btn" value="-" id="atk-">
+          <input type="button" class="_btn-" value="-" id="atk-">
           <input type="number" class="inputnumber" value="100" id="atk">
           <input type="button" class="_btn" value="+" id="atkplus"></button>
         </th>
@@ -275,7 +292,7 @@
       <tr>
         <th>def</th>
         <th><input type="range" id="defrangeInput" min="0" max="1000" value="100">
-          <input type="button" class="_btn" value="-" id="def-">
+          <input type="button" class="_btn-" value="-" id="def-">
           <input type="number" class="inputnumber" value="100" id="def">
           <input type="button" class="_btn" value="+" id="defplus"></button>
         </th>
@@ -283,7 +300,7 @@
       <tr>
         <th>威力</th>
         <th><input type="range" id="powerrangeInput" min="0" max="200" value="80">
-          <input type="button" class="_btn" value="-" id="power-">
+          <input type="button" class="_btn-" value="-" id="power-">
           <input type="number" class="inputnumber" value="80" id="power">
           <input type="button" class="_btn" value="+" id="powerplus"></button>
         </th>
