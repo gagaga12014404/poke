@@ -361,7 +361,7 @@
     </table>
   </div>
   <div id="myFavorite" class="tabcontent">
-    <table id="myFavorite" class="table table-striped table-bordered dt-responsive" style="width: 100%;">
+    <table id="myFavoriteTable" class="table table-striped table-bordered dt-responsive" style="width: 100%;">
       <thead>
 
       </thead>
@@ -423,7 +423,7 @@
   $('#character,#upplus,#selfplus,#attrplus,#weatherplus,#staffplus,#characterplus').on('change', calculate);
   //tab switch
   function switchTab(id) {
-    var allTable = ["guide", "moves", "calculator","myFavorite"];
+    var allTable = ["guide", "moves", "calculator", "myFavorite"];
     for (var i in allTable) {
       if (allTable[i] != id) {
         document.getElementById(allTable[i]).style.display = 'none';
@@ -477,10 +477,9 @@
   }
   //全域變數存目前點的tr
   var currentClickTr;
-  function ClickAddToTable()
-  {
-    console.log(currentClickTr);
-  }
+  // var t = $('#myFavoriteTable').DataTable();
+  var table3;
+  
   var columns = [
     { "data": "number" },
     { "data": "cName" },
@@ -495,9 +494,13 @@
     { "data": null, render: GetFiveTotal },
     { "data": null, render: GetFiveChart, className: 'none' },//className:'none'一定縮
     { "data": null, render: GetFiveTotal, className: 'none' },
-    { 'data': null, render: AddToTable, className: 'none'  },
+    { 'data': null, render: AddToTable, className: 'none' },
   ];
-
+  function ClickAddToTable() {
+    // t.row.add(currentClickTr);
+    // console.log(currentClickTr);
+    // $('#myFavoriteTable').DataTable().row.add(columns);
+  }
   //tfoot的搜尋功能
   $('#nu,#na').each(function () {
     var title = $(this).text();
@@ -507,7 +510,6 @@
     var title = $(this).text();
     $(this).html('<input type="text" class="inputSearch" placeholder="' + title + '" />');
   });
-
   $(document).ready(function () {
     var table = $('#all').DataTable({
       "language": {
@@ -540,15 +542,21 @@
             });
           });
         //指定欄位下拉選單
+        var column23 = this.api();
         this.api()
-          .columns([2, 3])
+          .columns(2)
           .every(function () {
             var column = this;
             var select = $('<select style=" height: 25px; " ><option value=""></option></select>')
               .appendTo($(column.footer()).empty())
               .on('change', function () {
-                var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                column.search(val ? '^' + val + '$' : '', true, false).draw();
+                var val = $.fn.dataTable.util.escapeRegex($(this).val());//這裡的this是option的值
+                column23.search(val).draw();
+                // filterColumn23(val);
+                // (column.search(val,false, true)+column3.search(val,false, true)).draw();
+                // console.log(typeof(column.search(val,false, true)));
+                // column3.search("^" + val,true,false,true).draw();
+                // column3.search(val).draw();
               });
 
             column
@@ -596,6 +604,7 @@
         { targets: [0], responsivePriority: 1 },
       ],
     });
+    // table3 = $('#myFavoriteTable').DataTable();
     //先隱藏，透過select option切換
     table.column(5).visible(false);
     table.column(6).visible(false);
