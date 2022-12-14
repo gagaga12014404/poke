@@ -363,8 +363,48 @@
   <div id="myFavorite" class="tabcontent">
     <table id="myFavoriteTable" class="table table-striped table-bordered dt-responsive" style="width: 100%;">
       <thead>
-
+        <tr id="theadtr">
+          <th rowspan="2" style="width: 25px;">編號</th>
+          <th rowspan="2" style="width: 50px;">名稱</th>
+          <th colspan="2" style="width: 110px;text-align: center;height: 10px;padding: 0;">屬性</th>
+          <th colspan="7" style="padding: 0; width: 60px;">
+            <select id="selectAbility" style="width: 60px;">
+              <option value="4" selected>生命</option>
+              <option value="5">物攻</option>
+              <option value="6">物防</option>
+              <option value="7">特攻</option>
+              <option value="8">特防</option>
+              <option value="9">速度</option>
+              <option value="10">能力值</option>
+            </select>
+          </th>
+          <th rowspan="2">能力值</th>
+          <th rowspan="2" class="thhp">總和</th>
+        </tr>
+        <tr>
+          <!--colspan 是複數的下面那層  -->
+          <th style="padding: 0;height: 10px;width: 45px;text-align: center;">1</th>
+          <th style="padding: 0;height: 10px;width: 45px;text-align: center;">2</th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
       </thead>
+      <tfoot>
+        <tr style="height: 25px;">
+          <th id="nu" style="padding: 0;">編號</th>
+          <th id="na" style="padding: 0;width: 50px;">名稱</th>
+          <th colspan="2" style="padding: 0;width: 45px;text-align: center;"></th>
+          <!-- <th style="padding: 0;height: 10px;width: 45px;text-align: center;">2</th> -->
+          <th colspan="7"></th>
+          <th class="thhp"></th>
+          <th></th>
+        </tr>
+      </tfoot>
     </table>
   </div>
 </body>
@@ -472,35 +512,30 @@
   var AddToTable = function (data) {
     // console.log(data["hp"]);
     // return `<button onclick="ClickAddToTable('${data["number"].replace('\n','')}')">加入</button>`;
-    return `<button onclick="ClickAddToTable()">加入</button>`;
-    // return `<input type="button" value="加入" class="ClickAddToTable">`;
+    // return `<button onclick="ClickAddToTable('${data["number"].replace('\n','')}')">加入</button>`;
+    return `<input type="button" value="加入" class="ClickAddToTable">`;
   }
   //全域變數存目前點的tr
   var currentClickTr;
   // var t = $('#myFavoriteTable').DataTable();
   var table3;
-  
+
   var columns = [
-    { "data": "number" },
-    { "data": "cName" },
-    { "data": "attr1" },
-    { "data": "attr2" },
-    { "data": "hp" },
-    { "data": "atk" },
-    { "data": "def" },
-    { "data": "satk" },
-    { "data": "sdef" },
-    { "data": "speed" },
+    { "data": "number", "width": "14%" },
+    { "data": "cName", "width": "26%" },
+    { "data": "attr1", "width": "20%" },
+    { "data": "attr2", "width": "20%" },
+    { "data": "hp", "width": "20%" },
+    { "data": "atk", "width": "20%" },
+    { "data": "def", "width": "20%" },
+    { "data": "satk", "width": "20%" },
+    { "data": "sdef", "width": "20%" },
+    { "data": "speed", "width": "20%" },
     { "data": null, render: GetFiveTotal },
     { "data": null, render: GetFiveChart, className: 'none' },//className:'none'一定縮
     { "data": null, render: GetFiveTotal, className: 'none' },
     { 'data': null, render: AddToTable, className: 'none' },
   ];
-  function ClickAddToTable() {
-    // t.row.add(currentClickTr);
-    // console.log(currentClickTr);
-    // $('#myFavoriteTable').DataTable().row.add(columns);
-  }
   //tfoot的搜尋功能
   $('#nu,#na').each(function () {
     var title = $(this).text();
@@ -518,6 +553,7 @@
       "dom": `<'row'<'col-4 col-sm-4 col-md-4'l><'col-8 col-sm-8 col-md-8'f>>
             <'row'<'col-sm-12'tr>>
             <'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>`,
+      "autoWidth": false,
       "ajax": "data.json",
       //拿到ajax的結果
       // "drawCallback": function (settings) {
@@ -570,10 +606,11 @@
           });
       },
       "columnDefs": [
-        { targets: [0], responsivePriority: 1 },
-        { targets: [1], responsivePriority: 2 },
-        { targets: [2], responsivePriority: 3 },
-        { targets: [3], responsivePriority: 3 },
+        { "width": "10%", targets: 0, responsivePriority: 1 },
+        { "width": "20%", targets: 1, responsivePriority: 2 },
+        { "width": "20%", targets: 2, responsivePriority: 3 },
+        { "width": "20%", targets: 3, responsivePriority: 3 },
+        { "width": "20%", targets: 4, responsivePriority: 3 },
       ],
     });
     var table2 = $('#movesTable').DataTable({
@@ -604,7 +641,73 @@
         { targets: [0], responsivePriority: 1 },
       ],
     });
-    // table3 = $('#myFavoriteTable').DataTable();
+    table3 = $('#myFavoriteTable').DataTable({
+      "language": {
+        "lengthMenu": "_MENU_",
+      },
+      "dom": `<'row'<'col-4 col-sm-4 col-md-4'l><'col-8 col-sm-8 col-md-8'f>>
+            <'row'<'col-sm-12'tr>>
+            <'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>`,
+      "autoWidth": false,
+      "columns": [
+        { "data": "number", "width": "14%" },
+        { "data": "cName", "width": "26%" },
+        { "data": "attr1", "width": "20%" },
+        { "data": "attr2", "width": "20%" },
+        { "data": "hp", "width": "20%" },
+        { "data": "atk", "width": "20%" },
+        { "data": "def", "width": "20%" },
+        { "data": "satk", "width": "20%" },
+        { "data": "sdef", "width": "20%" },
+        { "data": "speed", "width": "20%" },
+        { "data": null, render: GetFiveTotal },
+        { "data": null, render: GetFiveChart, className: 'none' },//className:'none'一定縮
+        { "data": null, render: GetFiveTotal, className: 'none' },
+      ],
+      "pagingType": "numbers",
+      initComplete: function () {
+        // Apply the search
+        //指定欄位搜尋
+        this.api()
+          .columns([0, 1])//用column指定
+          .every(function () {
+            var that = this
+            $('input', this.footer()).on('keyup change clear', function () {
+              if (that.search() !== this.value) {
+                that.search(this.value).draw();
+              }
+            });
+          });
+        //指定欄位下拉選單
+        var column23 = this.api();
+        this.api()
+          .columns(2)
+          .every(function () {
+            var column = this;
+            var select = $('<select style=" height: 25px; " ><option value=""></option></select>')
+              .appendTo($(column.footer()).empty())
+              .on('change', function () {
+                var val = $.fn.dataTable.util.escapeRegex($(this).val());//這裡的this是option的值
+                column23.search(val).draw();
+                // filterColumn23(val);
+                // (column.search(val,false, true)+column3.search(val,false, true)).draw();
+                // console.log(typeof(column.search(val,false, true)));
+                // column3.search("^" + val,true,false,true).draw();
+                // column3.search(val).draw();
+              });
+
+            column
+              .data()
+              .unique()
+              .sort()
+              .each(function (d, j) {
+                if (typeof (d) == 'string')
+                  select.append('<option value="' + d + '">' + d + '</option>');
+              });
+          });
+      },
+    });
+
     //先隱藏，透過select option切換
     table.column(5).visible(false);
     table.column(6).visible(false);
@@ -612,6 +715,12 @@
     table.column(8).visible(false);
     table.column(9).visible(false);
     table.column(10).visible(false);
+    table3.column(5).visible(false);
+    table3.column(6).visible(false);
+    table3.column(7).visible(false);
+    table3.column(8).visible(false);
+    table3.column(9).visible(false);
+    table3.column(10).visible(false);
     $('#selectAbility').click(function (e) {
       //點選的時候預防點到下層
       e.stopPropagation();
@@ -623,18 +732,9 @@
       column2.visible(!column2.visible());
       selectAbilityPreSelect = $(this).val();
     });
-
-    $('#all tbody').on('click', 'tr', function () {
-      currentClickTr = table.row(this).data();
-
-      // console.log(currentClickTr);
-
-      // console.log(tthis);
-      // $('#ClickAddToTable').on('click', function () {
-      //   console.log(tthis);
-      // })
-      // console.log(table.row(this).data());
-      // $(this).toggleClass('selected');
+    $('#all tbody').on('click', '.ClickAddToTable', function () {
+      table3.row.add(table.row(this).data()).draw(false);
+      console.log(table.row(this).data());
     });
 
   });
