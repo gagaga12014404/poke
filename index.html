@@ -744,13 +744,7 @@
       table3.row.add(table.row(this).data()).draw(false);
     });
     $('#myFavorite tbody').on('click', '.ClickRemoveFromTable', function () {
-      console.log(123);
-      table3.row('.selected').remove().draw(false);
-    });
-    $('#myFavorite tbody').on('click', 'tr', function () {
-      table3.$('tr.selected').removeClass('selected');
-      $(this).addClass('selected');
-
+      table3.row(table.row(this).data()).remove().draw(false);
     });
   });
 </script>
