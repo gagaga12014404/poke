@@ -368,7 +368,7 @@
           <th rowspan="2" style="width: 50px;">名稱</th>
           <th colspan="2" style="width: 110px;text-align: center;height: 10px;padding: 0;">屬性</th>
           <th colspan="7" style="padding: 0; width: 60px;">
-            <select id="selectAbility" style="width: 60px;">
+            <select id="selectAbility2" style="width: 60px;">
               <option value="4" selected>生命</option>
               <option value="5">物攻</option>
               <option value="6">物防</option>
@@ -380,6 +380,7 @@
           </th>
           <th rowspan="2">能力值</th>
           <th rowspan="2" class="thhp">總和</th>
+          <th rowspan="2" class="thhp"></th>
         </tr>
         <tr>
           <!--colspan 是複數的下面那層  -->
@@ -401,6 +402,7 @@
           <th colspan="2" style="padding: 0;width: 45px;text-align: center;"></th>
           <!-- <th style="padding: 0;height: 10px;width: 45px;text-align: center;">2</th> -->
           <th colspan="7"></th>
+          <th class="thhp"></th>
           <th class="thhp"></th>
           <th></th>
         </tr>
@@ -514,6 +516,9 @@
     // return `<button onclick="ClickAddToTable('${data["number"].replace('\n','')}')">加入</button>`;
     // return `<button onclick="ClickAddToTable('${data["number"].replace('\n','')}')">加入</button>`;
     return `<input type="button" value="加入" class="ClickAddToTable">`;
+  }
+  var RemoveFromTable = function (data) {
+    return `<input type="button" value="移除" class="ClickRemoveFromTable">`;
   }
   //全域變數存目前點的tr
   var currentClickTr;
@@ -663,6 +668,7 @@
         { "data": null, render: GetFiveTotal },
         { "data": null, render: GetFiveChart, className: 'none' },//className:'none'一定縮
         { "data": null, render: GetFiveTotal, className: 'none' },
+        { 'data': null, render: RemoveFromTable, className: 'none' },
       ],
       "pagingType": "numbers",
       initComplete: function () {
@@ -689,11 +695,6 @@
               .on('change', function () {
                 var val = $.fn.dataTable.util.escapeRegex($(this).val());//這裡的this是option的值
                 column23.search(val).draw();
-                // filterColumn23(val);
-                // (column.search(val,false, true)+column3.search(val,false, true)).draw();
-                // console.log(typeof(column.search(val,false, true)));
-                // column3.search("^" + val,true,false,true).draw();
-                // column3.search(val).draw();
               });
 
             column
@@ -732,11 +733,25 @@
       column2.visible(!column2.visible());
       selectAbilityPreSelect = $(this).val();
     });
+    $('#selectAbility2').change(function (e) {
+      var column = table3.column(selectAbilityPreSelect);
+      column.visible(!column.visible());
+      var column2 = table3.column($(this).val());
+      column2.visible(!column2.visible());
+      selectAbilityPreSelect = $(this).val();
+    });
     $('#all tbody').on('click', '.ClickAddToTable', function () {
       table3.row.add(table.row(this).data()).draw(false);
-      console.log(table.row(this).data());
     });
+    $('#myFavorite tbody').on('click', '.ClickRemoveFromTable', function () {
+      console.log(123);
+      table3.row('.selected').remove().draw(false);
+    });
+    $('#myFavorite tbody').on('click', 'tr', function () {
+      table3.$('tr.selected').removeClass('selected');
+      $(this).addClass('selected');
 
+    });
   });
 </script>
 
