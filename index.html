@@ -150,6 +150,7 @@
     <button onclick="switchTab('calculator')" class="calculatorbtn">計算器</button>
     <button onclick="switchTab('myFavorite')" class="myFavoritebtn">MY</button>
   </div>
+  <!-- 圖鑑 -->
   <div id="guide">
     <table id="all" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%;">
       <thead>
@@ -199,15 +200,18 @@
       </tfoot>
     </table>
   </div>
+  <!-- 招式 -->
   <div id="moves" class="tabcontent">
     <table id="movesTable" class="table table-striped table-bordered dt-responsive" style="width: 100%;">
       <thead>
+        <th>編號</th>
         <th>名稱</th>
-        <th>敘述</th>
+        <th></th>
       </thead>
       <tfoot>
+        <th></th>
         <th id="movesThName">名稱</th>
-        <th id="movesThDescription">敘述</th>
+        <th id="movesThDescription"></th>
       </tfoot>
     </table>
   </div>
@@ -625,9 +629,10 @@
       "dom": `<'row'<'col-4 col-sm-6 col-md-6'l><'col-8 col-sm-6 col-md-6'f>>
             <'row'<'col-sm-12'tr>>
             <'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>`,
-      "ajax": "特性.json",
+      "ajax": "123.json",
       "pagingType": "numbers",
-      "columns": [{ 'data': '中文名' }, { 'data': '敘述', className: 'none' }],
+      "autoWidth": false,
+      "columns": [{'data':'編號',"width": "10%" },{ 'data': '中文名',"width": "90%"  }, { 'data': '效果', className: 'none' }],
       initComplete: function () {
         // Apply the search
         //指定欄位搜尋
@@ -642,9 +647,6 @@
             });
           });
       },
-      "columnDefs": [
-        { targets: [0], responsivePriority: 1 },
-      ],
     });
     table3 = $('#myFavoriteTable').DataTable({
       "language": {
