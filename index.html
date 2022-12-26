@@ -15,6 +15,8 @@
   <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
   <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
   <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
   <style>
     html,
@@ -39,38 +41,14 @@
       table-layout: fixed;
     }
 
-    .calculatorTable {
-      margin-top: 10px;
-      margin-left: 10px;
-    }
-
     input[type=range] {
       margin: 10px 0;
-    }
-
-    .inputnumber {
-      width: 55px;
     }
 
     .inputSearch {
       font-size: 0.7em;
       width: 100%;
       height: 25px;
-    }
-
-    ._btn- {
-      width: 20px;
-      height: 20px;
-      padding: 0;
-      line-height: 0;
-      margin-left: 15px;
-    }
-
-    ._btn {
-      width: 20px;
-      height: 20px;
-      padding: 0;
-      line-height: 0;
     }
 
     /*.row:first-child::after {
@@ -104,14 +82,14 @@
     }
 
     /* Style the tab */
-    .tab {
+    .nav {
       overflow: hidden;
       /* border: 1px solid #ccc; */
       background-color: rgb(160, 160, 160);
     }
 
     /* Style the buttons that are used to open the tab content */
-    .tab button {
+    .nav button {
       background-color: inherit;
       color: rgb(255, 255, 255);
       float: left;
@@ -123,12 +101,16 @@
     }
 
     /* Change background color of buttons on hover */
-    .tab button:hover {
+    .nav button:hover {
       background-color: rgb(130, 130, 130);
     }
 
     /* Create an active/current tablink class */
-    .tab button.active {
+    .nav button.active {
+      background-color: rgb(70, 70, 70);
+    }
+
+    .calculatorTab button.active {
       background-color: rgb(70, 70, 70);
     }
 
@@ -144,7 +126,7 @@
 
 <body>
 
-  <div class="tab" style="width: 100%;font-size: 13px;">
+  <div class="nav" style="width: 100%;font-size: 13px;">
     <button onclick="switchTab('guide')" class="guidebtn active">圖鑑</button>
     <button onclick="switchTab('moves')" class="movesbtn">招式</button>
     <button onclick="switchTab('calculator')" class="calculatorbtn">計算器</button>
@@ -222,147 +204,21 @@
       <p style="margin: 0px 10px;">其他：[(種*2+個體+努力/4)*(Lv/100)+5]*性格</p>
       <p style="margin: 0px 10px;">傷害計算：[(2*Lv+10)/250*atk/def*威力+2]*加成</p>
     </div>
+    <div class="calculatorTab" style="width: 100%;font-size: 13px;">
+      <button onclick="switchcalculatorTab('atker')" class="atkerbtn active">攻擊方</button>
+      <button onclick="switchcalculatorTab('defer')" class="deferbtn">防守方</button>
+    </div>
     <!-- 計算器table -->
-    <table class="calculatorTable">
-      <tr>
-        <th>種族值</th>
-        <th><input type="range" id="racerangeInput" min="0" max="200" value="100">
-          <input type="button" class="_btn-" value="-" id="race-">
-          <input type="number" class="inputnumber" value="100" id="race">
-          <input type="button" class="_btn" value="+" id="raceplus"></button>
-        </th>
-      </tr>
-      <tr>
-        <th>個體值</th>
-        <th><input type="range" id="personalrangeInput" min="0" max="31" value="31">
-          <input type="button" class="_btn-" value="-" id="personal-">
-          <input type="number" class="inputnumber" value="31" id="personal">
-          <input type="button" class="_btn" value="+" id="personalplus"></button>
-        </th>
-      </tr>
-      <tr>
-        <th>努力值</th>
-        <th><input type="range" id="effortrangeInput" min="0" max="255" value="255">
-          <input type="button" class="_btn-" value="-" id="effort-">
-          <input type="number" class="inputnumber" value="255" id="effort">
-          <input type="button" class="_btn" value="+" id="effortplus"></button>
-        </th>
-      </tr>
-      <tr>
-        <th>Level</th>
-        <th><input type="range" id="levelrangeInput" min="0" max="100" value="50">
-          <input type="button" class="_btn-" value="-" id="level-">
-          <input type="number" class="inputnumber" value="50" id="level">
-          <input type="button" class="_btn" value="+" id="levelplus"></button>
-        </th>
-      </tr>
-      <tr>
-        <th>HP結果</th>
-        <th><input type="text" class="inputnumber" value="207.375" id="Result"></th>
-      </tr>
-      <tr>
-        <th>性格</th>
-        <th><select name="" id="character">
-            <option value="1.1">1.1</option>
-            <option value="1" selected>1</option>
-            <option value="0.9">0.9</option>
-          </select></th>
-      </tr>
-      <tr>
-        <th>能力提升</th>
-        <th><select name="" id="upplus">
-            <option value="0.5" selected>0.5</option>
-            <option value="0.66" selected>0.66</option>
-            <option value="1" selected>1</option>
-            <option value="1.3">古代活性</option>
-            <option value="1.5">1.5</option>
-            <option value="2">2</option>
-            <option value="2.5">2.5</option>
-            <option value="3">3</option>
-            <option value="3.5">3.5</option>
-            <option value="4">4</option>
-          </select>
-        </th>
-      </tr>
-      <tr>
-        <th>其他結果</th>
-        <th><input type="text" class="inputnumber" value="167.6125" id="otherResult"></th>
-      </tr>
-      <tr>
-        <th>atk</th>
-        <th><input type="range" id="atkrangeInput" min="0" max="1000" value="100">
-          <input type="button" class="_btn-" value="-" id="atk-">
-          <input type="number" class="inputnumber" value="100" id="atk">
-          <input type="button" class="_btn" value="+" id="atkplus"></button>
-        </th>
-      </tr>
-      <tr>
-        <th>def</th>
-        <th><input type="range" id="defrangeInput" min="0" max="1000" value="100">
-          <input type="button" class="_btn-" value="-" id="def-">
-          <input type="number" class="inputnumber" value="100" id="def">
-          <input type="button" class="_btn" value="+" id="defplus"></button>
-        </th>
-      </tr>
-      <tr>
-        <th>威力</th>
-        <th><input type="range" id="powerrangeInput" min="0" max="200" value="80">
-          <input type="button" class="_btn-" value="-" id="power-">
-          <input type="number" class="inputnumber" value="80" id="power">
-          <input type="button" class="_btn" value="+" id="powerplus"></button>
-        </th>
-      </tr>
-      <tr>
-        <th>本系加成</th>
-        <th><select name="" id="selfplus">
-            <option value="1" selected>1</option>
-            <option value="1.5">1.5</option>
-            <option value="2">2</option>
-          </select>
-        </th>
-      </tr>
-      <tr>
-        <th>屬性相剋</th>
-        <th><select name="" id="attrplus">
-            <option value="0.25">0.25</option>
-            <option value="0.5">0.5</option>
-            <option value="1" selected>1</option>
-            <option value="2">2</option>
-            <option value="4">4</option>
-          </select></th>
-      </tr>
-      <tr>
-        <th>天氣加成</th>
-        <th><select name="" id="weatherplus">
-            <option value="0.5">0.5</option>
-            <option value="1" selected>1</option>
-            <option value="1.5">1.5</option>
-          </select></th>
-      </tr>
-      <tr>
-        <th>道具</th>
-        <th>
-          <select name="" id="staffplus">
-            <option value="1.5">講究系列</option>
-            <option value="1" selected>無</option>
-            <option value="1.3">生命寶珠</option>
-            <option value="1.1">1.1</option>
-            <option value="1.2">1.2</option>
-          </select>
-        </th>
-      </tr>
-      <tr>
-        <th>特性</th>
-        <th><select name="" id="characterplus">
-            <option value="1" selected>無</option>
-            <option value="1.3">強行</option>
-          </select></th>
-      </tr>
-      <tr>
-        <th>傷害計算</th>
-        <th><input type="number" class="inputnumber" value="37.2" id="damage"></th>
-      </tr>
-    </table>
+    <div id="atker">
+      <select name="" id="atkerName" style="width: 100px;">
+      </select>
+      <div id="includeCaculator1"></div>
+    </div>
+    <div id="defer" class="tabcontent">
+      <select name="" id="atkerName2" style="width: 100px;">
+      </select>
+      <div id="includeCaculator2"></div>
+    </div>
   </div>
   <div id="myFavorite" class="tabcontent">
     <table id="myFavoriteTable" class="table table-striped table-bordered dt-responsive" style="width: 100%;">
@@ -415,58 +271,18 @@
   </div>
 </body>
 <script>
+  $(function () {
+    $("#includeCaculator1").load("caculator.html");
+    $("#includeCaculator2").load("caculator.html");
+  });
+
+  $(document).ready(function () {
+    $('#atkerName').select2();
+    $('#atkerName2').select2();
+  });
+
   var selectAbilityPreSelect = "4";
-  //+- start
-  $('#raceplus,#personalplus,#effortplus,#levelplus,#atkplus,#defplus,#powerplus').click(function () {
-    var id = "#" + $(this).attr("id").replace('plus', '');
-    var value = parseInt($(id).val()) + 1;
-    $(id).val(value);
-    $(id + "rangeInput").val(value);
-    calculate();
-  });
-  $('#race-,#personal-,#effort-,#level-,#atk-,#def-,#power-').click(function () {
-    var id = "#" + $(this).attr("id").replace('-', '');
-    var value = parseInt($(id).val()) - 1;
-    $(id).val(value);
-    $(id + "rangeInput").val(value);
-    calculate();
-  });
-  //+- end
-  //拖拉同步改變text值
-  $('#racerangeInput,#personalrangeInput,#effortrangeInput,#levelrangeInput,#atkrangeInput,#defrangeInput,#powerrangeInput').on('input', function () {
-    var id = "#" + $(this).attr("id").replace('rangeInput', '');
-    $(id).val($(this).val());
-  });
-  //text值同步改變拖拉長度
-  $('#race,#personal,#effort,#level,#atk,#def,#power').on('input', function () {
-    var rangeInputName = "#" + $(this).attr("id") + "rangeInput";
-    $(rangeInputName).val($(this).val());
-  });
-  var calculate = function () {
-    var race = parseInt($('#race').val());
-    var personal = parseInt($('#personal').val());
-    var effort = parseInt($('#effort').val());
-    var level = parseInt($('#level').val());
-    var charact = parseFloat($('#character').val());
-    var res = (race * 2 + personal + effort / 4) * (level / 100) + level + 10;
-    var upplus = parseFloat($('#upplus').val());
-    var otherres = ((race * 2 + personal + effort / 4) * (level / 100) + 5) * charact * upplus;
-    $('#Result').val(res.toString());
-    $('#otherResult').val(otherres.toString());
-    var atk = parseInt($('#atk').val());
-    var def = parseInt($('#def').val());
-    var power = parseInt($('#power').val());
-    var selfplus = parseFloat($('#selfplus').val());
-    var attrplus = parseFloat($('#attrplus').val());
-    var weatherplus = parseFloat($('#weatherplus').val());
-    var staffplus = parseFloat($('#staffplus').val());
-    var characterplus = parseFloat($('#characterplus').val());
-    var calculatedamage = ((2 * level + 10) / 250 * atk / def * power + 2) * selfplus * attrplus * weatherplus * staffplus * characterplus;
-    $('#damage').val(calculatedamage.toString());
-  }
-  //改變值立刻計算結果
-  $('#race,#personal,#effort,#level,#racerangeInput,#personalrangeInput,#effortrangeInput,#levelrangeInput,#atkrangeInput,#defrangeInput,#powerrangeInput,#atk,#def,#power').on('input', calculate);
-  $('#character,#upplus,#selfplus,#attrplus,#weatherplus,#staffplus,#characterplus').on('change', calculate);
+
   //tab switch
   function switchTab(id) {
     var allTable = ["guide", "moves", "calculator", "myFavorite"];
@@ -484,8 +300,27 @@
 
     }
   }
+  function switchcalculatorTab(id) {
+    var allTable = ["atker", "defer"];
+    for (var i in allTable) {
+      for (var i in allTable) {
+        if (allTable[i] != id) {
+          document.getElementById(allTable[i]).style.display = 'none';
+          document.getElementsByClassName(allTable[i] + "btn")[0].className = document.getElementsByClassName(allTable[i] + "btn")[0].className.replace(" active", "");
+        }
+        else {
+          if (document.getElementsByClassName(allTable[i] + "btn")[0].className.includes(" active"))
+            return;
+          document.getElementById(allTable[i]).style.display = 'table-row';
+          document.getElementsByClassName(allTable[i] + "btn")[0].className += " active";
+        }
+
+      }
+    }
+  }
   //table 1的資料表
   var column = ["編號", "名稱", "屬性", "生命", "物攻", "物防", "特攻", "特防", "速度"];
+  var countatkerName = 1;
   var GetFiveTotal = function (data) {
     var inthp = parseInt(data["hp"]);
     var intatk = parseInt(data["atk"]);
@@ -493,6 +328,11 @@
     var intsatk = parseInt(data["satk"]);
     var intsdef = parseInt(data["sdef"]);
     var intspeed = parseInt(data["speed"]);
+    if (parseInt(data['number'].substring(1, 4)) == countatkerName) {
+      $('#atkerName').append(new Option(data['cName'], data['cName']));
+      $('#atkerName2').append(new Option(data['cName'], data['cName']));
+      countatkerName++;
+    }
     return inthp + intatk + intdef + intsatk + intsdef + intspeed;
   }
   var GetFiveChart = function (data) {
@@ -632,7 +472,7 @@
       "ajax": "特性.json",
       "pagingType": "numbers",
       "autoWidth": false,
-      "columns": [{'data':'編號',"width": "10%" },{ 'data': '中文名',"width": "90%"  }, { 'data': '效果', className: 'none' }],
+      "columns": [{ 'data': '編號', "width": "10%" }, { 'data': '中文名', "width": "90%" }, { 'data': '效果', className: 'none' }],
       initComplete: function () {
         // Apply the search
         //指定欄位搜尋
