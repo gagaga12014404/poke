@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>guide</title>
+
+</head>
+
+<body>
+    <table id="all" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%;">
+        <thead>
+            <tr id="theadtr">
+                <th rowspan="2" style="width: 25px;">編號</th>
+                <th rowspan="2" style="width: 50px;">名稱</th>
+                <th colspan="2" style="width: 110px;text-align: center;height: 10px;padding: 0;">屬性</th>
+                <th colspan="7" style="padding: 0; width: 60px;">
+                    <select id="selectAbility" style="width: 60px;">
+                        <option value="4" selected>生命</option>
+                        <option value="5">物攻</option>
+                        <option value="6">物防</option>
+                        <option value="7">特攻</option>
+                        <option value="8">特防</option>
+                        <option value="9">速度</option>
+                        <option value="10">能力值</option>
+                    </select>
+                </th>
+                <th rowspan="2">能力值</th>
+                <th rowspan="2" class="thhp">總和</th>
+                <th rowspan="2">加入比較</th>
+            </tr>
+            <tr>
+                <!--colspan 是複數的下面那層  -->
+                <th style="padding: 0;height: 10px;width: 45px;text-align: center;">1</th>
+                <th style="padding: 0;height: 10px;width: 45px;text-align: center;">2</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr style="height: 25px;">
+                <th id="nu" style="padding: 0;">編號</th>
+                <th id="na" style="padding: 0;width: 50px;">名稱</th>
+                <th colspan="2" style="padding: 0;width: 45px;text-align: center;"></th>
+                <!-- <th style="padding: 0;height: 10px;width: 45px;text-align: center;">2</th> -->
+                <th colspan="7"></th>
+                <th class="thhp"></th>
+                <th class="thhp"></th>
+                <th></th>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+<script>
+    var table;
+    //table 1的資料表
+    var column = ["編號", "名稱", "屬性", "生命", "物攻", "物防", "特攻", "特防", "速度"];
+    var countatkerName = 1;
+    var ajaxdata = {};
+    var GetFiveTotal = function (data) {
+        ajaxdata[data['cName']] = data;
+        var inthp = parseInt(data["hp"]);
+        var intatk = parseInt(data["atk"]);
+        var intdef = parseInt(data["def"]);
+        var intsatk = parseInt(data["satk"]);
+        var intsdef = parseInt(data["sdef"]);
+        var intspeed = parseInt(data["speed"]);
+        if (parseInt(data['number'].substring(1, 4)) == countatkerName) {
+            $('#atkerName').append(new Option(data['cName'], data['cName']));
+            $('#deferName').append(new Option(data['cName'], data['cName']));
+            countatkerName++;
+        }
+        return inthp + intatk + intdef + intsatk + intsdef + intspeed;
+    }
+    var GetFiveChart = function (data) {
+        var x = 150, y = 15;
+        var hp = parseInt(data["hp"]);
+        var atk = parseInt(data["atk"]);
+        var def = parseInt(data["def"]);
+        var satk = parseInt(data["satk"]);
+        var sdef = parseInt(data["sdef"]);
+        var speed = parseInt(data["speed"]);
+        column2 = ["", "", "", hp, atk, def, satk, sdef, speed];// / 255 * x
+        var r = "";
+        for (var i = 3; i < column.length; i++) {
+            r += `<div>
+      <div style="display: inline-block;">${column[i]}</div>
+      <div style="position:relative;display: inline-block;">
+        <div style="width:${x}px;height:${y}px;background-color: green;"></div>
+      <div style="width:${column2[i] / 255 * x}px;height:${y}px;background-color:chartreuse;border:1px black solid;position:absolute;top:0px;"></div>
+      </div> ${column2[i]}</div>`;
+        }
+        return r;
+    }
+    var AddToTable = function (data) {
+        // console.log(data["hp"]);
+        // return `<button onclick="ClickAddToTable('${data["number"].replace('\n','')}')">加入</button>`;
+        // return `<button onclick="ClickAddToTable('${data["number"].replace('\n','')}')">加入</button>`;
+        return `<input type="button" value="加入" class="ClickAddToTable">`;
+    }
+
+
+    var columns = [
+        { "data": "number", "width": "14%" },
+        { "data": "cName", "width": "26%" },
+        { "data": "attr1", "width": "20%" },
+        { "data": "attr2", "width": "20%" },
+        { "data": "hp", "width": "20%" },
+        { "data": "atk", "width": "20%" },
+        { "data": "def", "width": "20%" },
+        { "data": "satk", "width": "20%" },
+        { "data": "sdef", "width": "20%" },
+        { "data": "speed", "width": "20%" },
+        { "data": null, render: GetFiveTotal },
+        { "data": null, render: GetFiveChart, className: 'none' },//className:'none'一定縮
+        { "data": null, render: GetFiveTotal, className: 'none' },
+        { 'data': null, render: AddToTable, className: 'none' },
+    ];
+    //tfoot的搜尋功能
+    $('#nu,#na').each(function () {
+        var title = $(this).text();
+        $(this).html('<input type="text" class="inputSearch" placeholder="' + title + '" />');
+    });
+    $(document).ready(function () {
+        table = $('#all').DataTable({
+            "language": {
+                "lengthMenu": "_MENU_",
+            },
+            "dom": `<'row'<'col-4 col-sm-4 col-md-4'l><'col-8 col-sm-8 col-md-8'f>>
+            <'row'<'col-sm-12'tr>>
+            <'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>`,
+            "autoWidth": false,
+            "ajax": "data.json",
+            //拿到ajax的結果
+            // "drawCallback": function (settings) {
+            //   // Here the response
+            //   response = settings.json;
+
+            // },
+            "columns": columns,
+            // "info":     false,
+            "pagingType": "numbers",
+            initComplete: function () {
+                // Apply the search
+                //指定欄位搜尋
+                this.api()
+                    .columns([0, 1])//用column指定
+                    .every(function () {
+                        var that = this
+                        $('input', this.footer()).on('keyup change clear', function () {
+                            if (that.search() !== this.value) {
+                                that.search(this.value).draw();
+                            }
+                        });
+                    });
+                //指定欄位下拉選單
+                var column23 = this.api();
+                this.api()
+                    .columns(2)
+                    .every(function () {
+                        var column = this;
+                        var select = $('<select style=" height: 25px; " ><option value=""></option></select>')
+                            .appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());//這裡的this是option的值
+                                column23.search(val).draw();
+                                // filterColumn23(val);
+                                // (column.search(val,false, true)+column3.search(val,false, true)).draw();
+                                // console.log(typeof(column.search(val,false, true)));
+                                // column3.search("^" + val,true,false,true).draw();
+                                // column3.search(val).draw();
+                            });
+
+                        column
+                            .data()
+                            .unique()
+                            .sort()
+                            .each(function (d, j) {
+                                if (typeof (d) == 'string')
+                                    select.append('<option value="' + d + '">' + d + '</option>');
+                            });
+                    });
+            },
+            "columnDefs": [
+                { "width": "10%", targets: 0, responsivePriority: 1 },
+                { "width": "20%", targets: 1, responsivePriority: 2 },
+                { "width": "20%", targets: 2, responsivePriority: 3 },
+                { "width": "20%", targets: 3, responsivePriority: 3 },
+                { "width": "20%", targets: 4, responsivePriority: 3 },
+            ],
+        });
+        //先隱藏，透過select option切換
+        table.column(5).visible(false);
+        table.column(6).visible(false);
+        table.column(7).visible(false);
+        table.column(8).visible(false);
+        table.column(9).visible(false);
+        table.column(10).visible(false);
+        $('#selectAbility').click(function (e) {
+            //點選的時候預防點到下層
+            e.stopPropagation();
+        });
+        $('#selectAbility').change(function (e) {
+            var column = table.column(selectAbilityPreSelect);
+            column.visible(!column.visible());
+            var column2 = table.column($(this).val());
+            column2.visible(!column2.visible());
+            selectAbilityPreSelect = $(this).val();
+        });
+        $('#all tbody').on('click', '.ClickAddToTable', function () {
+            table3.row.add(table.row(this).data()).draw(false);
+        });
+    });
+</script>
+
+</html>

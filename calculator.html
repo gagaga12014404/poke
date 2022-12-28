@@ -5,9 +5,23 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
 </head>
 <style>
+  .Nature button {
+    background-color: inherit;
+    color: rgb(182, 182, 182);
+    /* float: left; */
+    border: none;
+    outline: none;
+    cursor: pointer;
+    /* padding: 8px 15px; */
+    transition: 0.3s;
+  }
+
+  .Nature button.active {
+    background-color: rgb(70, 70, 70);
+  }
+
   .calculatorTable {
     margin-top: 10px;
     margin-left: 10px;
@@ -18,7 +32,6 @@
     height: 20px;
     padding: 0;
     line-height: 0;
-    margin-left: 15px;
   }
 
   ._btn {
@@ -36,47 +49,91 @@
     font-size: 0.7em;
   }
 
-  input[type=range] {
+  /* input[type=range] {
     margin: 10px 0;
-  }
+  } */
 
   table {
     table-layout: fixed;
   }
+
+  .SpeciesStrength {
+    text-align: center;
+    width: 40px;
+  }
+
+  #levelrangeInput {
+    width: 70px;
+  }
 </style>
 
 <body>
-  <table class="calculatorTable">
-    <tr>
-      <th>種族值</th>
-      <th><input type="range" id="racerangeInput" min="0" max="200" value="100">
-        <input type="button" class="_btn-" value="-" id="race-">
-        <input type="number" class="inputnumber" value="100" id="race">
-        <input type="button" class="_btn" value="+" id="raceplus"></button>
-      </th>
-    </tr>
-    <tr>
-      <th>個體值</th>
-      <th><input type="range" id="personalrangeInput" min="0" max="31" value="31">
-        <input type="button" class="_btn-" value="-" id="personal-">
-        <input type="number" class="inputnumber" value="31" id="personal">
-        <input type="button" class="_btn" value="+" id="personalplus"></button>
-      </th>
-    </tr>
-    <tr>
-      <th>努力值</th>
-      <th><input type="range" id="effortrangeInput" min="0" max="255" value="255">
-        <input type="button" class="_btn-" value="-" id="effort-">
-        <input type="number" class="inputnumber" value="255" id="effort">
-        <input type="button" class="_btn" value="+" id="effortplus"></button>
-      </th>
-    </tr>
+  <div style="font-size: 0.7em;">
+    <h6 style="margin: 0px 10px;">公式：</h6>
+    <p style="margin: 0px 10px;">HP：(種*2+個體+努力/4)*Lv/100+Lv+10</p>
+    <p style="margin: 0px 10px;">其他：[(種*2+個體+努力/4)*(Lv/100)+5]*性格</p>
+    <p style="margin: 0px 10px;">傷害計算：[(2*Lv+10)/250*atk/def*威力+2]*加成</p>
+  </div>
+  <div class="calculatorTab" style="width: 100%;font-size: 13px;">
+    <button onclick="switchcalculatorTab('atker')" class="atkerbtn active">攻擊方</button>
+    <button onclick="switchcalculatorTab('defer')" class="deferbtn">防守方</button>
+  </div>
+  <!-- 計算器table -->
+  <div id="atker">
+    <select name="" id="atkerName" style="width: 100px;">
+    </select>
+    <div id="includeCaculator1"></div>
+  </div>
+  <div id="defer" class="tabcontent">
+    <select name="" id="deferName" style="width: 100px;">
+    </select>
+    <div id="includeCaculator2"></div>
+  </div>
+
+
+
+  <table class="calculatorTable" style="width: 330px;">
+    <thead>
+      <tr>
+        <th style="width: 10%;padding: 0;">值</th>
+        <th style="width: 25%;padding: 0;">個體值</th>
+        <th style="width: 25%;padding: 0;">努力值</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td><input type="text" readonly value="100" id="HPstrength" class="SpeciesStrength"></td>
+        <td>
+          <select name="" id="">
+            <option value="31" selected>Best</option>
+            <option value="30">Fantastic</option>
+            <option value="VeryGood">Very Good</option>
+            <option value="PrettyGood">Pretty Good</option>
+            <option value="Decent">Decent</option>
+            <option value="0">No good</option>
+          </select>
+        </td>
+        <td>
+          <input type="range" id="effortrangeInput" min="0" max="255" value="252" style="width: 100px;">
+          <br>
+          <input type="button" class="_btn-" value="-" id="effort-">
+          <input type="number" class="inputnumber" value="252" id="effort" style="width: 50px;">
+          <input type="button" class="_btn" value="+" id="effortplus">
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+  <table>
+
     <tr>
       <th>Level</th>
-      <th><input type="range" id="levelrangeInput" min="0" max="100" value="50">
+      <th>
+        <input type="range" id="levelrangeInput" min="0" max="100" value="50">
         <input type="button" class="_btn-" value="-" id="level-">
-        <input type="number" class="inputnumber" value="50" id="level">
-        <input type="button" class="_btn" value="+" id="levelplus"></button>
+        <input type="number" class="inputnumber" value="50" id="level" style="width: 50px;">
+        <input type="button" class="_btn" value="+" id="levelplus">
       </th>
     </tr>
     <tr>
@@ -85,11 +142,11 @@
     </tr>
     <tr>
       <th>性格</th>
-      <th><select name="" id="character">
-          <option value="1.1">1.1</option>
-          <option value="1" selected>1</option>
-          <option value="0.9">0.9</option>
-        </select></th>
+      <th class="Nature">
+        <button onclick="switchNature1Tab('Nature1.1')" class="Nature1.1btn active" style="width: 40px;">1.1</button>
+        <button onclick="switchNature1Tab('Nature1')" class="Nature1btn" style="width: 40px;">1</button>
+        <button onclick="switchNature1Tab('Nature0.9')" class="Nature0.9btn" style="width: 40px;">0.9</button>
+      </th>
     </tr>
     <tr>
       <th>能力提升</th>
@@ -188,6 +245,44 @@
   </table>
 </body>
 <script>
+  $(document).ready(function () {
+    $('#atkerName').select2();
+    $('#deferName').select2();
+  });
+  function switchcalculatorTab(id) {
+    var allTable = ["atker", "defer"];
+    for (var i in allTable) {
+      for (var i in allTable) {
+        if (allTable[i] != id) {
+          document.getElementById(allTable[i]).style.display = 'none';
+          document.getElementsByClassName(allTable[i] + "btn")[0].className = document.getElementsByClassName(allTable[i] + "btn")[0].className.replace(" active", "");
+        }
+        else {
+          if (document.getElementsByClassName(allTable[i] + "btn")[0].className.includes(" active"))
+            return;
+          document.getElementById(allTable[i]).style.display = 'table-row';
+          document.getElementsByClassName(allTable[i] + "btn")[0].className += " active";
+        }
+      }
+    }
+  }
+  //tab switch
+  var natureVal = 1.1;
+  function switchNature1Tab(id) {
+    var allTable = ["Nature1.1", "Nature1", "Nature0.9"];
+    for (var i in allTable) {
+      if (allTable[i] != id) {
+        document.getElementsByClassName(allTable[i] + "btn")[0].className = document.getElementsByClassName(allTable[i] + "btn")[0].className.replace(" active", "");
+      }
+      else {
+        if (document.getElementsByClassName(allTable[i] + "btn")[0].className.includes(" active"))
+          return;
+        document.getElementsByClassName(allTable[i] + "btn")[0].className += " active";
+        natureVal = parseFloat(id.replace("Nature", ""));
+        calculate();
+      }
+    }
+  }
   //+- start
   $('#raceplus,#personalplus,#effortplus,#levelplus,#atkplus,#defplus,#powerplus').click(function () {
     var id = "#" + $(this).attr("id").replace('plus', '');
@@ -219,7 +314,7 @@
     var personal = parseInt($('#personal').val());
     var effort = parseInt($('#effort').val());
     var level = parseInt($('#level').val());
-    var charact = parseFloat($('#character').val());
+    var charact = natureVal;
     var res = (race * 2 + personal + effort / 4) * (level / 100) + level + 10;
     var upplus = parseFloat($('#upplus').val());
     var otherres = ((race * 2 + personal + effort / 4) * (level / 100) + 5) * charact * upplus;
@@ -238,7 +333,7 @@
   }
   //改變值立刻計算結果
   $('#race,#personal,#effort,#level,#racerangeInput,#personalrangeInput,#effortrangeInput,#levelrangeInput,#atkrangeInput,#defrangeInput,#powerrangeInput,#atk,#def,#power').on('input', calculate);
-  $('#character,#upplus,#selfplus,#attrplus,#weatherplus,#staffplus,#characterplus').on('change', calculate);
+  $('#upplus,#selfplus,#attrplus,#weatherplus,#staffplus,#characterplus').on('change', calculate);
 </script>
 
 </html>
