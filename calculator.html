@@ -65,6 +65,11 @@
   #levelrangeInput {
     width: 70px;
   }
+
+  #atkerTable th,
+  td {
+    border: 1px solid black;
+  }
 </style>
 
 <body>
@@ -80,51 +85,25 @@
   </div>
   <!-- 計算器table -->
   <div id="atker">
-    <select name="" id="atkerName" style="width: 100px;">
-    </select>
-    <div id="includeCaculator1"></div>
+    <select name="" id="atkerName" style="width: 100px;"></select>
+    <table id="atkerTable" style="width: 330px;">
+      <thead>
+        <tr>
+          <th style="width: 10%;padding: 0;"></th>
+          <th style="width: 25%;padding: 0;">個體值</th>
+          <th style="width: 25%;padding: 0;">努力值</th>
+        </tr>
+      </thead>
+    </table>
   </div>
   <div id="defer" class="tabcontent">
-    <select name="" id="deferName" style="width: 100px;">
-    </select>
-    <div id="includeCaculator2"></div>
+    <select name="" id="deferName" style="width: 100px;"></select>
+    <table class="deferTable" style="width: 330px;"></table>
   </div>
 
 
 
-  <table class="calculatorTable" style="width: 330px;">
-    <thead>
-      <tr>
-        <th style="width: 10%;padding: 0;">值</th>
-        <th style="width: 25%;padding: 0;">個體值</th>
-        <th style="width: 25%;padding: 0;">努力值</th>
-      </tr>
-    </thead>
 
-    <tbody>
-      <tr>
-        <td><input type="text" readonly value="100" id="HPstrength" class="SpeciesStrength"></td>
-        <td>
-          <select name="" id="">
-            <option value="31" selected>Best</option>
-            <option value="30">Fantastic</option>
-            <option value="VeryGood">Very Good</option>
-            <option value="PrettyGood">Pretty Good</option>
-            <option value="Decent">Decent</option>
-            <option value="0">No good</option>
-          </select>
-        </td>
-        <td>
-          <input type="range" id="effortrangeInput" min="0" max="255" value="252" style="width: 100px;">
-          <br>
-          <input type="button" class="_btn-" value="-" id="effort-">
-          <input type="number" class="inputnumber" value="252" id="effort" style="width: 50px;">
-          <input type="button" class="_btn" value="+" id="effortplus">
-        </td>
-      </tr>
-    </tbody>
-
-  </table>
   <table>
 
     <tr>
@@ -233,10 +212,12 @@
     </tr>
     <tr>
       <th>特性</th>
-      <th><select name="" id="characterplus">
+      <th>
+        <select name="" id="characterplus">
           <option value="1" selected>無</option>
           <option value="1.3">強行</option>
-        </select></th>
+        </select>
+      </th>
     </tr>
     <tr>
       <th>傷害計算</th>
@@ -245,6 +226,33 @@
   </table>
 </body>
 <script>
+  var _6species = ["HP", "ATK", "DEF", "SATK", "SDEF", "SPEED"];
+  _6species.forEach(element => {
+    var str = `
+
+    <tbody>
+      <tr>
+        <td><input type="text" readonly value="100" id="HPstrength" class="SpeciesStrength"></td>
+        <td>
+          <select name="" id="">
+            <option value="31" selected>Best</option>
+            <option value="30">Fantastic</option>
+            <option value="VeryGood">Very Good</option>
+            <option value="PrettyGood">Pretty Good</option>
+            <option value="Decent">Decent</option>
+            <option value="0">No good</option>
+          </select>
+        </td>
+        <td>
+          <input type="button" class="_btn-" value="-" id="effort-">
+          <input type="range" id="effortrangeInput" min="0" max="255" value="252" style="width: 100px;">
+          <input type="text" class="inputnumber" value="252" id="effort" style="width: 30px;">
+          <input type="button" class="_btn" value="+" id="effortplus">
+        </td>
+      </tr>
+    </tbody>`;
+    $('#atkerTable').append(str);
+  });
   $(document).ready(function () {
     $('#atkerName').select2();
     $('#deferName').select2();
