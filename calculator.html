@@ -66,9 +66,36 @@
     width: 70px;
   }
 
-  #atkerTable th,
+  input[type=text] {
+    border: 0;
+    margin-left: 0;
+  }
+
+  /* .hexagons1 {
+    width: 0;
+    border-bottom: 5px solid rgb(255, 251, 44);
+    border-left: 8.6px solid transparent;
+    border-right: 8.6px solid transparent;
+  }
+
+  .hexagons2 {
+    width: 17.2px;
+    height: 10px;
+    background-color: rgb(255, 251, 44);
+  }
+
+  .hexagons3 {
+    width: 0;
+    border-top: 5px solid rgb(255, 251, 44);
+    border-left: 8.6px solid transparent;
+    border-right: 8.6px solid transparent;
+  } */
+  table th,
   td {
     border: 1px solid black;
+  }
+  #atkerTable{
+    white-space: nowrap;
   }
 </style>
 
@@ -79,29 +106,90 @@
     <p style="margin: 0px 10px;">其他：[(種*2+個體+努力/4)*(Lv/100)+5]*性格</p>
     <p style="margin: 0px 10px;">傷害計算：[(2*Lv+10)/250*atk/def*威力+2]*加成</p>
   </div>
-  <div class="calculatorTab" style="width: 100%;font-size: 13px;">
-    <button onclick="switchcalculatorTab('atker')" class="atkerbtn active">攻擊方</button>
-    <button onclick="switchcalculatorTab('defer')" class="deferbtn">防守方</button>
+  <div class="calculatorTab" style="width: 100%;font-size: 13px;text-align: center;">
+    <h6> </h6>
+    <!-- <button onclick="switchcalculatorTab('atker')" class="atkerbtn">攻擊方</button>
+    <button onclick="switchcalculatorTab('defer')" class="deferbtn">防守方</button> -->
   </div>
   <!-- 計算器table -->
-  <div id="atker">
-    <select name="" id="atkerName" style="width: 100px;"></select>
-    <table id="atkerTable" style="width: 330px;">
-      <thead>
-        <tr>
-          <th style="width: 10%;padding: 0;"></th>
-          <th style="width: 25%;padding: 0;">個體值</th>
-          <th style="width: 25%;padding: 0;">努力值</th>
-        </tr>
-      </thead>
-    </table>
-  </div>
-  <div id="defer" class="tabcontent">
-    <select name="" id="deferName" style="width: 100px;"></select>
-    <table class="deferTable" style="width: 330px;"></table>
-  </div>
-
-
+  <table style="width: 100%;">
+    <tr>
+      <td>
+        <div id="atker">
+          <h6 style="text-align: center;">攻擊方</h6>
+          <select name="" id="atkerName"></select>
+          <table id="atkerTable"><!-- style="width: 157px;"-->
+            <tr>
+              <td></td>
+              <td>HP<br><input type="text" readonly value="100" id="HPstrength" class="SpeciesStrength"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>ATK<br><input type="text" readonly value="100" id="ATKstrength" class="SpeciesStrength"></td>
+              <td rowspan="2" style="width: 100%;">
+                <div style="position: relative;">
+                  <div>
+                    <div class="hexagon1"></div>
+                    <div class="hexagon2"></div>
+                    <div class="hexagon3"></div>
+                  </div>
+                  <div>
+                    <div class="hexagons1"></div>
+                    <div class="hexagons2"></div>
+                    <div class="hexagons3"></div>
+                  </div>
+                </div>
+              </td>
+              <td>SATK<br><input type="text" readonly value="100" id="SATKstrength" class="SpeciesStrength"></td>
+            </tr>
+            <tr>
+              <td>DEF<br><input type="text" readonly value="100" id="DEFstrength" class="SpeciesStrength">
+              </td>
+              <td>SDEF<br><input type="text" readonly value="100" id="SDEFstrength" class="SpeciesStrength"></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>SPEED<br><input type="text" readonly value="100" id="SPEEDstrength" class="SpeciesStrength"></td>
+              <td></td>
+            </tr>
+            <!-- 填入 -->
+            <tr>
+              <td style="width: 10%;padding: 0;"></td>
+              <td style="width: 25%;padding: 0;">個體值</td>
+              <td style="width: 25%;padding: 0;">努力值</td>
+            </tr>
+            <tr>
+              <td>HP</td>
+              <td>
+                <select name="" id="">
+                  <option value="31" selected>Best</option>
+                  <option value="30">Fantastic</option>
+                  <option value="VeryGood">Very Good</option>
+                  <option value="PrettyGood">Pretty Good</option>
+                  <option value="Decent">Decent</option>
+                  <option value="0">No good</option>
+                </select>
+              </td>
+              <td>
+                <input type="range" id="effortrangeInput" min="0" max="255" value="252" style="width: 100px;">
+                <br>
+                <input type="button" class="_btn-" value="-" id="effort-">
+                <input type="text" class="inputnumber" value="252" id="effort" style="width: 30px;">
+                <input type="button" class="_btn" value="+" id="effortplus">
+              </td>
+            </tr>
+          </table>
+        </div>
+      </td>
+      <td>
+        <div id="defer">
+          防守方
+          <select name="" id="deferName" style="width: 100px;"></select>
+          <table class="deferTable" style="width: 330px;"></table>
+        </div>
+      </td>
+    </tr>
+  </table>
 
 
   <table>
@@ -114,10 +202,6 @@
         <input type="number" class="inputnumber" value="50" id="level" style="width: 50px;">
         <input type="button" class="_btn" value="+" id="levelplus">
       </th>
-    </tr>
-    <tr>
-      <th>HP結果</th>
-      <th><input type="text" class="inputnumber" value="207.375" id="Result"></th>
     </tr>
     <tr>
       <th>性格</th>
@@ -133,7 +217,7 @@
           <option value="0.5" selected>0.5</option>
           <option value="0.66" selected>0.66</option>
           <option value="1" selected>1</option>
-          <option value="1.3">古代活性</option>
+          <option value="1.3">1.3</option>
           <option value="1.5">1.5</option>
           <option value="2">2</option>
           <option value="2.5">2.5</option>
@@ -226,32 +310,27 @@
   </table>
 </body>
 <script>
+  //6角形
+  var hexagon1length = 20;
+  var sqrthexagon1length = (Math.sqrt(3) * hexagon1length).toFixed(1);
+  $('.hexagon1').css("width", "0");
+  $('.hexagon1').css("border-bottom", hexagon1length.toString() + "px solid rgb(185, 185, 185)");
+  $('.hexagon1').css("border-left", sqrthexagon1length.toString() + "px solid transparent");
+  $('.hexagon1').css("border-right", sqrthexagon1length.toString() + "px solid transparent");
+  $('.hexagon2').css("width", (sqrthexagon1length * 2).toString() + "px");
+  $('.hexagon2').css("height", (hexagon1length * 2).toString() + "px");
+  $('.hexagon2').css("background-color", "rgb(185, 185, 185)");
+  $('.hexagon3').css("width", "0");
+  $('.hexagon3').css("border-top", hexagon1length.toString() + "px solid rgb(185, 185, 185)");
+  $('.hexagon3').css("border-left", sqrthexagon1length.toString() + "px solid transparent");
+  $('.hexagon3').css("border-right", sqrthexagon1length.toString() + "px solid transparent");
   var _6species = ["HP", "ATK", "DEF", "SATK", "SDEF", "SPEED"];
   _6species.forEach(element => {
-    var str = `
+    // var str = `
+    // <tbody>
 
-    <tbody>
-      <tr>
-        <td><input type="text" readonly value="100" id="HPstrength" class="SpeciesStrength"></td>
-        <td>
-          <select name="" id="">
-            <option value="31" selected>Best</option>
-            <option value="30">Fantastic</option>
-            <option value="VeryGood">Very Good</option>
-            <option value="PrettyGood">Pretty Good</option>
-            <option value="Decent">Decent</option>
-            <option value="0">No good</option>
-          </select>
-        </td>
-        <td>
-          <input type="button" class="_btn-" value="-" id="effort-">
-          <input type="range" id="effortrangeInput" min="0" max="255" value="252" style="width: 100px;">
-          <input type="text" class="inputnumber" value="252" id="effort" style="width: 30px;">
-          <input type="button" class="_btn" value="+" id="effortplus">
-        </td>
-      </tr>
-    </tbody>`;
-    $('#atkerTable').append(str);
+    // </tbody>`;
+    // $('#atkerTable').append(str);
   });
   $(document).ready(function () {
     $('#atkerName').select2();
