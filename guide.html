@@ -221,12 +221,13 @@
         ad.forEach(i => {
             $('#' + i + 'Name').on('change', function () {
                 var cname = this.value;
-                document.getElementById(i + 'HPrace').value = ajaxdata[cname]['hp'];
-                document.getElementById(i + 'ATKrace').value = ajaxdata[cname]['atk'];
-                document.getElementById(i + 'DEFrace').value = ajaxdata[cname]['def'];
-                document.getElementById(i + 'SATKrace').value = ajaxdata[cname]['satk'];
-                document.getElementById(i + 'SDEFrace').value = ajaxdata[cname]['sdef'];
-                document.getElementById(i + 'SPEEDrace').value = ajaxdata[cname]['speed'];
+                raceArray[i + 'HPrace'] = ajaxdata[cname]['hp'];
+                raceArray[i + 'ATKrace'] = ajaxdata[cname]['atk'];
+                raceArray[i + 'DEFrace'] = ajaxdata[cname]['def'];
+                raceArray[i + 'SATKrace'] = ajaxdata[cname]['satk'];
+                raceArray[i + 'SDEFrace'] = ajaxdata[cname]['sdef'];
+                raceArray[i + 'SPEEDrace'] = ajaxdata[cname]['speed'];
+                calculateEach(i);
             });
         });
     });
