@@ -213,6 +213,7 @@
 </body>
 <script>
   var ad = ["atker", "defer"];
+  var input6 = ["HP", "ATK", "SATK", "DEF", "SDEF", "SPEED"];
   ad.forEach(i => {
     var tableString = `
           <table id="${i}Table">
@@ -243,14 +244,13 @@
             </tr>
           </table>`;
     $('#' + i).append(tableString);
-    var input6 = ["HP", "ATK", "SATK", "DEF", "SDEF", "SPEED"];
-    var input6string="";
+    var input6string = "";
     input6.forEach(j => {
       input6string +=
         `<tr>
           <td>${j}</td>
           <td>
-            <select name="" id="${i}+${j}select" style="width: 50px;">
+            <select name="" id="${i}${j}select" style="width: 50px;">
               <option value="31" selected>Best</option>
               <option value="30">Fantastic</option>
               <option value="VeryGood">Very Good</option>
@@ -260,13 +260,14 @@
             </select>
           </td>
           <td>
-            <input type="range" id="${i}+${j}rangeInput" min="0" max="252" value="0" style="width: 80px;">
+            <input type="range" id="${i}${j}rangeInput" min="0" max="252" value="0" style="width: 80px;">
             <br>
-            <input type="button" class="_btn-" value="-" id="${i}+${j}-">
-            <input type="text" class="inputnumber" value="0" id="${i}+${j}inputnumber">
-            <input type="button" class="_btn" value="+" id="${i}+${j}plus">
+            <input type="button" class="_btn-" value="-" id="${i}${j}-">
+            <input type="text" class="inputnumber" value="0" id="${i}${j}inputnumber">
+            <input type="button" class="_btn" value="+" id="${i}${j}plus">
           </td>
-        </tr>`
+        </tr>
+        <tr id="${i}+${j}race"></tr>`
     });
     var inputTotalString =
       `<table>
@@ -340,6 +341,25 @@
     }
   }
   //+- start
+  ad.forEach(i => {
+    input6.forEach(j => {
+      ['plus', '-'].forEach(k => {
+        $('#' + i + j + k).click(function () {
+          var id = "#" + $(this).attr("id").replace(k, '');
+          var value = 0;
+          if (k == 'plus')
+            value = parseInt($(id + 'inputnumber').val()) + 1;
+          else if (k == "-" && parseInt($(id + 'inputnumber').val()) > 0)
+            value = parseInt($(id + 'inputnumber').val()) - 1;
+          else
+            value = parseInt($(id + 'inputnumber').val());
+          $(id + 'inputnumber').val(value);
+          $(id + "rangeInput").val(value);
+        });
+      });
+    });
+  });
+
   $('#raceplus,#personalplus,#effortplus,#levelplus,#atkplus,#defplus,#powerplus').click(function () {
     var id = "#" + $(this).attr("id").replace('plus', '');
     var value = parseInt($(id).val()) + 1;
