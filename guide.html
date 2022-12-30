@@ -217,6 +217,21 @@
         $('#all tbody').on('click', '.ClickAddToTable', function () {
             table3.row.add(table.row(this).data()).draw(false);
         });
+        var ad = ["atker", "defer"];
+        ad.forEach(i => {
+            $('#' + i + 'Name').on('change', function () {
+                var cname = this.value;
+                console.log(cname);
+                $('#' + i + 'HPstrength').value = ajaxdata[cname]['hp'];
+                console.log($('#' + i + 'HPstrength'));
+                document.getElementById(i + 'HPstrength').value = ajaxdata[cname]['hp'];
+                document.getElementById(i + 'ATKstrength').value = ajaxdata[cname]['atk'];
+                document.getElementById(i + 'DEFstrength').value = ajaxdata[cname]['def'];
+                document.getElementById(i + 'SATKstrength').value = ajaxdata[cname]['satk'];
+                document.getElementById(i + 'SDEFstrength').value = ajaxdata[cname]['sdef'];
+                document.getElementById(i + 'SPEEDstrength').value = ajaxdata[cname]['speed'];
+            });
+        });
     });
 </script>
 
