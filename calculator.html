@@ -60,11 +60,6 @@
     background: transparent;
   }
 
-  table th,
-  td {
-    border: 1px solid black;
-  }
-
   table {
     table-layout: auto;
   }
@@ -92,10 +87,7 @@
       </td>
     </tr>
   </table>
-
-
   <table>
-
     <tr>
       <th>Level</th>
       <th>
@@ -103,14 +95,6 @@
         <input type="button" class="_btn-" value="-" id="level-">
         <input type="number" class="inputnumber" value="50" id="level" style="width: 50px;">
         <input type="button" class="_btn" value="+" id="levelplus">
-      </th>
-    </tr>
-    <tr>
-      <th>性格</th>
-      <th class="Nature">
-        <button onclick="switchNature1Tab('Nature1.1')" class="Nature1.1btn active" style="width: 40px;">1.1</button>
-        <button onclick="switchNature1Tab('Nature1')" class="Nature1btn" style="width: 40px;">1</button>
-        <button onclick="switchNature1Tab('Nature0.9')" class="Nature0.9btn" style="width: 40px;">0.9</button>
       </th>
     </tr>
     <tr>
@@ -129,10 +113,10 @@
         </select>
       </th>
     </tr>
-    <tr>
+    <!-- <tr>
       <th>其他結果</th>
       <th><input type="text" class="inputnumber" value="167.6125" id="otherResult"></th>
-    </tr>
+    </tr> -->
     <tr>
       <th>atk</th>
       <th><input type="range" id="atkrangeInput" min="0" max="1000" value="100">
@@ -271,7 +255,7 @@
         </tr>`
     });
     var inputTotalString =
-      `<table>
+      `<table style="border: 1px solid black;">
         <!-- 填入 -->
         <tr>
           <td></td>
@@ -279,6 +263,33 @@
           <td>努力值</td>
         </tr>
         ${input6string}
+        <tr>
+          <th>性格</th>
+          <th class="${i}Nature">
+            <select name="" id="${i}selectNature">
+              <option value="Adamant">+A-SA</option>
+              <option value="Modest">+SA-A</option>
+              <option value="Timid">+SP-A</option>
+              <option value="Jolly">+SP-SA</option>
+              <option value="Lonely">+A-D</option>
+              <option value="Naughty">+A-SD</option>
+              <option value="Brave">+A-SP</option>
+              <option value="Bold">+D-A</option>
+              <option value="Impish">+D-SA</option>
+              <option value="Lax">+D-SD</option>
+              <option value="Relaxed">+D-SP</option>
+              <option value="Mild">+SA-D</option>
+              <option value="Rash">+SA-SD</option>
+              <option value="Quiet">+SA-SP</option>
+              <option value="Calm">+SD-A</option>
+              <option value="Gentle">+SD-D</option>
+              <option value="Careful">+SD-SA</option>
+              <option value="Sassy">+SD-SP</option>
+              <option value="Hasty">+SP-D</option>
+              <option value="Naive">+SP-SD</option>
+            </select>
+          </th>
+        </tr>
       </table>`;
     $('#' + i).append(inputTotalString);
   });
@@ -344,6 +355,9 @@
   //+- start
   var totalEffort = 0;
   ad.forEach(i => {
+    $('#' + i + 'selectNature').on('change', function () {
+      calculateEach(i);
+    });
     input6.forEach(j => {
       ['plus', '-'].forEach(k => {
         $('#' + i + j + k).click(function () {
@@ -396,17 +410,89 @@
     var rangeInputName = "#" + $(this).attr("id") + "rangeInput";
     $(rangeInputName).val($(this).val());
   });
-  var calculateEach = function (i) {
-    input6.forEach(j => {
+  var charactArray;
+  function GetCharact(i, j) {
+    var charact = 1;
+    switch ($('#' + i + 'selectNature').val()) {
+      case "Adamant":
+        if (j == "ATK") charact = 1.1;
+        if (j == "SATK") charact = 0.9; break;
+      case "Modest":
+        if (j == "SATK") charact = 1.1;
+        if (j == "ATK") charact = 0.9; break;
+      case "Timid":
+        if (j == "SPEED") charact = 1.1;
+        if (j == "ATK") charact = 0.9; break;
+      case "Jolly":
+        if (j == "SPEED") charact = 1.1;
+        if (j == "SATK") charact = 0.9; break;
+      case "Lonely":
+        if (j == "ATK") charact = 1.1;
+        if (j == "DEF") charact = 0.9; break;
+      case "Naughty":
+        if (j == "ATK") charact = 1.1;
+        if (j == "SDEF") charact = 0.9; break;
+      case "Brave":
+        if (j == "ATK") charact = 1.1;
+        if (j == "SPEED") charact = 0.9; break;
+      case "Bold":
+        if (j == "DEF") charact = 1.1;
+        if (j == "ATK") charact = 0.9; break;
+      case "Impish":
+        if (j == "DEF") charact = 1.1;
+        if (j == "SATK") charact = 0.9; break;
+      case "Lax":
+        if (j == "DEF") charact = 1.1;
+        if (j == "SDEF") charact = 0.9; break;
+      case "Relaxed":
+        if (j == "DEF") charact = 1.1;
+        if (j == "SPEED") charact = 0.9; break;
+      case "Mild":
+        if (j == "SATK") charact = 1.1;
+        if (j == "DEF") charact = 0.9; break;
+      case "Rash":
+        if (j == "SATK") charact = 1.1;
+        if (j == "SDEF") charact = 0.9; break;
+      case "Quiet":
+        if (j == "SATK") charact = 1.1;
+        if (j == "SPEED") charact = 0.9; break;
+      case "Calm":
+        if (j == "SDEF") charact = 1.1;
+        if (j == "ATK") charact = 0.9; break;
+      case "Gentle":
+        if (j == "SDEF") charact = 1.1;
+        if (j == "DEF") charact = 0.9; break;
+      case "Careful":
+        if (j == "SDEF") charact = 1.1;
+        if (j == "SATK") charact = 0.9; break;
+      case "Sassy":
+        if (j == "SDEF") charact = 1.1;
+        if (j == "SPEED") charact = 0.9; break;
+      case "Hasty":
+        if (j == "SPEED") charact = 1.1;
+        if (j == "DEF") charact = 0.9; break;
+      case "Naive":
+        if (j == "SPEED") charact = 1.1;
+        if (j == "SDEF") charact = 0.9; break;
+    }
+    console.log(i + " " + j + " " + charact);
+    return charact;
+  }
+  var calculateEach = function (i) {//i=atker,defer
+    // console.log(raceArray);
+    input6.forEach(j => {//j=6 
       var race = parseInt(raceArray[i + j + 'race']);
       var personal = parseInt($('#' + i + j + 'select').val());
       var effort = parseInt($('#' + i + j + 'Effort').val());
       var level = 50;
-      var charact = 1;
+      var charact = GetCharact(i, j);
       var upplus = 1;
+      var hpResult = ((race * 2 + personal + effort / 4) * (level / 100)) + level + 10;
       var result = ((race * 2 + personal + effort / 4) * (level / 100) + 5) * charact * upplus;
-      $('#' + i + j + 'strength').val(parseInt(result));
-      console.log(race);
+      if (j == 'HP')
+        $('#' + i + 'HPstrength').val(parseInt(hpResult));
+      else
+        $('#' + i + j + 'strength').val(parseInt(result));
     });
   }
   var calculate = function () {
