@@ -242,8 +242,7 @@
         $('#all tbody').on('click', '.ClickAddToTable', function () {
             table3.row.add(table.row(this).data()).draw(false);
         });
-        var ad = ["atker", "defer"];
-        ad.forEach(i => {
+        ["atker", "defer"].forEach(i => {
             $('#' + i + 'Name').on('change', function () {
                 var cname = this.value;
                 raceArray[i + 'HPrace'] = ajaxdata[cname]['hp'];

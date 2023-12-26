@@ -77,13 +77,12 @@
     <tr>
       <td id="atker">
         <h6 style="text-align: center;">攻擊方</h6>
-        <select name="" id="atkerName"></select>
+        <select name="" id="atkerName" style="width:100px"></select>
       </td>
 
       <td id="defer">
         <h6 style="text-align: center;">防守方</h6>
-        <select name="" id="deferName"></select>
-        <table class="deferTable"></table>
+        <select name="" id="deferName" style="width:100px"></select>
       </td>
     </tr>
   </table>
@@ -196,10 +195,9 @@
   </table>
 </body>
 <script>
-  var ad = ["atker", "defer"];
   var input6 = ["HP", "ATK", "SATK", "DEF", "SDEF", "SPEED"];
   var raceArray = {};
-  ad.forEach(i => {
+  ["atker", "defer"].forEach(i => {
     var tableString = `
           <table id="${i}Table">
             <tr>
@@ -231,7 +229,6 @@
     $('#' + i).append(tableString);
     var input6string = "";
     input6.forEach(j => {
-      raceArray[i + j + 'race'] = 0;
       input6string +=
         `<tr>
           <td>${j}</td>
@@ -317,6 +314,21 @@
   $(document).ready(function () {
     $('#atkerName').select2();
     $('#deferName').select2();
+    raceArray["atkerHPrace"] = 45;
+    raceArray["atkerATKrace"] = 49;
+    raceArray["atkerSATKrace"] = 65;
+    raceArray["atkerDEFrace"] = 49;
+    raceArray["atkerSDEFrace"] = 65;
+    raceArray["atkerSPEEDrace"] = 45;
+
+    raceArray["deferHPrace"] = 45;
+    raceArray["deferATKrace"] = 49;
+    raceArray["deferSATKrace"] = 65;
+    raceArray["deferDEFrace"] = 49;
+    raceArray["deferSDEFrace"] = 65;
+    raceArray["deferSPEEDrace"] = 45;
+    calculateEach("atker");
+    calculateEach("defer");
   });
   function switchcalculatorTab(id) {
     var allTable = ["atker", "defer"];
@@ -352,10 +364,7 @@
   }
   //+- start
   var totalEffort = 0;
-  ad.forEach(i => {
-    $('#' + i + 'selectNature').on('change', function () {
-      calculateEach(i);
-    });
+  ["atker", "defer"].forEach(i => {
     input6.forEach(j => {
       ['plus', '-'].forEach(k => {
         $('#' + i + j + k).click(function () {
@@ -374,7 +383,7 @@
       });
     });
   });
-  ad.forEach(i => {
+  ["atker", "defer"].forEach(i => {
     input6.forEach(j => {
       $('#' + i + j + 'rangeInput').on('input', function () {
         var id = "#" + $(this).attr("id").replace('rangeInput', 'Effort');
@@ -473,11 +482,11 @@
         if (j == "SPEED") charact = 1.1;
         if (j == "SDEF") charact = 0.9; break;
     }
-    console.log(i + " " + j + " " + charact);
+    //console.log(i + " " + j + " " + charact);
     return charact;
   }
   var calculateEach = function (i) {//i=atker,defer
-    // console.log(raceArray);
+    console.log(raceArray);
     input6.forEach(j => {//j=6 
       var race = parseInt(raceArray[i + j + 'race']);
       var personal = parseInt($('#' + i + j + 'select').val());
