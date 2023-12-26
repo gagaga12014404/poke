@@ -14,21 +14,21 @@
         <thead>
             <tr id="theadtr">
                 <th rowspan="2" style="width: 25px;">編號</th>
-                <th rowspan="2" style="width: 25px;">圖像</th>
+                <th rowspan="2" style="width: 25px;">圖片</th>
                 <th rowspan="2" style="width: 50px;">名稱</th>
                 <th colspan="2" style="width: 110px;text-align: center;height: 10px;padding: 0;">屬性</th>
                 <th colspan="7" style="padding: 0; width: 60px;">
                     <select id="selectAbility" style="width: 60px;">
-                        <option value="4" selected>生命</option>
-                        <option value="5">物攻</option>
-                        <option value="6">物防</option>
-                        <option value="7">特攻</option>
-                        <option value="8">特防</option>
-                        <option value="9">速度</option>
-                        <option value="10">能力值</option>
+                        <option value="5" selected>生命</option>
+                        <option value="6">物攻</option>
+                        <option value="7">物防</option>
+                        <option value="8">特攻</option>
+                        <option value="9">特防</option>
+                        <option value="10">速度</option>
+                        <option value="11">種族值</option>
                     </select>
                 </th>
-                <th rowspan="2">能力值</th>
+                <th rowspan="2">種族值</th>
                 <th rowspan="2" class="thhp">總和</th>
                 <th rowspan="2">加入比較</th>
             </tr>
@@ -48,7 +48,7 @@
         <tfoot>
             <tr style="height: 25px;">
                 <th id="nu" style="padding: 0;">編號</th>
-                <th id="nu" style="padding: 0;">圖像</th>
+                <th id="nu" style="padding: 0;">圖片</th>
                 <th id="na" style="padding: 0;width: 50px;">名稱</th>
                 <th colspan="2" style="padding: 0;width: 45px;text-align: center;"></th>
                 <!-- <th style="padding: 0;height: 10px;width: 45px;text-align: center;">2</th> -->
@@ -63,10 +63,15 @@
 <script>
     var table;
     //table 1的資料表
-    var column = ["編號", "名稱", "屬性", "生命", "物攻", "物防", "特攻", "特防", "速度"];
+    var column = ["編號", "圖片", "名稱", "屬性", "生命", "物攻", "物防", "特攻", "特防", "速度"];
     var countatkerName = 1;
     var ajaxdata = {};
-    var GetPic = function(data){
+    var GetPic = function (data) {
+        if (data['number'] == "#" + countatkerName.toString().padStart(3, '0') + "\n") {
+            $('#atkerName').append(new Option(data['cName'], data['cName']));
+            $('#deferName').append(new Option(data['cName'], data['cName']));
+            countatkerName++;
+        }
         var r = "";
         r += `<div style="background-image: url('pic/MSP_Normal2.webp');background-size: 2240px 2240px;background-position: ${data['background-position']};background-repeat: no-repeat;width:56px;height:56px"></div>`;//width:22px;不給就是欄位的寬度
         return r;
@@ -79,11 +84,6 @@
         var intsatk = parseInt(data["satk"]);
         var intsdef = parseInt(data["sdef"]);
         var intspeed = parseInt(data["speed"]);
-        if (parseInt(data['number'].substring(1, 4)) == countatkerName) {
-            $('#atkerName').append(new Option(data['cName'], data['cName']));
-            $('#deferName').append(new Option(data['cName'], data['cName']));
-            countatkerName++;
-        }
         return inthp + intatk + intdef + intsatk + intsdef + intspeed;
     }
     var GetFiveChart = function (data) {
@@ -94,16 +94,33 @@
         var satk = parseInt(data["satk"]);
         var sdef = parseInt(data["sdef"]);
         var speed = parseInt(data["speed"]);
-        column2 = ["", "", "", hp, atk, def, satk, sdef, speed];// / 255 * x
-        var r = "";
-        for (var i = 3; i < column.length; i++) {
-            r += `<div>
-      <div style="display: inline-block;">${column[i]}</div>
-      <div style="position:relative;display: inline-block;">
-        <div style="width:${x}px;height:${y}px;background-color: green;"></div>
-      <div style="width:${column2[i] / 255 * x}px;height:${y}px;background-color:chartreuse;border:1px black solid;position:absolute;top:0px;"></div>
-      </div> ${column2[i]}</div>`;
+        column2 = [hp, atk, def, satk, sdef, speed];// / 255 * x
+        var r = `<table><tr><td colspan="2" style="width:186px;text-align:center;">種族值</td><td>Lv.50</td></tr>`;
+        var indexofHp = column.indexOf("生命");
+        for (var i = 0; i < column2.length; i++) {
+            var low;
+            var hight;
+            if (i == 3) {
+                low = parseInt(column2[i] + 10 + 50);
+                hight = parseInt((column2[i] * 2 + 31 + 63) / 2 + 10 + 50);
+            }
+            else {
+                low = parseInt((column2[i] + 5) * 0.9);
+                hight = parseInt(((column2[i] * 2 + 31 + 63) / 2 + 5) * 1.1);
+            }
+            r += `<tr>
+                <th style="width:50px;padding:0px;vertical-align:middle;text-align:center">
+                    ${column[i + indexofHp]}:&nbsp${column2[i]}&nbsp
+                </th>
+                <th style="padding:4px;">
+                    <div style="width:${column2[i] / 255 * x}px;height:${y}px;background-color:chartreuse;border:1px black solid;top:0px;"></div>
+                </th>
+                <th style="padding:0px;vertical-align:middle;text-align:center">
+                    ${low}~${hight}
+                </th>
+                </tr>`;
         }
+        r += "</table>";
         return r;
     }
     var AddToTable = function (data) {
@@ -169,16 +186,16 @@
                         });
                     });
                 //指定欄位下拉選單
-                var column23 = this.api();
+                var 屬性搜尋 = this.api();
                 this.api()
-                    .columns(2)
+                    .columns(3)
                     .every(function () {
                         var column = this;
                         var select = $('<select style=" height: 25px; " ><option value=""></option></select>')
                             .appendTo($(column.footer()).empty())
                             .on('change', function () {
                                 var val = $.fn.dataTable.util.escapeRegex($(this).val());//這裡的this是option的值
-                                column23.search(val).draw();
+                                屬性搜尋.search(val).draw();
                                 // filterColumn23(val);
                                 // (column.search(val,false, true)+column3.search(val,false, true)).draw();
                                 // console.log(typeof(column.search(val,false, true)));
@@ -204,14 +221,13 @@
                 { "width": "20%", targets: 4, responsivePriority: 3 },
             ],
         });
-        selectAbilityPreSelect = 4;
+        //option的value要注意
         //先隱藏，透過select option切換
-        table.column(5).visible(false);
-        table.column(6).visible(false);
-        table.column(7).visible(false);
-        table.column(8).visible(false);
-        table.column(9).visible(false);
-        table.column(10).visible(false);
+        var dom_selectAbility = document.getElementById("selectAbility");
+        selectAbilityPreSelect = dom_selectAbility.options[0].value;
+        for (var i = 1; i < dom_selectAbility.options.length; i++) {
+            table.column(dom_selectAbility.options[i].value).visible(false);
+        }
         $('#selectAbility').click(function (e) {
             //點選的時候預防點到下層
             e.stopPropagation();
