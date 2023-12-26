@@ -321,17 +321,15 @@
   function switchcalculatorTab(id) {
     var allTable = ["atker", "defer"];
     for (var i in allTable) {
-      for (var i in allTable) {
-        if (allTable[i] != id) {
-          document.getElementById(allTable[i]).style.display = 'none';
-          document.getElementsByClassName(allTable[i] + "btn")[0].className = document.getElementsByClassName(allTable[i] + "btn")[0].className.replace(" active", "");
-        }
-        else {
-          if (document.getElementsByClassName(allTable[i] + "btn")[0].className.includes(" active"))
-            return;
-          document.getElementById(allTable[i]).style.display = 'table-row';
-          document.getElementsByClassName(allTable[i] + "btn")[0].className += " active";
-        }
+      if (allTable[i] != id) {
+        document.getElementById(allTable[i]).style.display = 'none';
+        document.getElementsByClassName(allTable[i] + "btn")[0].className = document.getElementsByClassName(allTable[i] + "btn")[0].className.replace(" active", "");
+      }
+      else {
+        if (document.getElementsByClassName(allTable[i] + "btn")[0].className.includes(" active"))
+          return;
+        document.getElementById(allTable[i]).style.display = 'table-row';
+        document.getElementsByClassName(allTable[i] + "btn")[0].className += " active";
       }
     }
   }
