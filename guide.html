@@ -14,6 +14,7 @@
         <thead>
             <tr id="theadtr">
                 <th rowspan="2" style="width: 25px;">編號</th>
+                <th rowspan="2" style="width: 25px;">圖像</th>
                 <th rowspan="2" style="width: 50px;">名稱</th>
                 <th colspan="2" style="width: 110px;text-align: center;height: 10px;padding: 0;">屬性</th>
                 <th colspan="7" style="padding: 0; width: 60px;">
@@ -47,6 +48,7 @@
         <tfoot>
             <tr style="height: 25px;">
                 <th id="nu" style="padding: 0;">編號</th>
+                <th id="nu" style="padding: 0;">圖像</th>
                 <th id="na" style="padding: 0;width: 50px;">名稱</th>
                 <th colspan="2" style="padding: 0;width: 45px;text-align: center;"></th>
                 <!-- <th style="padding: 0;height: 10px;width: 45px;text-align: center;">2</th> -->
@@ -64,6 +66,11 @@
     var column = ["編號", "名稱", "屬性", "生命", "物攻", "物防", "特攻", "特防", "速度"];
     var countatkerName = 1;
     var ajaxdata = {};
+    var GetPic = function(data){
+        var r = "";
+        r += `<div style="background-image: url('pic/MSP_Normal.webp');background-size: 2240px 2240px;background-position: ${data['background-position']};background-repeat: no-repeat;width:56px;height:56px"></div>`;//width:22px;不給就是欄位的寬度
+        return r;
+    }
     var GetFiveTotal = function (data) {
         ajaxdata[data['cName']] = data;
         var inthp = parseInt(data["hp"]);
@@ -109,6 +116,7 @@
 
     var columns = [
         { "data": "number", "type": "num", "width": "14%" },
+        { "data": null, "width": "0%", render: GetPic },
         { "data": "cName", "width": "26%" },
         { "data": "attr1", "width": "20%" },
         { "data": "attr2", "width": "20%" },
