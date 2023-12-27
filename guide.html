@@ -67,17 +67,11 @@
     var countatkerName = 1;
     var ajaxdata = {};
     var GetPic = function (data) {
-        if (data['number'] == "#" + countatkerName.toString().padStart(3, '0') + "\n") {
-            $('#atkerName').append(new Option(data['cName'], data['cName']));
-            $('#deferName').append(new Option(data['cName'], data['cName']));
-            countatkerName++;
-        }
         var r = "";
         r += `<div style="background-image: url('pic/MSP_Normal2.webp');background-size: 2240px 2240px;background-position: ${data['background-position']};background-repeat: no-repeat;width:56px;height:56px"></div>`;//width:22px;不給就是欄位的寬度
         return r;
     }
     var GetFiveTotal = function (data) {
-        ajaxdata[data['cName']] = data;
         var inthp = parseInt(data["hp"]);
         var intatk = parseInt(data["atk"]);
         var intdef = parseInt(data["def"]);
@@ -175,7 +169,12 @@
             "columns": columns,
             // "info":     false,
             "pagingType": "numbers",
-            initComplete: function () {
+            initComplete: function (settings, json) {
+                json.data.forEach(function (item, index) {
+                    ajaxdata[item.cName] = item;
+                    $('#atkerName').append(new Option(item.cName, item.cName));
+                    $('#deferName').append(new Option(item.cName, item.cName));
+                });
                 // Apply the search
                 //指定欄位搜尋
                 this.api()
@@ -244,18 +243,6 @@
         });
         $('#all tbody').on('click', '.ClickAddToTable', function () {
             table3.row.add(table.row(this).data()).draw(false);
-        });
-        ["atker", "defer"].forEach(i => {
-            $('#' + i + 'Name').on('change', function () {
-                var cname = this.value;
-                raceArray[i + 'HPrace'] = ajaxdata[cname]['hp'];
-                raceArray[i + 'ATKrace'] = ajaxdata[cname]['atk'];
-                raceArray[i + 'DEFrace'] = ajaxdata[cname]['def'];
-                raceArray[i + 'SATKrace'] = ajaxdata[cname]['satk'];
-                raceArray[i + 'SDEFrace'] = ajaxdata[cname]['sdef'];
-                raceArray[i + 'SPEEDrace'] = ajaxdata[cname]['speed'];
-                calculateEach(i);
-            });
         });
     });
 </script>

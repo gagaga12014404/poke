@@ -329,6 +329,18 @@
     raceArray["deferSPEEDrace"] = 45;
     calculateEach("atker");
     calculateEach("defer");
+    ["atker", "defer"].forEach(i => {
+      $('#' + i + 'Name').on('change', function () {
+        var cname = this.value;
+        raceArray[i + 'HPrace'] = ajaxdata[cname]['hp'];
+        raceArray[i + 'ATKrace'] = ajaxdata[cname]['atk'];
+        raceArray[i + 'DEFrace'] = ajaxdata[cname]['def'];
+        raceArray[i + 'SATKrace'] = ajaxdata[cname]['satk'];
+        raceArray[i + 'SDEFrace'] = ajaxdata[cname]['sdef'];
+        raceArray[i + 'SPEEDrace'] = ajaxdata[cname]['speed'];
+        calculateEach(i);
+      });
+    });
   });
   function switchcalculatorTab(id) {
     var allTable = ["atker", "defer"];
