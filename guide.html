@@ -29,7 +29,7 @@
                     </select>
                 </th>
                 <th rowspan="2">種族值</th>
-                <th rowspan="2" class="thhp">總和</th>
+                <th rowspan="2" class="thhp">招式列表</th>
                 <th rowspan="2">加入比較</th>
             </tr>
             <tr>
@@ -72,13 +72,7 @@
         return r;
     }
     var GetFiveTotal = function (data) {
-        var inthp = parseInt(data["hp"]);
-        var intatk = parseInt(data["atk"]);
-        var intdef = parseInt(data["def"]);
-        var intsatk = parseInt(data["satk"]);
-        var intsdef = parseInt(data["sdef"]);
-        var intspeed = parseInt(data["speed"]);
-        return inthp + intatk + intdef + intsatk + intsdef + intspeed;
+        return data["race"];
     }
     var GetFiveChart = function (data) {
         var x = 150, y = 15;
@@ -89,10 +83,10 @@
         var sdef = parseInt(data["sdef"]);
         var speed = parseInt(data["speed"]);
         column2 = [hp, atk, def, satk, sdef, speed];// / 255 * x
-        colorList = ["#ffcccc", "#ffe6cc", "#ffffcc", "#d6f5d6", "#b3ecff", "#c6d9ec"]
-        colorList2 = ["#ff9999", "#ffcc99", "#e6e600", "#99e699", "#80dfff", "#9fbfdf"]
-        colorBorder = ["#ff8080", "#ffbf80", "#cccc00", "#85e085", "#66d9ff", "#8cb3d9"]
-        var r = `<table style="font-size:20px"><tr style="background-color:#d9b3ff;font-weight:700;"><td colspan="2" style="text-align:center;">種族值</td><td style="text-align:center;">Lv.50</td></tr>`;
+        colorList = ["#ffcccc", "#ffe6cc", "#ffffcc", "#d6f5d6", "#b3ecff", "#51A8DD"]
+        colorList2 = ["#ff9999", "#ffcc99", "#e6e600", "#99e699", "#7acde9", "#4086b1"]
+        colorBorder = ["#ff8080", "#ffbf80", "#cccc00", "#85e085", "#77c5e0", "#3b769a  "]
+        var r = `<table style="font-size:25px"><tr style="background-color:#ffcc7f;font-weight:700;"><th colspan="2" style="text-align:center;">種族值</th><th style="text-align:center;">Lv.50</th></tr>`;
         var indexofHp = column.indexOf("生命");
         for (var i = 0; i < column2.length; i++) {
             var low;
@@ -105,20 +99,45 @@
                 low = parseInt((column2[i] + 5) * 0.9);
                 hight = parseInt(((column2[i] * 2 + 31 + 63) / 2 + 5) * 1.1);
             }
-            r += `<tr style="background-color: ${colorList[i]}">
-                <th style="padding:0px;width:80px;vertical-align:middle;text-align:center;font-weight:500;">
-                    ${column[i + indexofHp]}:&nbsp&nbsp${column2[i]}&nbsp
-                </th>
-                <th style="padding:4px;width:150px;">
-                    <div style="width:${column2[i] / 255 * x}px;height:${y}px;background-color:${colorList2[i]};border:1px ${colorBorder[i]} solid;top:0px;"></div>
-                </th>
-                <th style="padding:0px;width:80px;vertical-align:middle;text-align:center;font-weight:500">
-                    ${low}~${hight}
-                </th>
+            r += `<tr style="background-color:${colorList[i]}">
+                    <td style="padding:0 0 0 4px;width:80px;vertical-align:middle;text-align:left;font-weight:500;">
+                        ${column[i + indexofHp]}：&nbsp&nbsp${column2[i]}&nbsp
+                    </td>
+                    <td style="padding:4px;width:150px;">
+                        <div style="width:${column2[i] / 255 * x}px;height:${y}px;background-color:${colorList2[i]};border:1px ${colorBorder[i]} solid;top:0px;"></div>
+                    </td>
+                    <td style="padding:0px;width:80px;vertical-align:middle;text-align:center;font-weight:500">
+                        ${low}~${hight}
+                    </td>
                 </tr>`;
         }
-        r += "</table>";
+        r += `<tr style="background-color:#d9b3ff">
+                <td colspan="3" style="padding:0 0 0 6px;vertical-align:middle;font-weight:500;">總和：${data['race']}</td>
+              </tr></table>`;
         return r;
+    }
+    var Get招式表 = function (data) {
+        var r = `<table style="font-size:25px;text-align:center">
+            <tr class="header">
+              <th style="padding:0">等級</th>
+              <th style="padding:0">招式</th>
+              <th style="padding:0">分類</th>
+              <th style="padding:0">傷害</th>
+              <th style="padding:0">命中</th>
+              <th style="padding:0">PP</th>
+            </tr>`
+        data['招式'].forEach(move => {
+            r += `<tr>
+                    <td style="padding:0">${move[0]}</td>
+                    <td style="padding:0">${move[1]}</td>
+                    <td style="padding:0">${move[2]}</td>
+                    <td style="padding:0">${move[3]}</td>
+                    <td style="padding:0">${move[4]}</td>
+                    <td style="padding:0">${move[5]}</td>
+                  </tr>`
+        });
+
+        return r + `</table>`;
     }
     var AddToTable = function (data) {
         // console.log(data["hp"]);
@@ -142,7 +161,7 @@
         { "data": "speed", "width": "20%" },
         { "data": null, render: GetFiveTotal },
         { "data": null, render: GetFiveChart, className: 'none' },//className:'none'一定縮
-        { "data": null, render: GetFiveTotal, className: 'none' },
+        { "data": null, render: Get招式表, className: 'none' },
         { 'data': null, render: AddToTable, className: 'none' },
     ];
     //tfoot的搜尋功能
