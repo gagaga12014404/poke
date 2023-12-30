@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <table id="all" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%;">
+    <table id="all" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%;table-layout: fixed;">
         <thead>
             <tr id="theadtr">
                 <th rowspan="2" style="width: 25px;">編號</th>
@@ -28,6 +28,7 @@
                     </select>
                 </th>
                 <th rowspan="2">種族值</th>
+                <th rowspan="2">屬性相性</th>
                 <th rowspan="2" class="thhp">招式列表</th>
                 <th rowspan="2">加入比較</th>
             </tr>
@@ -52,6 +53,7 @@
                 <th colspan="2" style="padding: 0;width: 45px;text-align: center;"></th>
                 <!-- <th style="padding: 0;height: 10px;width: 45px;text-align: center;">2</th> -->
                 <th colspan="7"></th>
+                <th class="thhp"></th>
                 <th class="thhp"></th>
                 <th class="thhp"></th>
                 <th></th>
@@ -115,6 +117,57 @@
               </tr></table>`;
         return r;
     }
+    var Get屬性相剋 = function (data) {
+        var r = `<table class="table">
+            <!-- Table Header -->
+            <tr class="gradient-header">
+              <th colspan="3"></th>
+              <th>一般</th>
+              <th>格鬥</th>
+              <th>飛行</th>
+              <th>毒</th>
+              <th>地面</th>
+              <th>岩石</th>
+              <th>蟲</th>
+              <th>幽靈</th>
+              <th>鋼</th>
+              <th>火</th>
+              <th>水</th>
+              <th>草</th>
+              <th>電</th>
+              <th>超能力</th>
+              <th>冰</th>
+              <th>龍</th>
+              <th>惡</th>
+              <th>妖精</th>
+            </tr>`;
+        for(var i =0;i< data["屬性相剋"].length/21;i++){
+            r+=`<tr>
+                <td>${data['屬性相剋'][0+i*21]}</td>
+                <td>${data['屬性相剋'][1+i*21]}</td>
+                <td>${data['屬性相剋'][2+i*21]}</td>
+                <td>${data['屬性相剋'][3+i*21]}</td>
+                <td>${data['屬性相剋'][4+i*21]}</td>
+                <td>${data['屬性相剋'][5+i*21]}</td>
+                <td>${data['屬性相剋'][6+i*21]}</td>
+                <td>${data['屬性相剋'][7+i*21]}</td>
+                <td>${data['屬性相剋'][8+i*21]}</td>
+                <td>${data['屬性相剋'][9+i*21]}</td>
+                <td>${data['屬性相剋'][10+i*21]}</td>
+                <td>${data['屬性相剋'][11+i*21]}</td>
+                <td>${data['屬性相剋'][12+i*21]}</td>
+                <td>${data['屬性相剋'][13+i*21]}</td>
+                <td>${data['屬性相剋'][14+i*21]}</td>
+                <td>${data['屬性相剋'][15+i*21]}</td>
+                <td>${data['屬性相剋'][16+i*21]}</td>
+                <td>${data['屬性相剋'][17+i*21]}</td>
+                <td>${data['屬性相剋'][18+i*21]}</td>
+                <td>${data['屬性相剋'][19+i*21]}</td>
+                <td>${data['屬性相剋'][20+i*21]}</td>
+            </tr>`;
+        };
+            return r+`</table>`;
+    }
     var Get招式表 = function (data) {
         var r = `<table style="font-size:25px;text-align:center">
             <tr class="header">
@@ -135,7 +188,6 @@
                     <td style="padding:0">${move[5]}</td>
                   </tr>`
         });
-
         return r + `</table>`;
     }
     var AddToTable = function (data) {
@@ -153,7 +205,7 @@
             },
             "width": "14%"
         },
-        { "data": null, "width": "0%", render: GetPic },
+        { "data": null, "width": "20%", render: GetPic },
         { "data": "cName", "width": "26%" },
         { "data": "attr1", "width": "20%" },
         { "data": "attr2", "width": "20%" },
@@ -163,8 +215,9 @@
         { "data": "satk", "width": "20%" },
         { "data": "sdef", "width": "20%" },
         { "data": "speed", "width": "20%" },
-        { "data": null, render: GetFiveTotal },
+        { "data": "race", "width": "20%" },
         { "data": null, render: GetFiveChart, className: 'none' },//className:'none'一定縮
+        { "data": null, render: Get屬性相剋, className: 'none' },
         { "data": null, render: Get招式表, className: 'none' },
         { 'data': null, render: AddToTable, className: 'none' },
     ];
