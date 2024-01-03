@@ -17,34 +17,30 @@
 </head>
 
 <body>
-    <table id="all" class="table table-striped table-bordered dt-responsive nowrap"
-        style="width: 100%;table-layout: fixed;">
+    <table id="all" class="datatable table table-striped table-bordered" table-layout: fixed;">
         <thead>
             <tr id="theadtr">
-                <th rowspan="2" style="width: 25px;">編號</th>
-                <th rowspan="2" style="width: 25px;">圖片</th>
-                <th rowspan="2" style="width: 50px;">名稱</th>
-                <th colspan="2" style="width: 110px;text-align: center;height: 10px;padding: 0;">屬性</th>
-                <th colspan="7" style="padding: 0; width: 60px;">
-                    <select id="selectAbility" style="width: 60px;">
-                        <option value="5" selected>生命</option>
-                        <option value="6">物攻</option>
-                        <option value="7">物防</option>
-                        <option value="8">特攻</option>
-                        <option value="9">特防</option>
-                        <option value="10">速度</option>
-                        <option value="11">種族值</option>
+                <th rowspan="2"></th>
+                <th rowspan="2" >編號</th>
+                <th rowspan=" 2">圖片</th>
+                <th rowspan=" 2">名稱</th>
+                <th colspan=" 2" style="text-align: center;height: 10px;padding: 0;">屬性</th>
+                <th colspan="7" style="padding: 0; ">
+                    <select id="selectAbility">
+                        <option value=" 6" selected>生命</option>
+                        <option value="7">物攻</option>
+                        <option value="8">物防</option>
+                        <option value="9">特攻</option>
+                        <option value="10">特防</option>
+                        <option value="11">速度</option>
+                        <option value="12">種族值</option>
                     </select>
                 </th>
-                <th rowspan="2">種族值</th>
-                <th rowspan="2">屬性相性</th>
-                <th rowspan="2" class="thhp">招式列表</th>
-                <th rowspan="2">加入比較</th>
             </tr>
             <tr>
                 <!--colspan 是複數的下面那層  -->
-                <th style="padding: 0;height: 10px;width: 45px;text-align: center;">1</th>
-                <th style="padding: 0;height: 10px;width: 45px;text-align: center;">2</th>
+                <th style="padding: 0;height: 10px;text-align: center;">1</th>
+                <th style="padding: 0;height: 10px;text-align: center;">2</th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -56,16 +52,13 @@
         </thead>
         <tfoot>
             <tr style="height: 25px;">
+                <th></th>
                 <th id="nu" style="padding: 0;">編號</th>
                 <th id="nu" style="padding: 0;">圖片</th>
-                <th id="na" style="padding: 0;width: 50px;">名稱</th>
-                <th colspan="2" style="padding: 0;width: 45px;text-align: center;"></th>
+                <th id="na" style="padding: 0;">名稱</th>
+                <th colspan="2" style="padding: 0;text-align: center;"></th>
                 <!-- <th style="padding: 0;height: 10px;width: 45px;text-align: center;">2</th> -->
                 <th colspan="7"></th>
-                <th class="thhp"></th>
-                <th class="thhp"></th>
-                <th class="thhp"></th>
-                <th></th>
             </tr>
         </tfoot>
     </table>
@@ -76,6 +69,17 @@
     var column = ["編號", "圖片", "名稱", "屬性", "生命", "物攻", "物防", "特攻", "特防", "速度"];
     var countatkerName = 1;
     var ajaxdata = {};
+
+
+    function format(data) {
+        var r = `<div style="width:100%">`
+        r += Get種族值(data) + Get屬性相剋(data) + Get招式表(data)
+        return r + `</div>`;
+        // { "data": null, render: Get種族值, className: 'none' },//className:'none'一定縮
+        // { "data": null, render: Get屬性相剋, className: 'none' },
+        // { "data": null, render: Get招式表, className: 'none' },
+        // { 'data': null, render: AddToTable, className: 'none' },
+    }
     var GetPic = function (data) {
         var r = "";
         r += `<div style="background-image: url('pic/MSP_Normal2.webp');background-size: 2240px 2240px;background-position: ${data['background-position']};background-repeat: no-repeat;width:56px;height:56px"></div>`;//width:22px;不給就是欄位的寬度
@@ -121,9 +125,9 @@
             var speed = parseInt(data["7圍"][5 + 7 * j]);
             var column2 = [hp, atk, def, satk, sdef, speed];// / 255 * x
             if (j == 0)
-                r += `<table id="poke${data['number']}_${j}" style="font-size:25px;display:block"><tr style="background-color:#ffcc7f;font-weight:700;"><th colspan="2" style="text-align:center;">種族值</th><th style="text-align:center;">Lv.50</th></tr>`;
+                r += `<table id="poke${data['number']}_${j}" style="font-size:20px;display:block"><tr style="background-color:#ffcc7f;font-weight:700;"><th colspan="2" style="text-align:center;">種族值</th><th style="text-align:center;">Lv.50</th></tr>`;
             else
-                r += `<table id="poke${data['number']}_${j}" style="font-size:25px;display:none"><tr style="background-color:#ffcc7f;font-weight:700;"><th colspan="2" style="text-align:center;">種族值</th><th style="text-align:center;">Lv.50</th></tr>`;
+                r += `<table id="poke${data['number']}_${j}" style="font-size:20px;display:none"><tr style="background-color:#ffcc7f;font-weight:700;"><th colspan="2" style="text-align:center;">種族值</th><th style="text-align:center;">Lv.50</th></tr>`;
 
             var indexofHp = column.indexOf("生命");
             for (var i = 0; i < column2.length; i++) {
@@ -157,7 +161,7 @@
     }
     var Get屬性相剋 = function (data) {
         var 屬性18 = ['一般', '格鬥', '飛行', '毒', '地面', '岩石', '蟲', '幽靈', '鋼', '火', '水', '草', '電', '超能力', '冰', '龍', '惡', '妖精'];
-        var r = `<table style="font-size:25px">
+        var r = `<table style="font-size:20px;">
             <tr>
               <th colspan="3"></th>`;
         屬性18.forEach(i => {
@@ -174,7 +178,7 @@
         return r + `</table>`;
     }
     var Get招式表 = function (data) {
-        var r = `<table style="font-size:25px;text-align:center">
+        var r = `<table style="font-size:20px;text-align:center">
             <tr class="header">
               <th style="padding:0">等級</th>
               <th style="padding:0">招式</th>
@@ -210,26 +214,28 @@
 
     var columns = [
         {
+            className: 'dt-control',
+            orderable: false,
+            data: null,
+            defaultContent: '',
+        },
+        {
             "data": "number", "type": "num", "render": function (data, type, row) {
                 return type === 'sort' ? data.replace('#', '') : data;
             },
-            "width": "14%"
+            "width": "25px",
         },
-        { "data": null, "width": "20%", render: GetPic },
-        { "data": "cName", "width": "26%" },
-        { "data": "attr1", "width": "20%" },
-        { "data": "attr2", "width": "20%" },
-        { "data": "hp", "width": "20%" },
-        { "data": "atk", "width": "20%" },
-        { "data": "def", "width": "20%" },
-        { "data": "satk", "width": "20%" },
-        { "data": "sdef", "width": "20%" },
-        { "data": "speed", "width": "20%" },
-        { "data": "race", "width": "20%" },
-        { "data": null, render: Get種族值, className: 'none' },//className:'none'一定縮
-        { "data": null, render: Get屬性相剋, className: 'none' },
-        { "data": null, render: Get招式表, className: 'none' },
-        { 'data': null, render: AddToTable, className: 'none' },
+        { "data": null, "width": "40px", render: GetPic },
+        { "data": "cName", "width": "30px", },
+        { "data": "attr1", "width": "20px", },
+        { "data": "attr2", "width": "20px", },
+        { "data": "hp", "width": "20px", },
+        { "data": "atk", "width": "20px", },
+        { "data": "def", "width": "20px", },
+        { "data": "satk", "width": "20px", },
+        { "data": "sdef", "width": "20px", },
+        { "data": "speed", "width": "20px", },
+        { "data": "race", "width": "20px", },
     ];
     //tfoot的搜尋功能
     $('#nu,#na').each(function () {
@@ -238,13 +244,15 @@
     });
     $(document).ready(function () {
         table = $('#all').DataTable({
+            "scrollX": true,
+            "scrollCollapse": true,
             "language": {
                 "lengthMenu": "_MENU_",
             },
             "dom": `<'row'<'col-4 col-sm-4 col-md-4'l><'col-8 col-sm-8 col-md-8'f>>
             <'row'<'col-sm-12'tr>>
             <'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>`,
-            "autoWidth": false,
+            "autoWidth": true,
             "ajax": "data.json",
             //拿到ajax的結果
             // "drawCallback": function (settings) {
@@ -276,7 +284,7 @@
                 //指定欄位下拉選單
                 var 屬性搜尋 = this.api();
                 this.api()
-                    .columns(3)
+                    .columns(4)
                     .every(function () {
                         var column = this;
                         var select = $('<select style=" height: 25px; " ><option value=""></option></select>')
@@ -302,12 +310,7 @@
                     });
             },
             "columnDefs": [
-                { "className": "centermiddle", targets: 0, responsivePriority: 1 },
-                { targets: 1, responsivePriority: 2 },
-                { targets: 2, responsivePriority: 3 },
-                { targets: 3, responsivePriority: 3 },
-                { targets: 4, responsivePriority: 3 },
-                { "className": "overflow-x", targets: [12, 13, 14] },
+                { "className": "centermiddle", targets: 0, responsivePriority: 1 }
             ],
         });
         //option的value要注意
@@ -330,6 +333,19 @@
         });
         $('#all tbody').on('click', '.ClickAddToTable', function () {
             table3.row.add(table.row(this).data()).draw(false);
+        });
+        table.on('click', 'td.dt-control', function (e) {
+            let tr = e.target.closest('tr');
+            let row = table.row(tr);
+
+            if (row.child.isShown()) {
+                // This row is already open - close it
+                row.child.hide();
+            }
+            else {
+                // Open this row
+                row.child(format(row.data())).show();
+            }
         });
     });
 </script>
