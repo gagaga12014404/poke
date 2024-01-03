@@ -21,7 +21,7 @@
         <thead>
             <tr id="theadtr">
                 <th rowspan="2"></th>
-                <th rowspan="2" >編號</th>
+                <th rowspan="2">編號</th>
                 <th rowspan=" 2">圖片</th>
                 <th rowspan=" 2">名稱</th>
                 <th colspan=" 2" style="text-align: center;height: 10px;padding: 0;">屬性</th>
@@ -73,7 +73,7 @@
 
     function format(data) {
         var r = `<div style="width:100%">`
-        r += Get種族值(data) + Get屬性相剋(data) + Get招式表(data)
+        r += '<h5>種族值</h5><hr>' + Get種族值(data) + '<hr><h5>屬性相性</h5>' + Get屬性相剋(data) + '<hr><h5>招式表</h5>' + Get招式表(data)
         return r + `</div>`;
         // { "data": null, render: Get種族值, className: 'none' },//className:'none'一定縮
         // { "data": null, render: Get屬性相剋, className: 'none' },
@@ -91,7 +91,7 @@
     var change型態 = function (number, N種型態, 誰要被顯示) {
         console.log(number, N種型態, 誰要被顯示);
         for (var i = 0; i < N種型態; i++) {
-            id = `poke${number}_${i}`;
+            id = `型態${number}_${i}`;
             if (誰要被顯示 == i) {
                 document.getElementById(id).style.display = 'block';
             }
@@ -125,9 +125,9 @@
             var speed = parseInt(data["7圍"][5 + 7 * j]);
             var column2 = [hp, atk, def, satk, sdef, speed];// / 255 * x
             if (j == 0)
-                r += `<table id="poke${data['number']}_${j}" style="font-size:20px;display:block"><tr style="background-color:#ffcc7f;font-weight:700;"><th colspan="2" style="text-align:center;">種族值</th><th style="text-align:center;">Lv.50</th></tr>`;
+                r += `<table id="型態${data['number']}_${j}" style="font-size:20px;display:block"><tr style="background-color:#ffcc7f;font-weight:700;"><th colspan="2" style="text-align:center;">種族值</th><th style="text-align:center;">Lv.50</th></tr>`;
             else
-                r += `<table id="poke${data['number']}_${j}" style="font-size:20px;display:none"><tr style="background-color:#ffcc7f;font-weight:700;"><th colspan="2" style="text-align:center;">種族值</th><th style="text-align:center;">Lv.50</th></tr>`;
+                r += `<table id="型態${data['number']}_${j}" style="font-size:20px;display:none"><tr style="background-color:#ffcc7f;font-weight:700;"><th colspan="2" style="text-align:center;">種族值</th><th style="text-align:center;">Lv.50</th></tr>`;
 
             var indexofHp = column.indexOf("生命");
             for (var i = 0; i < column2.length; i++) {
@@ -177,9 +177,40 @@
         };
         return r + `</table>`;
     }
+    var change招式表 = function (number, N種型態, 誰要被顯示) {
+        console.log(number, N種型態, 誰要被顯示);
+        for (var i = 0; i < N種型態; i++) {
+            id = `招式表${number}_${i}`;
+            if (誰要被顯示 == i) {
+                document.getElementById(id).style.display = 'block';
+            }
+            else {
+                document.getElementById(id).style.display = 'none';
+            }
+        }
+    }
     var Get招式表 = function (data) {
-        var r = `<table style="font-size:20px;text-align:center">
-            <tr class="header">
+        var N種型態 = data['招式'].length / 3;
+        if (data['招式'].length % 3 != 0) {
+            N種型態 = 1;
+            console.log(data['number']);
+        }
+        var r;
+        if (N種型態 > 1) {
+            for (var i = 0; i < N種型態; i++) {
+                if (i == 0)
+                    r += `<span onclick="change招式表('${data['number']}','${N種型態}','${i}')">${data['型態列表'][i]}</span>`;
+                else
+                    r += `<span onclick="change招式表('${data['number']}','${N種型態}','${i}')">${data['型態列表'][i]}</span>`;
+                if (i != N種型態 - 1) r += `｜`;
+            }
+        }
+        for (var k = 0; k < N種型態; k++) {
+            if (k == 0)
+                r += `<table id="招式表${data['number']}_${k}" style="font-size:20px;text-align:center;display:block">`;
+            else
+                r += `<table id="招式表${data['number']}_${k}" style="font-size:20px;text-align:center;display:none">`;
+            r += `<tr class="header">
               <th style="padding:0">等級</th>
               <th style="padding:0">招式</th>
               <th style="padding:0">屬性</th>
@@ -187,10 +218,10 @@
               <th style="padding:0">傷害</th>
               <th style="padding:0">命中</th>
               <th style="padding:0">PP</th>
-            </tr>`
-        for (var i = 0; i < data['招式'].length; i++) {
-            for (var j = 0; j < data['招式'][i].length; j += 7) {
-                r += `<tr>
+            </tr>`;
+            for (var i = 0; i < 3; i++) {
+                for (var j = 0; j < data['招式'][i].length; j += 7) {
+                    r += `<tr>
                     <td style="padding:0">${data['招式'][i][j]}</td>
                     <td style="padding:0">${data['招式'][i][1 + j]}</td>
                     <td style="padding:0">${data['招式'][i][2 + j]}</td>
@@ -199,9 +230,10 @@
                     <td style="padding:0">${data['招式'][i][5 + j]}</td>
                     <td style="padding:0">${data['招式'][i][6 + j]}</td>
                 </tr>`
+                }
             }
+            r += `</table>`;
         }
-        r += `</table>`;
         return r;
     }
     var AddToTable = function (data) {
