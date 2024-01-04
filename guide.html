@@ -17,7 +17,7 @@
 </head>
 
 <body>
-    <table id="all" class="datatable table table-striped table-bordered" style="table-layout: fixed;">
+    <table id="all" class="datatable table table-striped table-bordered">
         <thead>
             <tr id="theadtr">
                 <th rowspan="2"></th>
@@ -119,9 +119,9 @@
             var speed = parseInt(data["7圍"][5 + 7 * j]);
             var column2 = [hp, atk, def, satk, sdef, speed];// / 255 * x
             if (j == 0)
-                r += `<table id="型態${data['number']}_${j}" style="font-size:20px;display:block;overflow:scroll"><tr style="background-color:#ffcc7f;font-weight:700;"><th colspan="2" style="text-align:center;">種族值</th><th style="text-align:center;">Lv.50</th></tr>`;
+                r += `<table id="型態${data['number']}_${j}" style="font-size:20px;display:block;overflow:auto"><tr style="background-color:#ffcc7f;font-weight:700;"><th colspan="2" style="text-align:center;">種族值</th><th style="text-align:center;">Lv.50</th></tr>`;
             else
-                r += `<table id="型態${data['number']}_${j}" style="font-size:20px;display:none;overflow:scroll"><tr style="background-color:#ffcc7f;font-weight:700;"><th colspan="2" style="text-align:center;">種族值</th><th style="text-align:center;">Lv.50</th></tr>`;
+                r += `<table id="型態${data['number']}_${j}" style="font-size:20px;display:none;overflow:auto"><tr style="background-color:#ffcc7f;font-weight:700;"><th colspan="2" style="text-align:center;">種族值</th><th style="text-align:center;">Lv.50</th></tr>`;
 
             var indexofHp = column.indexOf("生命");
             for (var i = 0; i < column2.length; i++) {
@@ -155,7 +155,7 @@
     }
     var Get屬性相剋 = function (data) {
         var 屬性18 = ['一般', '格鬥', '飛行', '毒', '地面', '岩石', '蟲', '幽靈', '鋼', '火', '水', '草', '電', '超能力', '冰', '龍', '惡', '妖精'];
-        var r = `<table style="font-size:20px;display:block;overflow:scroll;">
+        var r = `<table style="font-size:20px;display:block;overflow:auto;">
             <tr>
               <th colspan="3"></th>`;
         屬性18.forEach(i => {
@@ -207,9 +207,9 @@
         }
         for (var k = 0; k < N種型態; k++) {
             if (k == 0)
-                r += `<table id="招式表${data['number']}_${k}" style="font-size:20px;text-align:center;display:block;overflow:scroll">`;
+                r += `<table id="招式表${data['number']}_${k}" style="font-size:20px;text-align:center;display:block;overflow:auto">`;
             else
-                r += `<table id="招式表${data['number']}_${k}" style="font-size:20px;text-align:center;display:none;overflow:scroll">`;
+                r += `<table id="招式表${data['number']}_${k}" style="font-size:20px;text-align:center;display:none;overflow:auto">`;
             r += `<tr class="header">
               <th style="padding:0">等級</th>
               <th style="padding:0">招式</th>
@@ -280,7 +280,7 @@
                     case "12":
                         return row.race;
                 }
-            }, "width": "50px",
+            }, "width": "20px",
         },
     ];
     //tfoot的搜尋功能
