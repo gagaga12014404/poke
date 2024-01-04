@@ -25,9 +25,9 @@
                 <th rowspan=" 2">圖片</th>
                 <th rowspan=" 2">名稱</th>
                 <th colspan=" 2" style="text-align: center;height: 10px;padding: 0;">屬性</th>
-                <th colspan="7" style="padding: 0; ">
+                <th colspan="1" style="padding: 0; ">
                     <select id="selectAbility">
-                        <option value=" 6" selected>生命</option>
+                        <option value="6" selected>生命</option>
                         <option value="7">物攻</option>
                         <option value="8">物防</option>
                         <option value="9">特攻</option>
@@ -42,12 +42,6 @@
                 <th style="padding: 0;height: 10px;text-align: center;">1</th>
                 <th style="padding: 0;height: 10px;text-align: center;">2</th>
                 <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
             </tr>
         </thead>
         <tfoot>
@@ -58,7 +52,7 @@
                 <th id="na" style="padding: 0;">名稱</th>
                 <th colspan="2" style="padding: 0;text-align: center;"></th>
                 <!-- <th style="padding: 0;height: 10px;width: 45px;text-align: center;">2</th> -->
-                <th colspan="7"></th>
+                <th colspan="1"></th>
             </tr>
         </tfoot>
     </table>
@@ -73,7 +67,7 @@
 
     function format(data) {
         var r = `<div style="width:100%">`
-        r += '<h5>種族值</h5><hr>' + Get種族值(data) + '<hr><h5>屬性相性</h5>' + Get屬性相剋(data) + '<hr><h5>招式表</h5>' + Get招式表(data)
+        r += '<h5>種族值</h5><hr>' + Get種族值(data) + '<br><h5>屬性相性</h5><hr>' + Get屬性相剋(data) + '<br><h5>招式表</h5><hr>' + Get招式表(data);
         return r + `</div>`;
         // { "data": null, render: Get種族值, className: 'none' },//className:'none'一定縮
         // { "data": null, render: Get屬性相剋, className: 'none' },
@@ -82,7 +76,7 @@
     }
     var GetPic = function (data) {
         var r = "";
-        r += `<div style="background-image: url('pic/MSP_Normal2.webp');background-size: 2240px 2240px;background-position: ${data['background-position']};background-repeat: no-repeat;width:56px;height:56px"></div>`;//width:22px;不給就是欄位的寬度
+        r += `<div style="background-image: url('pic/MSP_Normal2.web');background-size: 2240px 2240px;background-position: ${data['background-position']};background-repeat: no-repeat;width:56px;height:56px"></div>`;//width:22px;不給就是欄位的寬度
         return r;
     }
     var GetFiveTotal = function (data) {
@@ -100,7 +94,7 @@
             }
         }
     }
-    var Get種族值 = function (data, type, row, meta) {
+    var Get種族值 = function (data) {
         var x = 150, y = 15;
         colorList = ["#ffcccc", "#ffe6cc", "#ffffcc", "#d6f5d6", "#b3ecff", "#51A8DD"]
         colorList2 = ["#ff9999", "#ffcc99", "#e6e600", "#99e699", "#7acde9", "#4086b1"]
@@ -190,18 +184,24 @@
         }
     }
     var Get招式表 = function (data) {
-        var N種型態 = data['招式'].length / 3;
-        if (data['招式'].length % 3 != 0) {
-            N種型態 = 1;
-            console.log(data['number']);
+        console.log(data['招式'].length);
+        var N種型態 = 1;
+        var 蛋招式 = 3;
+        if (data['招式'].length % 3 == 0) {
+            N種型態 = data['招式'].length / 3;
         }
-        var r;
+        else if (data['招式'].length % 2 == 0) {
+            N種型態 = data['招式'].length / 2;
+            蛋招式 = 2;
+        }
+        var r = "";
         if (N種型態 > 1) {
+            // console.log(N種型態);
             for (var i = 0; i < N種型態; i++) {
                 if (i == 0)
-                    r += `<span onclick="change招式表('${data['number']}','${N種型態}','${i}')">${data['型態列表'][i]}</span>`;
+                    r += `<a onclick="change招式表('${data['number']}','${N種型態}','${i}')" style="user-select: none;">${data['型態列表'][i]}</a>`;
                 else
-                    r += `<span onclick="change招式表('${data['number']}','${N種型態}','${i}')">${data['型態列表'][i]}</span>`;
+                    r += `<a onclick="change招式表('${data['number']}','${N種型態}','${i}')" style="user-select: none;">${data['型態列表'][i]}</a>`;
                 if (i != N種型態 - 1) r += `｜`;
             }
         }
@@ -219,16 +219,16 @@
               <th style="padding:0">命中</th>
               <th style="padding:0">PP</th>
             </tr>`;
-            for (var i = 0; i < 3; i++) {
-                for (var j = 0; j < data['招式'][i].length; j += 7) {
+            for (var i = 0; i < 蛋招式; i++) {
+                for (var j = 0; j < data['招式'][i + k * 蛋招式].length; j += 7) {
                     r += `<tr>
-                    <td style="padding:0">${data['招式'][i][j]}</td>
-                    <td style="padding:0">${data['招式'][i][1 + j]}</td>
-                    <td style="padding:0">${data['招式'][i][2 + j]}</td>
-                    <td style="padding:0">${data['招式'][i][3 + j]}</td>
-                    <td style="padding:0">${data['招式'][i][4 + j]}</td>
-                    <td style="padding:0">${data['招式'][i][5 + j]}</td>
-                    <td style="padding:0">${data['招式'][i][6 + j]}</td>
+                    <td style="padding:0">${data['招式'][i + k * 蛋招式][j]}</td>
+                    <td style="padding:0">${data['招式'][i + k * 蛋招式][1 + j]}</td>
+                    <td style="padding:0">${data['招式'][i + k * 蛋招式][2 + j]}</td>
+                    <td style="padding:0">${data['招式'][i + k * 蛋招式][3 + j]}</td>
+                    <td style="padding:0">${data['招式'][i + k * 蛋招式][4 + j]}</td>
+                    <td style="padding:0">${data['招式'][i + k * 蛋招式][5 + j]}</td>
+                    <td style="padding:0">${data['招式'][i + k * 蛋招式][6 + j]}</td>
                 </tr>`
                 }
             }
@@ -242,7 +242,6 @@
         // return `<button onclick="ClickAddToTable('${data["number"].replace('\n','')}')">加入</button>`;
         return `<input type="button" value="加入" class="ClickAddToTable">`;
     }
-
 
     var columns = [
         {
@@ -261,13 +260,28 @@
         { "data": "cName", "width": "30px", },
         { "data": "attr1", "width": "20px", },
         { "data": "attr2", "width": "20px", },
-        { "data": "hp", "width": "20px", },
-        { "data": "atk", "width": "20px", },
-        { "data": "def", "width": "20px", },
-        { "data": "satk", "width": "20px", },
-        { "data": "sdef", "width": "20px", },
-        { "data": "speed", "width": "20px", },
-        { "data": "race", "width": "20px", },
+        {
+            "data": null, render: function (data, type, row, meta) {
+                // 此处根据所选属性值进行渲染
+                var selectedAttribute = $('#selectAbility').val();
+                switch (selectedAttribute) {
+                    case "6":
+                        return row.hp;
+                    case "7":
+                        return row.atk;
+                    case "8":
+                        return row.def;
+                    case "9":
+                        return row.satk;
+                    case "10":
+                        return row.sdef;
+                    case "11":
+                        return row.speed;
+                    case "12":
+                        return row.race;
+                }
+            }, "width": "15px",
+        },
     ];
     //tfoot的搜尋功能
     $('#nu,#na').each(function () {
@@ -298,8 +312,44 @@
             initComplete: function (settings, json) {
                 json.data.forEach(function (item, index) {
                     ajaxdata[item.cName] = item;
+                    // if (item.招式.length % 3 != 0)
+                    //     console.log(item.number, item.招式.length);
                     $('#atkerName').append(new Option(item.cName, item.cName));
                     $('#deferName').append(new Option(item.cName, item.cName));
+                });
+
+                $('#selectAbility').on('change', function () {
+                    var selectedAttribute = $('#selectAbility').val();
+                    table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                        var rowData = this.data();
+                        var updatedValue = "";
+                        // 根据所选属性值设置更新的值
+                        switch (selectedAttribute) {
+                            case "6":
+                                updatedValue = rowData.hp;
+                                break;
+                            case "7":
+                                updatedValue = rowData.atk;
+                                break;
+                            case "8":
+                                updatedValue = rowData.def;
+                                break;
+                            case "9":
+                                updatedValue = rowData.satk;
+                                break;
+                            case "10":
+                                updatedValue = rowData.sdef;
+                                break;
+                            case "11":
+                                updatedValue = rowData.speed;
+                                break;
+                            case "12":
+                                updatedValue = rowData.race;
+                                break;
+                        }
+                        // 更新第6列的值
+                        table.cell(rowIdx, 6).data(updatedValue);
+                    });
                 });
                 // Apply the search
                 //指定欄位搜尋
@@ -347,22 +397,22 @@
         });
         //option的value要注意
         //先隱藏，透過select option切換
-        var dom_selectAbility = document.getElementById("selectAbility");
-        selectAbilityPreSelect = dom_selectAbility.options[0].value;
-        for (var i = 1; i < dom_selectAbility.options.length; i++) {
-            table.column(dom_selectAbility.options[i].value).visible(false);
-        }
+        // var dom_selectAbility = document.getElementById("selectAbility");
+        // selectAbilityPreSelect = dom_selectAbility.options[0].value;
+        // for (var i = 1; i < dom_selectAbility.options.length; i++) {
+        //     table.column(dom_selectAbility.options[i].value).visible(false);
+        // }
         $('#selectAbility').click(function (e) {
             //點選的時候預防點到下層
             e.stopPropagation();
         });
-        $('#selectAbility').change(function (e) {
-            var column = table.column(selectAbilityPreSelect);
-            column.visible(!column.visible());
-            var column2 = table.column($(this).val());
-            column2.visible(!column2.visible());
-            selectAbilityPreSelect = $(this).val();
-        });
+        // $('#selectAbility').change(function (e) {
+        //     var column = table.column(selectAbilityPreSelect);
+        //     column.visible(!column.visible());
+        //     var column2 = table.column($(this).val());
+        //     column2.visible(!column2.visible());
+        //     selectAbilityPreSelect = $(this).val();
+        // });
         $('#all tbody').on('click', '.ClickAddToTable', function () {
             table3.row.add(table.row(this).data()).draw(false);
         });
