@@ -498,7 +498,7 @@
     return charact;
   }
   var calculateEach = function (i) {//i=atker,defer
-    console.log(raceArray);
+    //console.log(raceArray);
     input6.forEach(j => {//j=6 
       var race = parseInt(raceArray[i + j + 'race']);
       var personal = parseInt($('#' + i + j + 'select').val());
@@ -514,6 +514,9 @@
         $('#' + i + j + 'strength').val(parseInt(result));
     });
   }
+  $('#atkerselectNature').change(function () { calculateEach("atker"); });
+  $('#deferselectNature').change(function () { calculateEach("defer") });
+
   var calculate = function () {
     var race = parseInt($('#race').val());
     var personal = parseInt($('#personal').val());
@@ -539,6 +542,7 @@
   //改變值立刻計算結果
   $('#race,#personal,#effort,#level,#racerangeInput,#personalrangeInput,#effortrangeInput,#levelrangeInput,#atkrangeInput,#defrangeInput,#powerrangeInput,#atk,#def,#power').on('input', calculate);
   $('#upplus,#selfplus,#attrplus,#weatherplus,#staffplus,#characterplus').on('change', calculate);
+
 </script>
 
 </html>
