@@ -17,7 +17,7 @@
 </head>
 
 <body>
-    <table id="all" class="datatable table table-striped table-bordered">
+    <table id="all" class="datatable table table-striped table-bordered" style="table-layout: fixed;">
         <thead>
             <tr id="theadtr">
                 <th rowspan="2"></th>
@@ -67,7 +67,7 @@
 
     function format(data) {
         var r = `<div style="width:100%">`
-        r += '<h5>種族值</h5><hr>' + Get種族值(data) + '<br><h5>屬性相性</h5><hr>' + Get屬性相剋(data) + '<br><h5>招式表</h5><hr>' + Get招式表(data);
+        r += '<h5>特性</h5>' + Get特性(data) + '<h5>種族值</h5><hr>' + Get種族值(data) + '<br><h5>屬性相性</h5><hr>' + Get屬性相剋(data) + '<br><h5>招式表</h5><hr>' + Get招式表(data);
         return r + `</div>`;
         // { "data": null, render: Get種族值, className: 'none' },//className:'none'一定縮
         // { "data": null, render: Get屬性相剋, className: 'none' },
@@ -86,13 +86,35 @@
         console.log(number, N種型態, 誰要被顯示);
         for (var i = 0; i < N種型態; i++) {
             id = `型態${number}_${i}`;
+            id特性 = `特性${number}_${i}`;
             if (誰要被顯示 == i) {
                 document.getElementById(id).style.display = 'block';
+                document.getElementById(id特性).style.display = 'block';
             }
             else {
                 document.getElementById(id).style.display = 'none';
+                document.getElementById(id特性).style.display = 'none';
             }
         }
+    }
+    var Get特性 = function (data) {
+        var r = "";
+        for (var i = 0; i < data['特性'].length; i++) {
+            var arr = data['特性'][i].split('\n\n');
+            var result = "";
+            console.log(arr);
+            for (var j = 0; j < arr.length; j++) {
+                result += arr[j];
+                if (j != arr.length - 1)
+                    result += '｜';
+            }
+            if (i == 0)
+                r += `<table id="特性${data['number']}_${i}" style="display:block;"><tr><th style="text-align:center;">${result}</th></tr></table>`;
+            else
+                r += `<table id="特性${data['number']}_${i}" style="display:none;"><tr><th style="text-align:center;">${result}</th></tr></table>`;
+
+        }
+        return r;
     }
     var Get種族值 = function (data) {
         var x = 150, y = 15;
@@ -155,8 +177,8 @@
     }
     var Get屬性相剋 = function (data) {
         var 屬性18 = ['一般', '格鬥', '飛行', '毒', '地面', '岩石', '蟲', '幽靈', '鋼', '火', '水', '草', '電', '超能力', '冰', '龍', '惡', '妖精'];
-        var r = `<table style="font-size:20px;display:block;overflow:auto;">
-            <tr>
+        var r = `<table style="font-size:20px;display:block;overflow:auto;white-space: nowrap;">
+            <tr style="background-color:#ffcc7f">
               <th colspan="3"></th>`;
         屬性18.forEach(i => {
             r += `<th style="padding:2px;text-align:center;">${i}</th>`
@@ -165,7 +187,16 @@
         for (var i = 0; i < data["屬性相剋"].length / 21; i++) {
             r += `<tr>`;
             for (var j = 0; j <= 20; j++) {
-                r += `<td style="padding:2px;text-align:center">${data['屬性相剋'][j + i * 21]}</td>`;
+                var 字體顏色 = "black";
+                if (data['屬性相剋'][j + i * 21] >= 2)
+                    字體顏色 = 'red';
+                else if (data['屬性相剋'][j + i * 21] == 1 || data['屬性相剋'][j + i * 21] == 0)
+                    字體顏色 = 'black';
+                else if (j > 3)
+                    字體顏色 = 'blue';
+                if (data['屬性相剋'][j + i * 21] == '未知')
+                    data['屬性相剋'][j + i * 21] = "";
+                r += `<td style="padding:2px;text-align:center;color:${字體顏色}">${data['屬性相剋'][j + i * 21]}</td>`;
             }
             r += `</tr>`;
         };
@@ -198,34 +229,45 @@
         if (N種型態 > 1) {
             // console.log(N種型態);
             for (var i = 0; i < N種型態; i++) {
+                var 型態name = data['型態列表'][i];
+                if (型態name.includes('超級'))
+                    型態name = data['型態列表'][i + 1];
                 if (i == 0)
-                    r += `<a onclick="change招式表('${data['number']}','${N種型態}','${i}')" style="user-select: none;">${data['型態列表'][i]}</a>`;
+                    r += `<a onclick="change招式表('${data['number']}','${N種型態}','${i}')" style="user-select: none;">${型態name}</a>`;
                 else
-                    r += `<a onclick="change招式表('${data['number']}','${N種型態}','${i}')" style="user-select: none;">${data['型態列表'][i]}</a>`;
+                    r += `<a onclick="change招式表('${data['number']}','${N種型態}','${i}')" style="user-select: none;">${型態name}</a>`;
                 if (i != N種型態 - 1) r += `｜`;
             }
         }
         for (var k = 0; k < N種型態; k++) {
             if (k == 0)
-                r += `<table id="招式表${data['number']}_${k}" style="font-size:20px;text-align:center;display:block;overflow:auto">`;
+                r += `<table id="招式表${data['number']}_${k}" style="font-size:21px;white-space:nowrap;text-align:center;display:block;overflow:auto">`;
             else
-                r += `<table id="招式表${data['number']}_${k}" style="font-size:20px;text-align:center;display:none;overflow:auto">`;
-            r += `<tr class="header">
-              <th style="padding:0">等級</th>
-              <th style="padding:0">招式</th>
-              <th style="padding:0">屬性</th>
-              <th style="padding:0">分類</th>
-              <th style="padding:0">傷害</th>
-              <th style="padding:0">命中</th>
-              <th style="padding:0">PP</th>
+                r += `<table id="招式表${data['number']}_${k}" style="font-size:21px;white-space:nowrap;text-align:center;display:none;overflow:auto">`;
+            r += `<tr class="header" style="background-color:#ffcc7f">
+              <th style="padding:3px">等級</th>
+              <th style="padding:3px">招式</th>
+              <th style="padding:3px">屬性</th>
+              <th style="padding:3px">分類</th>
+              <th style="padding:3px">傷害</th>
+              <th style="padding:3px">命中</th>
+              <th style="padding:3px">PP</th>
             </tr>`;
             for (var i = 0; i < 蛋招式; i++) {
                 for (var j = 0; j < data['招式'][i + k * 蛋招式].length; j += 7) {
+
+                    var 分類招式顏色 = '#4d94ff';
+                    if (data['招式'][i + k * 蛋招式][3 + j] == '特殊')
+                        分類招式顏色 = '#4d94ff';
+                    else if (data['招式'][i + k * 蛋招式][3 + j] == '物理')
+                        分類招式顏色 = '#ff8080';
+                    else if (data['招式'][i + k * 蛋招式][3 + j] == '變化')
+                        分類招式顏色 = '#f2f2f2';
                     r += `<tr>
                     <td style="padding:0">${data['招式'][i + k * 蛋招式][j]}</td>
                     <td style="padding:0">${data['招式'][i + k * 蛋招式][1 + j]}</td>
                     <td style="padding:0">${data['招式'][i + k * 蛋招式][2 + j]}</td>
-                    <td style="padding:0">${data['招式'][i + k * 蛋招式][3 + j]}</td>
+                    <td style="padding:0;background-color:${分類招式顏色}">${data['招式'][i + k * 蛋招式][3 + j]}</td>
                     <td style="padding:0">${data['招式'][i + k * 蛋招式][4 + j]}</td>
                     <td style="padding:0">${data['招式'][i + k * 蛋招式][5 + j]}</td>
                     <td style="padding:0">${data['招式'][i + k * 蛋招式][6 + j]}</td>
