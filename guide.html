@@ -67,7 +67,7 @@
 
     function format(data) {
         var r = `<div style="width:100%">`
-        r += '<h5>特性</h5>' + Get特性(data) + '<h5>種族值</h5><hr>' + Get種族值(data) + '<br><h5>屬性相性</h5><hr>' + Get屬性相剋(data) + '<br><h5>招式表</h5><hr>' + Get招式表(data);
+        r += '<h5>特性</h5>' + Get特性(data) + '<hr><h5>種族值</h5>' + Get種族值(data) + '<hr><br><h5>屬性相性</h5>' + Get屬性相剋(data) + '<hr><br><h5>招式表</h5>' + Get招式表(data);
         return r + `</div>`;
         // { "data": null, render: Get種族值, className: 'none' },//className:'none'一定縮
         // { "data": null, render: Get屬性相剋, className: 'none' },
@@ -109,9 +109,9 @@
                     result += '｜';
             }
             if (i == 0)
-                r += `<table id="特性${data['number']}_${i}" style="display:block;"><tr><th style="text-align:center;">${result}</th></tr></table>`;
+                r += `<table id="特性${data['number']}_${i}" style="display:block;"><tr><th style="text-align:center;font-size:15px;font-weight:500">${result}</th></tr></table>`;
             else
-                r += `<table id="特性${data['number']}_${i}" style="display:none;"><tr><th style="text-align:center;">${result}</th></tr></table>`;
+                r += `<table id="特性${data['number']}_${i}" style="display:none;"><tr><th style="text-align:center;font-size:15px;font-weight:500">${result}</th></tr></table>`;
 
         }
         return r;
