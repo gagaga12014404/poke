@@ -209,9 +209,7 @@
               <td style="text-align: center;">ATK<br><input type="text" readonly value="100" id="${i}ATKstrength"></td>
               <td rowspan="2" id="${i}drawhexagon">
                 <div>
-                  <div class="hexagon1"></div>
-                  <div class="hexagon2"></div>
-                  <div class="hexagon3"></div>
+                  <canvas id="${i}canvas" width="100" height="100"></canvas>
                 </div>
               </td>
               <td style="text-align: center;">SATK<br><input type="text" readonly value="100" id="${i}SATKstrength"></td>
@@ -291,19 +289,67 @@
     $('#' + i).append(inputTotalString);
   });
   //6角形
-  var hexagon1length = 30;
-  var sqrthexagon1length = (Math.sqrt(3) * hexagon1length).toFixed(1);
-  $('.hexagon1').css("width", "0");
-  $('.hexagon1').css("border-bottom", hexagon1length.toString() + "px solid rgb(185, 185, 185)");
-  $('.hexagon1').css("border-left", sqrthexagon1length.toString() + "px solid transparent");
-  $('.hexagon1').css("border-right", sqrthexagon1length.toString() + "px solid transparent");
-  $('.hexagon2').css("width", (sqrthexagon1length * 2).toString() + "px");
-  $('.hexagon2').css("height", (hexagon1length * 2).toString() + "px");
-  $('.hexagon2').css("background-color", "rgb(185, 185, 185)");
-  $('.hexagon3').css("width", "0");
-  $('.hexagon3').css("border-top", hexagon1length.toString() + "px solid rgb(185, 185, 185)");
-  $('.hexagon3').css("border-left", sqrthexagon1length.toString() + "px solid transparent");
-  $('.hexagon3').css("border-right", sqrthexagon1length.toString() + "px solid transparent");
+  function draw6angle(canvasId, sideLength, angle1, angle2, angle3, angle4, angle5, angle6, color, add1, add2, add3, add4, add5, add6) {
+    var canvas = document.getElementById(canvasId);
+    var ctx = canvas.getContext("2d");
+    // 計算正六邊形的中心點座標
+    var centerX = canvas.width / 2;
+    var centerY = canvas.height / 2;
+
+    // sideLength正六邊形的邊長
+
+    // 定義六個頂點的座標
+    var x1 = centerX + add1 + sideLength * Math.cos(angle1 * Math.PI / 180);
+    var y1 = centerY - add1 / 2 - sideLength * Math.sin(angle1 * Math.PI / 180);//satk
+
+    var x2 = centerX + sideLength * Math.cos(angle2 * Math.PI / 180);//hp
+    var y2 = centerY - add2 - sideLength * Math.sin(angle2 * Math.PI / 180);
+
+    var x3 = centerX - add3 + sideLength * Math.cos(angle3 * Math.PI / 180);//atk
+    var y3 = centerY - add3 / 2 - sideLength * Math.sin(angle3 * Math.PI / 180);
+
+    var x4 = centerX - add4 + sideLength * Math.cos(angle4 * Math.PI / 180);//def
+    var y4 = centerY + add4 / 2 - sideLength * Math.sin(angle4 * Math.PI / 180);
+
+    var x5 = centerX + sideLength * Math.cos(angle5 * Math.PI / 180);//speed
+    var y5 = centerY + add5 - sideLength * Math.sin(angle5 * Math.PI / 180);
+
+    var x6 = centerX + add6 + sideLength * Math.cos(angle6 * Math.PI / 180);//sdef
+    var y6 = centerY + add6 / 2 - sideLength * Math.sin(angle6 * Math.PI / 180);
+    // 開始繪製
+    ctx.beginPath();
+    ctx.moveTo(x1, y1); // 移動到第一個頂點
+    ctx.lineTo(x2, y2);
+    ctx.lineTo(x3, y3);
+    ctx.lineTo(x4, y4);
+    ctx.lineTo(x5, y5);
+    ctx.lineTo(x6, y6);
+    ctx.closePath(); // 連線回第一個頂點，形成封閉的正六邊形
+    ctx.fillStyle = color; // 填充顏色為藍色
+    ctx.fill(); // 填充正六邊形
+
+    // 結束繪製
+    ctx.closePath();
+  }
+  ["atker", "defer"].forEach(i => {
+    var canvasId = i + "canvas";
+    draw6angle(canvasId, 40, 30, 90, 150, 210, 270, 330, "gray", 0, 0, 0, 0, 0, 0);
+    draw6angle(canvasId, 5, 30, 90, 150, 210, 270, 330, "yellow", 0, 0, 0, 0, 0, 0);//從stak開始
+  });
+  function change6angle(i, hpeffort, atkeffort, satkeffort, defeffort, sdefeffort, speedeffort) {
+    //console.log(hpeffort, atkeffort, satkeffort, defeffort, sdefeffort, speedeffort)
+    var canvasId = i + "canvas";
+    draw6angle(canvasId, 40, 30, 90, 150, 210, 270, 330, "gray", 0, 0, 0, 0, 0, 0);
+    if (isNaN(hpeffort)) hpeffort = 0;
+    if (isNaN(atkeffort)) atkeffort = 0;
+    if (isNaN(satkeffort)) satkeffort = 0;
+    if (isNaN(defeffort)) defeffort = 0;
+    if (isNaN(sdefeffort)) sdefeffort = 0;
+    if (isNaN(speedeffort)) speedeffort = 0;
+    draw6angle(canvasId, 5, 30, 90, 150, 210, 270, 330, "yellow", satkeffort, hpeffort, atkeffort, defeffort, speedeffort, sdefeffort);//從stak開始
+
+  }
+  //6角形結束
   var _6species = ["HP", "ATK", "DEF", "SATK", "SDEF", "SPEED"];
   _6species.forEach(element => {
     // var str = `
@@ -513,6 +559,13 @@
       else
         $('#' + i + j + 'strength').val(parseInt(result));
     });
+    var hpeffort = parseInt($('#' + i + 'HPEffort').val()) / 252 * 36;
+    var atkeffort = parseInt($('#' + i + 'ATKEffort').val()) / 252 * 33;
+    var satkeffort = parseInt($('#' + i + 'SATKEffort').val()) / 252 * 33;
+    var defeffort = parseInt($('#' + i + 'DEFEffort').val()) / 252 * 33;
+    var sdefeffort = parseInt($('#' + i + 'SDEFEffort').val()) / 252 * 33;
+    var speedeffort = parseInt($('#' + i + 'SPEEDEffort').val()) / 252 * 36;
+    change6angle(i, hpeffort, atkeffort, satkeffort, defeffort, sdefeffort, speedeffort);
   }
   $('#atkerselectNature').change(function () { calculateEach("atker"); });
   $('#deferselectNature').change(function () { calculateEach("defer") });
