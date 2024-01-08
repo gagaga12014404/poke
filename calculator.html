@@ -23,15 +23,15 @@
   }
 
   ._btn- {
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     padding: 0;
     line-height: 0;
   }
 
   ._btn {
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     padding: 0;
     line-height: 0;
   }
@@ -43,9 +43,11 @@
   th {
     font-size: 12px;
   }
+
   td {
     font-size: 12px;
   }
+
   .SpeciesStrength {
     text-align: left;
     width: 40px;
@@ -233,20 +235,13 @@
         `<tr>
           <td>${j}</td>
           <td>
-            <select name="" id="${i}${j}select" style="width: 50px;">
-              <option value="31" selected>Best</option>
-              <option value="30">Fantastic</option>
-              <option value="VeryGood">Very Good</option>
-              <option value="PrettyGood">Pretty Good</option>
-              <option value="Decent">Decent</option>
-              <option value="0">No good</option>
-            </select>
+            <input type="text" id="${i}${j}select" value="31">
           </td>
           <td>
             <input type="range" id="${i}${j}rangeInput" min="0" max="252" value="0" style="width: 80px;">
             <br>
             <input type="button" class="_btn-" value="-" id="${i}${j}-">
-            <input type="text" class="inputnumber" value="0" id="${i}${j}Effort">
+            <input type="text" readonly class="inputnumber" value="0" id="${i}${j}Effort">
             <input type="button" class="_btn" value="+" id="${i}${j}plus">
           </td>
         </tr>`
@@ -261,29 +256,29 @@
         </tr>
         ${input6string}
         <tr>
-          <th>性格</th>
-          <th class="${i}Nature">
+          <th style="padding:25px 0 0 0">性格</th>
+          <th class="${i}Nature" style="padding:25px 0 0 0">
             <select name="" id="${i}selectNature">
-              <option value="Adamant">+A-SA</option>
-              <option value="Modest">+SA-A</option>
-              <option value="Timid">+SP-A</option>
-              <option value="Jolly">+SP-SA</option>
-              <option value="Lonely">+A-D</option>
-              <option value="Naughty">+A-SD</option>
-              <option value="Brave">+A-SP</option>
-              <option value="Bold">+D-A</option>
-              <option value="Impish">+D-SA</option>
-              <option value="Lax">+D-SD</option>
-              <option value="Relaxed">+D-SP</option>
-              <option value="Mild">+SA-D</option>
-              <option value="Rash">+SA-SD</option>
-              <option value="Quiet">+SA-SP</option>
-              <option value="Calm">+SD-A</option>
-              <option value="Gentle">+SD-D</option>
-              <option value="Careful">+SD-SA</option>
-              <option value="Sassy">+SD-SP</option>
-              <option value="Hasty">+SP-D</option>
-              <option value="Naive">+SP-SD</option>
+              <option value="Adamant">固執+A-SA</option>
+              <option value="Modest">內斂+SA-A</option>
+              <option value="Timid">膽小+SP-A</option>
+              <option value="Jolly">爽朗+SP-SA</option>
+              <option value="Lonely">怕寂寞+A-D</option>
+              <option value="Naughty">頑皮+A-SD</option>
+              <option value="Brave">勇敢+A-SP</option>
+              <option value="Bold">大膽+D-A</option>
+              <option value="Impish">陶氣+D-SA</option>
+              <option value="Lax">樂天+D-SD</option>
+              <option value="Relaxed">悠閒+D-SP</option>
+              <option value="Mild">慢吞吞+SA-D</option>
+              <option value="Rash">馬虎+SA-SD</option>
+              <option value="Quiet">冷靜+SA-SP</option>
+              <option value="Calm">溫和+SD-A</option>
+              <option value="Gentle">溫順+SD-D</option>
+              <option value="Careful">慎重+SD-SA</option>
+              <option value="Sassy">自大+SD-SP</option>
+              <option value="Hasty">急躁+SP-D</option>
+              <option value="Naive">天真+SP-SD</option>
             </select>
           </th>
         </tr>
@@ -355,6 +350,20 @@
 
   }
   //6角形結束
+  ["atker", "defer"].forEach(i => {
+    input6.forEach(j => {
+      let selectId = '#' + i + j + 'select';
+      $(selectId).on('change', function () {
+        if (isNaN($(this).val()))
+          $(this).val(31);
+        else if (parseInt($(this).val()) > 31)
+          $(this).val(31);
+        if (parseInt($(this).val()) < 0)
+          $(this).val(0);
+        calculateEach(i);
+      });
+    });
+  });
   var _6species = ["HP", "ATK", "DEF", "SATK", "SDEF", "SPEED"];
   _6species.forEach(element => {
     // var str = `
