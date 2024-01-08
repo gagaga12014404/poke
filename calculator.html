@@ -56,16 +56,28 @@
   #levelrangeInput {
     width: 70px;
   }
-
-  input[type=text] {
+  #atkerTable input[type=text] {
     width: 30px;
     border: 0;
     margin-left: 0;
     background: transparent;
-  }
+  } 
+  #deferTable input[type=text] {
+    width: 30px;
+    border: 0;
+    margin-left: 0;
+    background: transparent;
+  } 
+  /* input[type=text] {
+    width: 30px;
+    border: 0;
+    margin-left: 0;
+    background: transparent;
+  } */
 
   table {
     table-layout: fixed;
+    overflow: auto;
   }
 </style>
 
@@ -213,7 +225,7 @@
               <td style="text-align: center;">SATK<br><input type="text" readonly value="100" id="${i}SATKstrength"></td>
               <td rowspan="2" id="${i}drawhexagon">
                 <div>
-                  <canvas id="${i}canvas" width="100" height="100"></canvas>
+                  <canvas id="${i}canvas" width="120" height="120"></canvas>
                 </div>
               </td>
               <td style="text-align: center;">ATK<br><input type="text" readonly value="100" id="${i}ATKstrength"></td>
@@ -235,29 +247,29 @@
         `<tr>
           <td>${j}</td>
           <td>
-            <input type="text" id="${i}${j}select" value="31">
+            <input type="text" style="width:20px" id="${i}${j}select" value="31">
           </td>
           <td>
             <input type="range" id="${i}${j}rangeInput" min="0" max="252" value="0" style="width: 80px;">
             <br>
             <input type="button" class="_btn-" value="-" id="${i}${j}-">
-            <input type="text" readonly class="inputnumber" value="0" id="${i}${j}Effort">
+            <input type="text" style="width:30px" readonly class="inputnumber" value="0" id="${i}${j}Effort">
             <input type="button" class="_btn" value="+" id="${i}${j}plus">
           </td>
         </tr>`
     });
     var inputTotalString =
-      `<table style="border: 1px solid black;">
+      `<table style="border: 1px solid black;width:100%">
         <!-- 填入 -->
         <tr>
-          <td></td>
-          <td>個體值</td>
-          <td>努力值</td>
+          <th style="width:15%"></th>
+          <th style="width:20%">個體值</th>
+          <th style="width:50%">努力值</th>
         </tr>
         ${input6string}
         <tr>
-          <th style="padding:25px 0 0 0">性格</th>
-          <th class="${i}Nature" style="padding:25px 0 0 0">
+          <td style="padding:25px 0 0 0">性格</td>
+          <td class="${i}Nature" style="padding:25px 0 0 0">
             <select name="" id="${i}selectNature">
               <option value="Adamant">固執+A-SA</option>
               <option value="Modest">內斂+SA-A</option>
@@ -280,11 +292,11 @@
               <option value="Hasty">急躁+SP-D</option>
               <option value="Naive">天真+SP-SD</option>
             </select>
-          </th>
+          </td>
         </tr>
         <tr>
-          <th>總和</th>
-          <th><input type="text" value="0" id="${i}totaleffort"></th>
+          <td>總和</td>
+          <td><input type="text" value="0" id="${i}totaleffort"></td>
         </tr>
       </table>`;
     $('#' + i).append(inputTotalString);
@@ -334,8 +346,8 @@
   }
   ["atker", "defer"].forEach(i => {
     var canvasId = i + "canvas";
-    draw6angle(canvasId, 50, 30, 90, 150, 210, 270, 330, "gray", 0, 0, 0, 0, 0, 0);
-    draw6angle(canvasId, 4, 30, 90, 150, 210, 270, 330, "yellow", 0, 0, 0, 0, 0, 0);//從stak開始
+    draw6angle(canvasId, 60, 30, 90, 150, 210, 270, 330, "gray", 0, 0, 0, 0, 0, 0);
+    draw6angle(canvasId, 4.8, 30, 90, 150, 210, 270, 330, "yellow", 0, 0, 0, 0, 0, 0);//從stak開始
   });
   function change6angle(i, hpeffort, atkeffort, satkeffort, defeffort, sdefeffort, speedeffort) {
     //console.log(hpeffort, atkeffort, satkeffort, defeffort, sdefeffort, speedeffort)
