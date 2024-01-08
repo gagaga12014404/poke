@@ -285,6 +285,10 @@
             </select>
           </th>
         </tr>
+        <tr>
+          <th>總和</th>
+          <th><input type="text" value="0" id="${i}totaleffort"></th>
+        </tr>
       </table>`;
     $('#' + i).append(inputTotalString);
   });
@@ -430,12 +434,11 @@
     var speedeffort = parseInt($('#' + i + 'SPEEDEffort').val());
     return hpeffort + atkeffort + satkeffort + defeffort + sdefeffort + speedeffort;
   }
-  var totalEffort = 0;
   ["atker", "defer"].forEach(i => {
     input6.forEach(j => {
       ['plus', '-'].forEach(k => {
         $('#' + i + j + k).click(function () {
-          if (IsOver508(i) >= 510 && k == 'plus') return;
+          if (IsOver508(i) >= 510 && k == 'plus') return;//點下去的時候，510以上就return，但是拉條不能這樣做
           var id = "#" + $(this).attr("id").replace(k, '');
           var value = 0;
           if (k == 'plus')
@@ -454,8 +457,12 @@
   ["atker", "defer"].forEach(i => {
     input6.forEach(j => {
       $('#' + i + j + 'rangeInput').on('input', function () {
-        if (IsOver508(i) >= 510) {
-          $(this).val(510-(IsOver508(i)-$(this).val()));
+        var total = 0;
+        input6.forEach(k => {
+          if (k !== j) total += parseInt($('#' + i + k + 'rangeInput').val());
+        });
+        if (total + parseInt($(this).val()) > 510) {
+          $(this).val(510 - total);
         }
         var id = "#" + $(this).attr("id").replace('rangeInput', 'Effort');
         $(id).val($(this).val());
@@ -558,6 +565,7 @@
   }
   var calculateEach = function (i) {//i=atker,defer
     //console.log(raceArray);
+    let totaleffort = 0;
     input6.forEach(j => {//j=6 
       var race = parseInt(raceArray[i + j + 'race']);
       var personal = parseInt($('#' + i + j + 'select').val());
@@ -571,6 +579,7 @@
         $('#' + i + 'HPstrength').val(parseInt(hpResult));
       else
         $('#' + i + j + 'strength').val(parseInt(result));
+      totaleffort += effort;
     });
     var hpeffort = parseInt($('#' + i + 'HPEffort').val()) / 252 * 46.5;
     var atkeffort = parseInt($('#' + i + 'ATKEffort').val()) / 252 * 41;
@@ -579,6 +588,7 @@
     var sdefeffort = parseInt($('#' + i + 'SDEFEffort').val()) / 252 * 41;
     var speedeffort = parseInt($('#' + i + 'SPEEDEffort').val()) / 252 * 46.5;
     change6angle(i, hpeffort, atkeffort, satkeffort, defeffort, sdefeffort, speedeffort);
+    $('#' + i + 'totaleffort').val(totaleffort);
   }
   $('#atkerselectNature').change(function () { calculateEach("atker"); });
   $('#deferselectNature').change(function () { calculateEach("defer") });
