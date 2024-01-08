@@ -61,7 +61,7 @@
   }
 
   table {
-    table-layout: auto;
+    table-layout: fixed;
   }
 </style>
 
@@ -73,14 +73,14 @@
     <p style="margin: 0px 10px;">傷害計算：[(2*Lv+10)/250*atk/def*威力+2]*加成</p>
   </div>
   <!-- 計算器table -->
-  <table style="width: 100%;">
+  <table>
     <tr>
-      <td id="atker">
+      <td id="atker" style="padding: 5px;">
         <h6 style="text-align: center;">攻擊方</h6>
         <select name="" id="atkerName" style="width:100px"></select>
       </td>
 
-      <td id="defer">
+      <td id="defer" style="padding: 5px;">
         <h6 style="text-align: center;">防守方</h6>
         <select name="" id="deferName" style="width:100px"></select>
       </td>
@@ -206,17 +206,17 @@
               <td></td>
             </tr>
             <tr>
-              <td style="text-align: center;">ATK<br><input type="text" readonly value="100" id="${i}ATKstrength"></td>
+              <td style="text-align: center;">SATK<br><input type="text" readonly value="100" id="${i}SATKstrength"></td>
               <td rowspan="2" id="${i}drawhexagon">
                 <div>
                   <canvas id="${i}canvas" width="100" height="100"></canvas>
                 </div>
               </td>
-              <td style="text-align: center;">SATK<br><input type="text" readonly value="100" id="${i}SATKstrength"></td>
+              <td style="text-align: center;">ATK<br><input type="text" readonly value="100" id="${i}ATKstrength"></td>
             </tr>
             <tr>
-              <td style="text-align: center;">DEF<br><input type="text" readonly value="100" id="${i}DEFstrength"></td>
               <td style="text-align: center;">SDEF<br><input type="text" readonly value="100" id="${i}SDEFstrength"></td>
+              <td style="text-align: center;">DEF<br><input type="text" readonly value="100" id="${i}DEFstrength"></td>
             </tr>
             <tr>
               <td></td>
@@ -300,22 +300,22 @@
 
     // 定義六個頂點的座標
     var x1 = centerX + add1 + sideLength * Math.cos(angle1 * Math.PI / 180);
-    var y1 = centerY - add1 / 2 - sideLength * Math.sin(angle1 * Math.PI / 180);//satk
+    var y1 = centerY - add1 / 1.8 - sideLength * Math.sin(angle1 * Math.PI / 180);//atk
 
     var x2 = centerX + sideLength * Math.cos(angle2 * Math.PI / 180);//hp
     var y2 = centerY - add2 - sideLength * Math.sin(angle2 * Math.PI / 180);
 
-    var x3 = centerX - add3 + sideLength * Math.cos(angle3 * Math.PI / 180);//atk
-    var y3 = centerY - add3 / 2 - sideLength * Math.sin(angle3 * Math.PI / 180);
+    var x3 = centerX - add3 + sideLength * Math.cos(angle3 * Math.PI / 180);//satk
+    var y3 = centerY - add3 / 1.8 - sideLength * Math.sin(angle3 * Math.PI / 180);
 
     var x4 = centerX - add4 + sideLength * Math.cos(angle4 * Math.PI / 180);//def
-    var y4 = centerY + add4 / 2 - sideLength * Math.sin(angle4 * Math.PI / 180);
+    var y4 = centerY + add4 / 1.8 - sideLength * Math.sin(angle4 * Math.PI / 180);
 
     var x5 = centerX + sideLength * Math.cos(angle5 * Math.PI / 180);//speed
     var y5 = centerY + add5 - sideLength * Math.sin(angle5 * Math.PI / 180);
 
     var x6 = centerX + add6 + sideLength * Math.cos(angle6 * Math.PI / 180);//sdef
-    var y6 = centerY + add6 / 2 - sideLength * Math.sin(angle6 * Math.PI / 180);
+    var y6 = centerY + add6 / 1.8 - sideLength * Math.sin(angle6 * Math.PI / 180);
     // 開始繪製
     ctx.beginPath();
     ctx.moveTo(x1, y1); // 移動到第一個頂點
@@ -333,20 +333,19 @@
   }
   ["atker", "defer"].forEach(i => {
     var canvasId = i + "canvas";
-    draw6angle(canvasId, 40, 30, 90, 150, 210, 270, 330, "gray", 0, 0, 0, 0, 0, 0);
-    draw6angle(canvasId, 5, 30, 90, 150, 210, 270, 330, "yellow", 0, 0, 0, 0, 0, 0);//從stak開始
+    draw6angle(canvasId, 50, 30, 90, 150, 210, 270, 330, "gray", 0, 0, 0, 0, 0, 0);
+    draw6angle(canvasId, 4, 30, 90, 150, 210, 270, 330, "yellow", 0, 0, 0, 0, 0, 0);//從stak開始
   });
   function change6angle(i, hpeffort, atkeffort, satkeffort, defeffort, sdefeffort, speedeffort) {
     //console.log(hpeffort, atkeffort, satkeffort, defeffort, sdefeffort, speedeffort)
     var canvasId = i + "canvas";
-    draw6angle(canvasId, 40, 30, 90, 150, 210, 270, 330, "gray", 0, 0, 0, 0, 0, 0);
-    if (isNaN(hpeffort)) hpeffort = 0;
-    if (isNaN(atkeffort)) atkeffort = 0;
-    if (isNaN(satkeffort)) satkeffort = 0;
-    if (isNaN(defeffort)) defeffort = 0;
-    if (isNaN(sdefeffort)) sdefeffort = 0;
-    if (isNaN(speedeffort)) speedeffort = 0;
-    draw6angle(canvasId, 5, 30, 90, 150, 210, 270, 330, "yellow", satkeffort, hpeffort, atkeffort, defeffort, speedeffort, sdefeffort);//從stak開始
+    var canvas = document.getElementById(canvasId); // 替換為您的畫布ID
+    var ctx = canvas.getContext("2d");
+    // 清空整個畫布
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    draw6angle(canvasId, 50, 30, 90, 150, 210, 270, 330, "gray", 0, 0, 0, 0, 0, 0);
+    draw6angle(canvasId, 4, 30, 90, 150, 210, 270, 330, "yellow", atkeffort, hpeffort, satkeffort, sdefeffort, speedeffort, defeffort);//從stak開始
 
   }
   //6角形結束
@@ -421,11 +420,22 @@
     }
   }
   //+- start
+
+  function IsOver508(i) {
+    var hpeffort = parseInt($('#' + i + 'HPEffort').val());
+    var atkeffort = parseInt($('#' + i + 'ATKEffort').val());
+    var satkeffort = parseInt($('#' + i + 'SATKEffort').val());
+    var defeffort = parseInt($('#' + i + 'DEFEffort').val());
+    var sdefeffort = parseInt($('#' + i + 'SDEFEffort').val());
+    var speedeffort = parseInt($('#' + i + 'SPEEDEffort').val());
+    return hpeffort + atkeffort + satkeffort + defeffort + sdefeffort + speedeffort;
+  }
   var totalEffort = 0;
   ["atker", "defer"].forEach(i => {
     input6.forEach(j => {
       ['plus', '-'].forEach(k => {
         $('#' + i + j + k).click(function () {
+          if (IsOver508(i) >= 510 && k == 'plus') return;
           var id = "#" + $(this).attr("id").replace(k, '');
           var value = 0;
           if (k == 'plus')
@@ -444,6 +454,9 @@
   ["atker", "defer"].forEach(i => {
     input6.forEach(j => {
       $('#' + i + j + 'rangeInput').on('input', function () {
+        if (IsOver508(i) >= 510) {
+          $(this).val(510-(IsOver508(i)-$(this).val()));
+        }
         var id = "#" + $(this).attr("id").replace('rangeInput', 'Effort');
         $(id).val($(this).val());
         calculateEach(i);
@@ -559,12 +572,12 @@
       else
         $('#' + i + j + 'strength').val(parseInt(result));
     });
-    var hpeffort = parseInt($('#' + i + 'HPEffort').val()) / 252 * 36;
-    var atkeffort = parseInt($('#' + i + 'ATKEffort').val()) / 252 * 33;
-    var satkeffort = parseInt($('#' + i + 'SATKEffort').val()) / 252 * 33;
-    var defeffort = parseInt($('#' + i + 'DEFEffort').val()) / 252 * 33;
-    var sdefeffort = parseInt($('#' + i + 'SDEFEffort').val()) / 252 * 33;
-    var speedeffort = parseInt($('#' + i + 'SPEEDEffort').val()) / 252 * 36;
+    var hpeffort = parseInt($('#' + i + 'HPEffort').val()) / 252 * 46.5;
+    var atkeffort = parseInt($('#' + i + 'ATKEffort').val()) / 252 * 41;
+    var satkeffort = parseInt($('#' + i + 'SATKEffort').val()) / 252 * 41;
+    var defeffort = parseInt($('#' + i + 'DEFEffort').val()) / 252 * 41;
+    var sdefeffort = parseInt($('#' + i + 'SDEFEffort').val()) / 252 * 41;
+    var speedeffort = parseInt($('#' + i + 'SPEEDEffort').val()) / 252 * 46.5;
     change6angle(i, hpeffort, atkeffort, satkeffort, defeffort, sdefeffort, speedeffort);
   }
   $('#atkerselectNature').change(function () { calculateEach("atker"); });
