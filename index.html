@@ -121,16 +121,13 @@
       border: 1px solid #ccc;
       border-top: none;
     }
-
-    table.dataTable>tbody>tr.child ul.dtr-details {
+    table.dataTable>tbody>tr.child ul.dtr-details{
       max-width: 100%;
     }
-
     .overflow-x {
       overflow-x: auto;
     }
-
-    .centermiddle {
+    .centermiddle{
       text-align: center;
       vertical-align: middle;
     }
@@ -180,8 +177,6 @@
           return;
         document.getElementById(allTable[i]).style.display = 'table-row';
         document.getElementsByClassName(allTable[i] + "btn")[0].className += " active";
-        if (allTable[i] == "guide")
-          $("all").css("width:95%");
       }
     }
   }
