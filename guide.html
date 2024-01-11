@@ -13,10 +13,11 @@
         .種族值.active{
             display: block;
         }*/
-        .txtcenter{
+        .txtcenter {
             text-align: center;
         }
-        td.dt-control{
+
+        td.dt-control {
             text-align: center;
             vertical-align: top;
             padding-top: 5px;
@@ -29,7 +30,7 @@
         <thead>
             <tr id="theadtr">
                 <th rowspan="2">編號</th>
-                <th rowspan=" 2" >圖片</th>
+                <th rowspan=" 2">圖片</th>
                 <th rowspan=" 2">名稱</th>
                 <th colspan=" 2" style="text-align: center;height: 10px;padding: 0px;">屬性</th>
                 <th colspan="1" style="padding: 0;">
@@ -293,17 +294,17 @@
 
     var columns = [
         {
-            "data": "number",class: 'dt-control', "type": "num", "render": function (data, type, row) {
+            "data": "number", class: 'dt-control', "type": "num", "render": function (data, type, row) {
                 return type === 'sort' ? data.replace('#', '') : data;
             },
             "width": "24px",
         },
         { "data": null, "width": "28px", render: GetPic },
-        { "data": "cName", "width": "35px","class":"txtcenter" },
-        { "data": "attr1","class":"txtcenter", "width": "35px"},
-        { "data": "attr2","class":"txtcenter", "width": "35px"},
+        { "data": "cName", "width": "35px", "class": "txtcenter" },
+        { "data": "attr1", "class": "txtcenter", "width": "35px" },
+        { "data": "attr2", "class": "txtcenter", "width": "35px" },
         {
-            "data": null, "width": "35px","class":"txtcenter", render: function (data, type, row, meta) {
+            "data": null, "width": "35px", "class": "txtcenter", render: function (data, type, row, meta) {
                 // 此处根据所选属性值进行渲染
                 var selectedAttribute = $('#selectAbility').val();
                 switch (selectedAttribute) {
@@ -366,6 +367,20 @@
                     //     console.log(item.number, item.招式.length);
                     $('#atkerName').append(new Option(item.cName, item.cName));
                     $('#deferName').append(new Option(item.cName, item.cName));
+                    var N種型態 = item['7圍'].length / 7;
+                    if (N種型態 > 1) {
+                        for (var i = 1; i < N種型態; i++) {
+                            $('#atkerName').append(new Option(item["型態列表"][i], item["型態列表"][i]));
+                            $('#deferName').append(new Option(item["型態列表"][i], item["型態列表"][i]));
+                            ajaxdata[item["型態列表"][i]] = Object.assign({}, item);
+                            ajaxdata[item["型態列表"][i]]['hp'] = parseInt(item["7圍"][0 + 7 * i]);
+                            ajaxdata[item["型態列表"][i]]['atk'] = parseInt(item["7圍"][1 + 7 * i]);
+                            ajaxdata[item["型態列表"][i]]['def'] = parseInt(item["7圍"][2 + 7 * i]);
+                            ajaxdata[item["型態列表"][i]]['satk'] = parseInt(item["7圍"][3 + 7 * i]);
+                            ajaxdata[item["型態列表"][i]]['sdef'] = parseInt(item["7圍"][4 + 7 * i]);
+                            ajaxdata[item["型態列表"][i]]['speed'] = parseInt(item["7圍"][5 + 7 * i]);
+                        }
+                    }
                 });
 
                 $('#selectAbility').on('change', function () {
@@ -440,7 +455,7 @@
                     });
             },
             "columnDefs": [
-                
+
             ],
         });
         //option的value要注意
