@@ -52,7 +52,6 @@
     text-align: left;
     width: 40px;
   }
-
   #levelrangeInput {
     width: 70px;
   }
@@ -76,8 +75,7 @@
   } */
 
   table {
-    table-layout: fixed;
-    overflow: auto;
+    max-width: 500px;
   }
 </style>
 
@@ -136,7 +134,7 @@
       <th>atk</th>
       <th><input type="range" id="atkrangeInput" min="0" max="1000" value="100">
         <input type="button" class="_btn-" value="-" id="atk-">
-        <input type="number" class="inputnumber" value="100" id="atk">
+        <input type="number" style="width: 50px;padding: 0 0 5px 5px;" class="inputnumber" value="100" id="atk">
         <input type="button" class="_btn" value="+" id="atkplus"></button>
       </th>
     </tr>
@@ -144,7 +142,7 @@
       <th>def</th>
       <th><input type="range" id="defrangeInput" min="0" max="1000" value="100">
         <input type="button" class="_btn-" value="-" id="def-">
-        <input type="number" class="inputnumber" value="100" id="def">
+        <input type="number" style="width: 50px;" class="inputnumber" value="100" id="def">
         <input type="button" class="_btn" value="+" id="defplus"></button>
       </th>
     </tr>
@@ -152,7 +150,7 @@
       <th>威力</th>
       <th><input type="range" id="powerrangeInput" min="0" max="200" value="80">
         <input type="button" class="_btn-" value="-" id="power-">
-        <input type="number" class="inputnumber" value="80" id="power">
+        <input type="number" style="width: 50px;" class="inputnumber" value="80" id="power">
         <input type="button" class="_btn" value="+" id="powerplus"></button>
       </th>
     </tr>
@@ -296,7 +294,7 @@
         </tr>
         <tr>
           <td>總和</td>
-          <td><input type="text" value="0" id="${i}totaleffort"></td>
+          <td><input type="text" value="0" id="${i}totaleffort" style="width:40px"></td>
         </tr>
       </table>`;
     $('#' + i).append(inputTotalString);

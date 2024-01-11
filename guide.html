@@ -13,19 +13,22 @@
         .種族值.active{
             display: block;
         }*/
+        .txtcenter{
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
-    <table id="all" class="datatable table table-striped table-bordered" style="table-layout: fixed;">
+    <table id="all" class="table-striped table-bordered" style="width: 350px;">
         <thead>
             <tr id="theadtr">
                 <th rowspan="2"></th>
                 <th rowspan="2">編號</th>
                 <th rowspan=" 2">圖片</th>
                 <th rowspan=" 2">名稱</th>
-                <th colspan=" 2" style="text-align: center;height: 10px;padding: 0;">屬性</th>
-                <th colspan="1" style="padding: 0; ">
+                <th colspan=" 2" style="text-align: center;height: 10px;padding: 0px;">屬性</th>
+                <th colspan="1" style="padding: 0;width: 50px;">
                     <select id="selectAbility" style="width: 100%;">
                         <option value="6" selected>生命</option>
                         <option value="7">物攻</option>
@@ -39,8 +42,8 @@
             </tr>
             <tr>
                 <!--colspan 是複數的下面那層  -->
-                <th style="padding: 0;height: 10px;text-align: center;">1</th>
-                <th style="padding: 0;height: 10px;text-align: center;">2</th>
+                <th style="text-align: center;padding: 0px;width: 28px;">1</th>
+                <th style="text-align: center;padding: 0px;width: 28px;">2</th>
                 <th></th>
             </tr>
         </thead>
@@ -290,20 +293,20 @@
             className: 'dt-control',
             orderable: false,
             data: null,
-            defaultContent: '',
+            defaultContent: '', "width": "25px",
         },
         {
             "data": "number", "type": "num", "render": function (data, type, row) {
                 return type === 'sort' ? data.replace('#', '') : data;
             },
-            "width": "25px",
+            "width": "24px",
         },
-        { "data": null, "width": "20px", render: GetPic },
-        { "data": "cName", "width": "30px", },
-        { "data": "attr1", "width": "20px", },
-        { "data": "attr2", "width": "20px", },
+        { "data": null, "width": "28px", render: GetPic },
+        { "data": "cName", "width": "35px","class":"txtcenter" },
+        { "data": "attr1","class":"txtcenter"},
+        { "data": "attr2","class":"txtcenter"},
         {
-            "data": null, render: function (data, type, row, meta) {
+            "data": null,"class":"txtcenter", render: function (data, type, row, meta) {
                 // 此处根据所选属性值进行渲染
                 var selectedAttribute = $('#selectAbility').val();
                 switch (selectedAttribute) {
@@ -322,14 +325,14 @@
                     case "12":
                         return row.race;
                 }
-            }, "width": "20px",
+            }
         },
         {
-            "data":"特性",
+            "data": "特性",
             visible: false
         },
         {
-            "data":"招式",
+            "data": "招式",
             visible: false
         }
     ];
@@ -341,7 +344,7 @@
     $(document).ready(function () {
         table = $('#all').DataTable({
             "scrollX": true,
-            "scrollCollapse": true,
+            //"scrollCollapse": true,
             "language": {
                 "lengthMenu": "_MENU_",
             },
@@ -414,23 +417,21 @@
                         });
                     });
                 //指定欄位下拉選單
-                var 屬性搜尋 = this.api();
+                var 屬性搜尋 = table.columns([4]);
                 this.api()
-                    .columns(4)
+                    .columns([4, 5])
                     .every(function () {
                         var column = this;
                         var select = $('<select style=" height: 25px; " ><option value=""></option></select>')
                             .appendTo($(column.footer()).empty())
                             .on('change', function () {
-                                var val = $.fn.dataTable.util.escapeRegex($(this).val());//這裡的this是option的值
-                                屬性搜尋.search(val).draw();
+                                屬性搜尋.search($(this).val()).draw();
                                 // filterColumn23(val);
                                 // (column.search(val,false, true)+column3.search(val,false, true)).draw();
                                 // console.log(typeof(column.search(val,false, true)));
                                 // column3.search("^" + val,true,false,true).draw();
                                 // column3.search(val).draw();
                             });
-
                         column
                             .data()
                             .unique()
