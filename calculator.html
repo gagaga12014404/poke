@@ -52,21 +52,25 @@
     text-align: left;
     width: 40px;
   }
+
   #levelrangeInput {
     width: 70px;
   }
+
   #atkerTable input[type=text] {
     width: 30px;
     border: 0;
     margin-left: 0;
     background: transparent;
-  } 
+  }
+
   #deferTable input[type=text] {
     width: 30px;
     border: 0;
     margin-left: 0;
     background: transparent;
-  } 
+  }
+
   /* input[type=text] {
     width: 30px;
     border: 0;
@@ -75,32 +79,31 @@
   } */
 
   table {
+    width: 100%;
     max-width: 500px;
+  }
+
+  .hidden公式 {
+    display: none;
   }
 </style>
 
 <body>
-  <div style="font-size: 0.7em;">
-    <h6 style="margin: 0px 10px;">公式：</h6>
-    <p style="margin: 0px 10px;">HP：(種*2+個體+努力/4)*Lv/100+Lv+10</p>
-    <p style="margin: 0px 10px;">其他：[(種*2+個體+努力/4)*(Lv/100)+5]*性格</p>
-    <p style="margin: 0px 10px;">傷害計算：[(2*Lv+10)/250*atk/def*威力+2]*加成</p>
-  </div>
   <!-- 計算器table -->
   <table>
     <tr>
-      <td id="atker" style="padding: 5px;">
+      <td id="atker" style="padding: 0px;">
         <h6 style="text-align: center;">攻擊方</h6>
         <select name="" id="atkerName" style="width:100px"></select>
       </td>
 
-      <td id="defer" style="padding: 5px;">
+      <td id="defer" style="padding: 0px;">
         <h6 style="text-align: center;">防守方</h6>
         <select name="" id="deferName" style="width:100px"></select>
       </td>
     </tr>
   </table>
-  <table>
+  <table style="display: block;margin:10px">
     <tr>
       <th>Level</th>
       <th>
@@ -132,7 +135,7 @@
     </tr> -->
     <tr>
       <th>atk</th>
-      <th><input type="range" id="atkrangeInput" min="0" max="1000" value="100">
+      <th><input type="range" id="atkrangeInput" min="0" max="332" value="100">
         <input type="button" class="_btn-" value="-" id="atk-">
         <input type="number" style="width: 50px;padding: 0 0 5px 5px;" class="inputnumber" value="100" id="atk">
         <input type="button" class="_btn" value="+" id="atkplus"></button>
@@ -140,7 +143,7 @@
     </tr>
     <tr>
       <th>def</th>
-      <th><input type="range" id="defrangeInput" min="0" max="1000" value="100">
+      <th><input type="range" id="defrangeInput" min="0" max="332" value="100">
         <input type="button" class="_btn-" value="-" id="def-">
         <input type="number" style="width: 50px;" class="inputnumber" value="100" id="def">
         <input type="button" class="_btn" value="+" id="defplus"></button>
@@ -207,34 +210,55 @@
       <th><input type="number" class="inputnumber" value="37.2" id="damage"></th>
     </tr>
   </table>
+
+  <div style="font-size: 0.7em;text-align:right">
+    <h6 onclick="open公式()" style="margin: 0px 10px;">公式</h6>
+    <p class="hidden公式" style="margin: 0px 10px;">HP：(種*2+個體+努力/4)*Lv/100+Lv+10</p>
+    <p class="hidden公式" style="margin: 0px 10px;">其他：[(種*2+個體+努力/4)*(Lv/100)+5]*性格</p>
+    <p class="hidden公式" style="margin: 0px 10px;">傷害計算：[(2*Lv+10)/250*atk/def*威力+2]*加成</p>
+  </div>
 </body>
 <script>
+  var formulasVisible = false;
+
+  function open公式() {
+    var formulas = document.querySelectorAll('.hidden公式');
+    for (var i = 0; i < formulas.length; i++) {
+      if (formulasVisible) {
+        formulas[i].style.display = 'none'; // 隐藏<p>元素
+      } else {
+        formulas[i].style.display = 'block'; // 显示<p>元素
+      }
+    }
+    formulasVisible = !formulasVisible; // 切换状态
+  }
+
   var input6 = ["HP", "ATK", "SATK", "DEF", "SDEF", "SPEED"];
   var raceArray = {};
   ["atker", "defer"].forEach(i => {
     var tableString = `
-          <table id="${i}Table">
+          <table id="${i}Table" style="display:block">
             <tr>
               <td></td>
-              <td style="text-align: center;">HP<br><input type="text" readonly value="100" id="${i}HPstrength"></td>
+              <td style="text-align: center;">HP<br><input style="text-align: center;" type="text" readonly value="100" id="${i}HPstrength"></td>
               <td></td>
             </tr>
             <tr>
-              <td style="text-align: center;">SATK<br><input type="text" readonly value="100" id="${i}SATKstrength"></td>
+              <td style="text-align: right;">SATK<br><input style="text-align: right;" type="text" readonly value="100" id="${i}SATKstrength"></td>
               <td rowspan="2" id="${i}drawhexagon">
                 <div>
-                  <canvas id="${i}canvas" width="120" height="120"></canvas>
+                  <canvas id="${i}canvas" width="100" height="100"></canvas>
                 </div>
               </td>
-              <td style="text-align: center;">ATK<br><input type="text" readonly value="100" id="${i}ATKstrength"></td>
+              <td style="text-align: left;">ATK<br><input style="text-align: left;" type="text" readonly value="100" id="${i}ATKstrength"></td>
             </tr>
             <tr>
-              <td style="text-align: center;">SDEF<br><input type="text" readonly value="100" id="${i}SDEFstrength"></td>
-              <td style="text-align: center;">DEF<br><input type="text" readonly value="100" id="${i}DEFstrength"></td>
+              <td style="text-align: right;">SDEF<br><input style="text-align: right;" type="text" readonly value="100" id="${i}SDEFstrength"></td>
+              <td style="text-align: left;">DEF<br><input style="text-align: left;" type="text" readonly value="100" id="${i}DEFstrength"></td>
             </tr>
             <tr>
               <td></td>
-              <td style="text-align: center;">SPEED<br><input type="text" readonly value="100" id="${i}SPEEDstrength"></td>
+              <td style="text-align: center;">SPEED<br><input style="text-align: center;" type="text" readonly value="100" id="${i}SPEEDstrength"></td>
               <td></td>
             </tr>
           </table>`;
@@ -247,7 +271,7 @@
           <td>
             <input type="text" style="width:20px" id="${i}${j}select" value="31">
           </td>
-          <td>
+          <td style="text-align:center">
             <input type="range" id="${i}${j}rangeInput" min="0" max="252" value="0" style="width: 80px;">
             <br>
             <input type="button" class="_btn-" value="-" id="${i}${j}-">
@@ -262,7 +286,7 @@
         <tr>
           <th style="width:15%"></th>
           <th style="width:20%">個體值</th>
-          <th style="width:50%">努力值</th>
+          <th style="width:50%;text-align:center">努力值</th>
         </tr>
         ${input6string}
         <tr>
@@ -294,7 +318,7 @@
         </tr>
         <tr>
           <td>總和</td>
-          <td><input type="text" value="0" id="${i}totaleffort" style="width:40px"></td>
+          <td><input type="text" readonly value="0" id="${i}totaleffort" style="width:40px"></td>
         </tr>
       </table>`;
     $('#' + i).append(inputTotalString);
