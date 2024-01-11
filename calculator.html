@@ -139,6 +139,7 @@
         <input type="button" class="_btn-" value="-" id="atk-">
         <input type="number" style="width: 50px;padding: 0 0 5px 5px;" class="inputnumber" value="100" id="atk">
         <input type="button" class="_btn" value="+" id="atkplus"></button>
+        <input type="button" value="76" id="填入攻擊方atk" style="margin-left: 20px;"></button>
       </th>
     </tr>
     <tr>
@@ -147,6 +148,7 @@
         <input type="button" class="_btn-" value="-" id="def-">
         <input type="number" style="width: 50px;" class="inputnumber" value="100" id="def">
         <input type="button" class="_btn" value="+" id="defplus"></button>
+        <input type="button" value="76" id="填入防禦方def" style="margin-left: 20px;"></button>
       </th>
     </tr>
     <tr>
@@ -219,6 +221,14 @@
   </div>
 </body>
 <script>
+  $('#填入攻擊方atk').on('click', function () {
+    $('#atk').val($(this).val());
+    calculate();
+  });
+  $('#填入防禦方def').on('click', function () {
+    $('#def').val($(this).val());
+    calculate();
+  });
   var formulasVisible = false;
 
   function open公式() {
@@ -634,6 +644,13 @@
     var speedeffort = parseInt($('#' + i + 'SPEEDEffort').val()) / 252 * 46.5;
     change6angle(i, hpeffort, atkeffort, satkeffort, defeffort, sdefeffort, speedeffort);
     $('#' + i + 'totaleffort').val(totaleffort);
+    
+    $('#填入攻擊方atk').val($('#atkerSATKstrength').val());
+    $('#填入防禦方def').val($('#deferSDEFstrength').val());
+    if ($('#atkerATKstrength').val() > $('#atkerSATKstrength').val()){
+      $('#填入攻擊方atk').val($('#atkerATKstrength').val());
+      $('#填入防禦方def').val($('#deferDEFstrength').val());
+    }
   }
   $('#atkerselectNature').change(function () { calculateEach("atker"); });
   $('#deferselectNature').change(function () { calculateEach("defer") });
