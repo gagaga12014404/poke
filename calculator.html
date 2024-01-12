@@ -139,7 +139,6 @@
         <input type="button" class="_btn-" value="-" id="atk-">
         <input type="number" style="width: 50px;padding: 0 0 5px 5px;" class="inputnumber" value="100" id="atk">
         <input type="button" class="_btn" value="+" id="atkplus"></button>
-        <input type="button" value="76" id="填入攻擊方atk" style="margin-left: 20px;"></button>
       </th>
     </tr>
     <tr>
@@ -148,7 +147,6 @@
         <input type="button" class="_btn-" value="-" id="def-">
         <input type="number" style="width: 50px;" class="inputnumber" value="100" id="def">
         <input type="button" class="_btn" value="+" id="defplus"></button>
-        <input type="button" value="76" id="填入防禦方def" style="margin-left: 20px;"></button>
       </th>
     </tr>
     <tr>
@@ -221,14 +219,6 @@
   </div>
 </body>
 <script>
-  $('#填入攻擊方atk').on('click', function () {
-    $('#atk').val($(this).val());
-    calculate();
-  });
-  $('#填入防禦方def').on('click', function () {
-    $('#def').val($(this).val());
-    calculate();
-  });
   var formulasVisible = false;
 
   function open公式() {
@@ -277,8 +267,8 @@
     input6.forEach(j => {
       input6string +=
         `<tr>
-          <td>${j}</td>
-          <td>
+          <td><input type="button" style="padding:0;width:100%" id="${i}${j}button" value="${j}"></td>
+          <td style="text-align:center">
             <input type="text" style="width:20px" id="${i}${j}select" value="31">
           </td>
           <td style="text-align:center">
@@ -294,7 +284,7 @@
       `<table style="border: 1px solid black;width:100%">
         <!-- 填入 -->
         <tr>
-          <th style="width:15%"></th>
+          <th style="width:20%"></th>
           <th style="width:20%">個體值</th>
           <th style="width:50%;text-align:center">努力值</th>
         </tr>
@@ -644,13 +634,6 @@
     var speedeffort = parseInt($('#' + i + 'SPEEDEffort').val()) / 252 * 46.5;
     change6angle(i, hpeffort, atkeffort, satkeffort, defeffort, sdefeffort, speedeffort);
     $('#' + i + 'totaleffort').val(totaleffort);
-    
-    $('#填入攻擊方atk').val($('#atkerSATKstrength').val());
-    $('#填入防禦方def').val($('#deferSDEFstrength').val());
-    if ($('#atkerATKstrength').val() > $('#atkerSATKstrength').val()){
-      $('#填入攻擊方atk').val($('#atkerATKstrength').val());
-      $('#填入防禦方def').val($('#deferDEFstrength').val());
-    }
   }
   $('#atkerselectNature').change(function () { calculateEach("atker"); });
   $('#deferselectNature').change(function () { calculateEach("defer") });
@@ -681,6 +664,16 @@
   $('#race,#personal,#effort,#level,#racerangeInput,#personalrangeInput,#effortrangeInput,#levelrangeInput,#atkrangeInput,#defrangeInput,#powerrangeInput,#atk,#def,#power').on('input', calculate);
   $('#upplus,#selfplus,#attrplus,#weatherplus,#staffplus,#characterplus').on('change', calculate);
 
+  $('#atkerATKbutton,#atkerSATKbutton,#deferATKbutton,#deferSATKbutton').click(function () {
+    let id = '#' + this.id.replace('button', 'strength');
+    $('#atk').val($(id).val());
+    calculate();
+  });
+  $('#deferDEFbutton,#deferSDEFbutton,#atkerDEFbutton,#atkerSDEFbutton').click(function () {
+    let id = '#' + this.id.replace('button', 'strength');
+    $('#def').val($(id).val());
+    calculate();
+  });
 </script>
 
 </html>
