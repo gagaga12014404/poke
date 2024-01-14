@@ -119,10 +119,10 @@
         }
     }
     var 去特性列表找此特性 = function (name) {
+        switchTab('attribute');
         name = name.replace(/隱藏特性/g, '');
         $("#attributeTable_filter input[type='search']").val(name);
         $("#attributeTable").DataTable().search(name).draw();
-        switchTab('attribute');
     }
     var Get特性 = function (data) {
         var r = "";
@@ -132,7 +132,7 @@
             for (var j = 0; j < arr.length; j++) {
                 let options = arr[j].split(/\s+或\s+/);
                 for (var k = 0; k < options.length; k++) {
-                    result += `<a onclick="去特性列表找此特性('${options[k]}')">` + options[k] + `</a>`;
+                    result += `<a style="color:blue;text-decoration:underline" onclick="去特性列表找此特性('${options[k]}')">` + options[k] + `</a>`;
                     if (k != options.length - 1)
                         result += ' 或 ';
                 }

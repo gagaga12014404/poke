@@ -11,7 +11,7 @@
             vertical-align: top;
             padding-top: 5px;
             background-position: left 5px center;
-            height: 22px;
+            height: 30px;
         }
 
         #attributeTable tr.dt-hasChild td.dt-control {
@@ -23,7 +23,7 @@
 <body>
     <table id="attributeTable" class="table-striped table-bordered" style="max-width: 400px;width:95%">
         <thead>
-            <tr>
+            <tr style="height: 40px;">
                 <th>編號</th>
                 <th>中文名</th>
             </tr>
@@ -31,8 +31,14 @@
     </table>
 </body>
 <script>
+    function 尋找含有此特性寶可夢(name) {
+        switchTab('guide');
+        $("#all_filter input[type='search']").val(name);
+        $("#all").DataTable().search(name).draw();
+
+    }
     function 特性效果format(data) {
-        return data['效果'];
+        return data['效果'] + `<br><a onclick="尋找含有此特性寶可夢('${data['中文名']}')" style="color:blue;text-decoration:underline">含有此特性寶可夢</a>`;
     }
 
     $(document).ready(function () {
@@ -65,6 +71,7 @@
                 row.child(特性效果format(row.data())).show();
             }
         });
+
 
     });
 </script>
