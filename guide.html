@@ -23,7 +23,8 @@
             padding-top: 5px;
             background-position: center bottom 9px;
         }
-        #all tr.dt-hasChild td.dt-control{
+
+        #all tr.dt-hasChild td.dt-control {
             background-position: center bottom 9px;
         }
     </style>
@@ -97,25 +98,33 @@
         console.log(number, N種型態, 誰要被顯示);
         for (var i = 0; i < N種型態; i++) {
             id = `型態${number}_${i}`;
+            span的textid = `span${number}${N種型態}${i}`;
             id特性 = `特性${number}_${i}`;
             if (誰要被顯示 == i) {
                 document.getElementById(id).style.display = 'block';
                 document.getElementById(id特性).style.display = 'block';
+                document.getElementById(span的textid).style = 'font-size:13px;text-decoration:underline;font-weight:700';
             }
             else {
                 document.getElementById(id).style.display = 'none';
                 document.getElementById(id特性).style.display = 'none';
+                document.getElementById(span的textid).style = 'none';
             }
         }
+    }
+    var 去特性列表找此特性 = function (name) {
+        name = name.replace(/隱藏特性/g, '');
+        $("#attributeTable_filter input[type='search']").val(name);
+        $("#attributeTable").DataTable().search(name).draw();
+        switchTab('attribute');
     }
     var Get特性 = function (data) {
         var r = "";
         for (var i = 0; i < data['特性'].length; i++) {
             var arr = data['特性'][i].split('\n\n');
             var result = "";
-            console.log(arr);
             for (var j = 0; j < arr.length; j++) {
-                result += arr[j];
+                result += `<a onclick="去特性列表找此特性('${arr[j]}')">` + arr[j] + `</a>`;
                 if (j != arr.length - 1)
                     result += '｜';
             }
@@ -127,6 +136,7 @@
         }
         return r;
     }
+
     var Get種族值 = function (data) {
         var x = 150, y = 15;
         colorList = ["#ffcccc", "#ffe6cc", "#ffffcc", "#d6f5d6", "#b3ecff", "#51A8DD"]
@@ -137,9 +147,9 @@
         if (N種型態 > 1) {
             for (var i = 0; i < N種型態; i++) {
                 if (i == 0)
-                    r += `<span onclick="change型態('${data['number']}','${N種型態}','${i}')">${data['型態列表'][i]}</span>`;
+                    r += `<span id="span${data['number']}${N種型態}${i}" style="font-size:13px;text-decoration:underline;font-weight:700" onclick="change型態('${data['number']}','${N種型態}','${i}')">${data['型態列表'][i]}</span>`;
                 else
-                    r += `<span onclick="change型態('${data['number']}','${N種型態}','${i}')">${data['型態列表'][i]}</span>`;
+                    r += `<span id="span${data['number']}${N種型態}${i}" onclick="change型態('${data['number']}','${N種型態}','${i}')">${data['型態列表'][i]}</span>`;
                 if (i != N種型態 - 1) r += `｜`;
             }
         }
@@ -214,7 +224,7 @@
         return r + `</table>`;
     }
     var change招式表 = function (number, N種型態, 誰要被顯示) {
-        console.log(number, N種型態, 誰要被顯示);
+        //console.log(number, N種型態, 誰要被顯示);
         for (var i = 0; i < N種型態; i++) {
             id = `招式表${number}_${i}`;
             if (誰要被顯示 == i) {
@@ -226,7 +236,7 @@
         }
     }
     var Get招式表 = function (data) {
-        console.log(data['招式'].length);
+        //console.log(data['招式'].length);
         var N種型態 = 1;
         var 蛋招式 = 3;
         if (data['招式'].length % 3 == 0) {
@@ -486,7 +496,7 @@
         alltable.on('click', 'td.dt-control', function (e) {
             let tr = e.target.closest('tr');
             let row = alltable.row(tr);
-            console.log(tr);
+            //console.log(tr);
             if (row.child.isShown()) {
                 // This row is already open - close it
                 row.child.hide();
