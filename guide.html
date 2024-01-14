@@ -130,7 +130,12 @@
             var arr = data['特性'][i].split('\n\n');
             var result = "";
             for (var j = 0; j < arr.length; j++) {
-                result += `<a onclick="去特性列表找此特性('${arr[j]}')">` + arr[j] + `</a>`;
+                let options = arr[j].split(/\s+或\s+/);
+                for (var k = 0; k < options.length; k++) {
+                    result += `<a onclick="去特性列表找此特性('${options[k]}')">` + options[k] + `</a>`;
+                    if (k != options.length - 1)
+                        result += ' 或 ';
+                }
                 if (j != arr.length - 1)
                     result += '｜';
             }
