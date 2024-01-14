@@ -121,13 +121,16 @@
       border: 1px solid #ccc;
       border-top: none;
     }
-    table.dataTable>tbody>tr.child ul.dtr-details{
+
+    table.dataTable>tbody>tr.child ul.dtr-details {
       max-width: 100%;
     }
+
     .overflow-x {
       overflow-x: auto;
     }
-    .centermiddle{
+
+    .centermiddle {
       text-align: center;
       vertical-align: middle;
     }
@@ -138,12 +141,17 @@
 
   <div class="nav" style="width: 100%;font-size: 13px;">
     <button onclick="switchTab('guide')" class="guidebtn active">圖鑑</button>
+    <button onclick="switchTab('attribute')" class="attributebtn">特性</button>
     <button onclick="switchTab('moves')" class="movesbtn">招式</button>
     <button onclick="switchTab('calculator')" class="calculatorbtn">計算器</button>
-    <button onclick="switchTab('myFavorite')" class="myFavoritebtn">MY</button>
+    <!-- <button onclick="switchTab('myFavorite')" class="myFavoritebtn">MY</button> -->
   </div>
   <!-- 圖鑑 -->
   <div id="guide">
+
+  </div>
+  <!-- 特性 -->
+  <div id="attribute" class="tabcontent">
 
   </div>
   <!-- 招式 -->
@@ -153,20 +161,21 @@
   <div id="calculator" class="tabcontent">
 
   </div>
-  <div id="myFavorite" class="tabcontent">
+  <!-- <div id="myFavorite" class="tabcontent">
 
-  </div>
+  </div> -->
 </body>
 <script>
   $(document).ready(function () {
     $("#guide").load("guide.html");
+    $("#attribute").load("attribute.html");
     $("#moves").load("moves.html");
     $("#calculator").load("calculator.html");
     $("#myFavorite").load("myFavorite.html");
   });
   //tab switch
   function switchTab(id) {
-    var allTable = ["guide", "moves", "calculator", "myFavorite"];
+    var allTable = ["guide", "attribute", "moves", "calculator"];
     for (var i in allTable) {
       if (allTable[i] != id) {
         document.getElementById(allTable[i]).style.display = 'none';

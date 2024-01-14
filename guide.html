@@ -17,10 +17,14 @@
             text-align: center;
         }
 
-        td.dt-control {
+        #all td.dt-control {
             text-align: center;
             vertical-align: top;
             padding-top: 5px;
+            background-position: center bottom 9px;
+        }
+        #all tr.dt-hasChild td.dt-control{
+            background-position: center bottom 9px;
         }
     </style>
 </head>
@@ -340,7 +344,7 @@
         $(this).html('<input type="text" class="inputSearch" placeholder="' + title + '" />');
     });
     $(document).ready(function () {
-        table = $('#all').DataTable({
+        var alltable = $('#all').DataTable({
             "scrollX": true,
             //"scrollCollapse": true,
             "language": {
@@ -385,7 +389,7 @@
 
                 $('#selectAbility').on('change', function () {
                     var selectedAttribute = $('#selectAbility').val();
-                    table.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                    alltable.rows().every(function (rowIdx, tableLoop, rowLoop) {
                         var rowData = this.data();
                         var updatedValue = "";
                         // 根据所选属性值设置更新的值
@@ -413,7 +417,7 @@
                                 break;
                         }
                         // 更新第6列的值
-                        table.cell(rowIdx, 5).data(updatedValue);
+                        alltable.cell(rowIdx, 5).data(updatedValue);
                     });
                 });
                 // Apply the search
@@ -429,7 +433,7 @@
                         });
                     });
                 //指定欄位下拉選單
-                var 屬性搜尋 = table.columns([4]);
+                var 屬性搜尋 = alltable.columns([4]);
                 this.api()
                     .columns([4, 3])
                     .every(function () {
@@ -477,12 +481,12 @@
         //     selectAbilityPreSelect = $(this).val();
         // });
         $('#all tbody').on('click', '.ClickAddToTable', function () {
-            table3.row.add(table.row(this).data()).draw(false);
+            table3.row.add(alltable.row(this).data()).draw(false);
         });
-        table.on('click', 'td.dt-control', function (e) {
+        alltable.on('click', 'td.dt-control', function (e) {
             let tr = e.target.closest('tr');
-            let row = table.row(tr);
-
+            let row = alltable.row(tr);
+            console.log(tr);
             if (row.child.isShown()) {
                 // This row is already open - close it
                 row.child.hide();

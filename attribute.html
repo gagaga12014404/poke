@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>特性列表</title>
+    <style>
+        #attributeTable td.dt-control {
+            text-align: center;
+            vertical-align: top;
+            padding-top: 5px;
+            background-position: left 5px center;
+            height: 22px;
+        }
+
+        #attributeTable tr.dt-hasChild td.dt-control {
+            background-position: left 5px center;
+        }
+    </style>
+</head>
+
+<body>
+    <table id="attributeTable" class="table-striped table-bordered" style="max-width: 400px;width:95%">
+        <thead>
+            <tr>
+                <th>編號</th>
+                <th>中文名</th>
+            </tr>
+        </thead>
+    </table>
+</body>
+<script>
+    function 特性效果format(data) {
+        return data['效果'];
+    }
+
+    $(document).ready(function () {
+        var attributeTable2 = $('#attributeTable').DataTable({
+            "ajax": "特性.json",
+            "dom": `<'row'<'col-4 col-sm-4 col-md-4'l><'col-8 col-sm-8 col-md-8'f>>
+            <'row'<'col-sm-12'tr>>
+            <'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>`,
+            "autoWidth": false,
+            "columns": [
+                /*{
+                    "data": null,"width":"20%", orderable: false, class: 'dt-control',defaultContent: ''
+                },*/
+
+                { 'data': '編號', class: 'dt-control', "width": "50px" },
+                { 'data': '中文名', "width": "100px" }],
+            "pagingType": "numbers",
+
+        });
+        attributeTable2.on('click', 'td.dt-control', function (e) {
+            let tr = e.target.closest('tr');
+            let row = attributeTable2.row(tr);
+
+            if (row.child.isShown()) {
+                // This row is already open - close it
+                row.child.hide();
+            }
+            else {
+                // Open this row
+                row.child(特性效果format(row.data())).show();
+            }
+        });
+
+    });
+</script>
+
+</html>
