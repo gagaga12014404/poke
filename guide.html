@@ -97,18 +97,24 @@
     var change型態 = function (number, N種型態, 誰要被顯示) {
         console.log(number, N種型態, 誰要被顯示);
         for (var i = 0; i < N種型態; i++) {
-            id = `型態${number}_${i}`;
-            span的textid = `span${number}${N種型態}${i}`;
-            id特性 = `特性${number}_${i}`;
+            let id = `型態${number}_${i}`;
+            let span的textid = `span${number}${i}`;
+            let id特性 = `特性${number}_${i}`;
+            let getElementid = document.getElementById(id);
+            let getElementid特性 = document.getElementById(id特性);
+            let getElementspan的textid = document.getElementById(span的textid);
             if (誰要被顯示 == i) {
-                document.getElementById(id).style.display = 'block';
-                document.getElementById(id特性).style.display = 'block';
-                document.getElementById(span的textid).style = 'font-size:13px;text-decoration:underline;font-weight:700';
+                if (getElementid == null) getElementid = document.getElementById(`型態${number}_0`);
+                console.log(getElementid);
+                getElementid.style.display = 'block';
+                getElementid特性.style.display = 'block';
+                getElementspan的textid.style = 'font-size:13px;text-decoration:underline;font-weight:700';
             }
             else {
-                document.getElementById(id).style.display = 'none';
-                document.getElementById(id特性).style.display = 'none';
-                document.getElementById(span的textid).style = 'none';
+                if (getElementid != null)
+                    getElementid.style.display = 'none';
+                getElementid特性.style.display = 'none';
+                getElementspan的textid.style = 'none';
             }
         }
     }
@@ -144,16 +150,18 @@
         colorBorder = ["#ff8080", "#ffbf80", "#cccc00", "#85e085", "#77c5e0", "#3b769a  "]
         var r = "";
         var N種型態 = data['7圍'].length / 7;
+        if (data['特性'].length > N種型態)
+            N種型態 = data['特性'].length
         if (N種型態 > 1) {
             for (var i = 0; i < N種型態; i++) {
                 if (i == 0)
-                    r += `<span id="span${data['number']}${N種型態}${i}" style="font-size:13px;text-decoration:underline;font-weight:700" onclick="change型態('${data['number']}','${N種型態}','${i}')">${data['型態列表'][i]}</span>`;
+                    r += `<span id="span${data['number']}${i}" style="font-size:13px;text-decoration:underline;font-weight:700" onclick="change型態('${data['number']}','${N種型態}','${i}')">${data['型態列表'][i]}</span>`;
                 else
-                    r += `<span id="span${data['number']}${N種型態}${i}" onclick="change型態('${data['number']}','${N種型態}','${i}')">${data['型態列表'][i]}</span>`;
+                    r += `<span id="span${data['number']}${i}" onclick="change型態('${data['number']}','${N種型態}','${i}')">${data['型態列表'][i]}</span>`;
                 if (i != N種型態 - 1) r += `｜`;
             }
         }
-        for (var j = 0; j < N種型態; j++) {
+        for (var j = 0; j < data['7圍'].length / 7; j++) {
             var hp = parseInt(data["7圍"][0 + 7 * j]);
             var atk = parseInt(data["7圍"][1 + 7 * j]);
             var def = parseInt(data["7圍"][2 + 7 * j]);
@@ -226,7 +234,7 @@
     var change招式表 = function (number, N種型態, 誰要被顯示) {
         //console.log(number, N種型態, 誰要被顯示);
         for (var i = 0; i < N種型態; i++) {
-            id = `招式表${number}_${i}`;
+            let id = `招式表${number}_${i}`;
             if (誰要被顯示 == i) {
                 document.getElementById(id).style.display = 'block';
             }
