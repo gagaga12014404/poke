@@ -8,7 +8,6 @@
     <style>
         #attributeTable td.dt-control {
             text-align: center;
-            vertical-align: top;
             padding-top: 5px;
             background-position: left 5px center;
             height: 30px;
@@ -17,6 +16,10 @@
         #attributeTable tr.dt-hasChild td.dt-control {
             background-position: left 5px center;
         }
+
+        .ft14 {
+            font-size: 14px;
+        }
     </style>
 </head>
 
@@ -24,8 +27,8 @@
     <table id="attributeTable" class="table-striped table-bordered" style="max-width: 400px;width:95%">
         <thead>
             <tr style="height: 40px;">
-                <th>編號</th>
-                <th>中文名</th>
+                <th style="font-size:14px">編號</th>
+                <th style="font-size:14px">中文名</th>
             </tr>
         </thead>
     </table>
@@ -38,7 +41,7 @@
 
     }
     function 特性效果format(data) {
-        return data['效果'] + `<br><a onclick="尋找含有此特性寶可夢('${data['中文名']}')" style="color:blue;text-decoration:underline">含有此特性寶可夢</a>`;
+        return '<p class="ft14">' + data['效果'] + `</p><a onclick="尋找含有此特性寶可夢('${data['中文名']}')" style="color:blue;text-decoration:underline">含有此特性寶可夢</a>`;
     }
 
     $(document).ready(function () {

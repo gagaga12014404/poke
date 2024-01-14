@@ -15,6 +15,7 @@
         }*/
         .txtcenter {
             text-align: center;
+            font-size: 13.5px;
         }
 
         #all td.dt-control {
@@ -34,11 +35,11 @@
     <table id="all" class="table-striped table-bordered" style="max-width: 400px;width:95%">
         <thead>
             <tr id="theadtr">
-                <th rowspan="2">編號</th>
-                <th rowspan=" 2">圖片</th>
-                <th rowspan=" 2">名稱</th>
-                <th colspan=" 2" style="text-align: center;height: 10px;padding: 0px;">屬性</th>
-                <th colspan="1" style="padding: 0;">
+                <th rowspan="2" style="font-size: 12px;">編號</th>
+                <th rowspan=" 2" style="font-size: 12px;">圖片</th>
+                <th rowspan=" 2" style="font-size: 12px;">名稱</th>
+                <th colspan=" 2" style="font-size: 12px;text-align: center;height: 10px;padding: 0px;">屬性</th>
+                <th colspan="1" style="font-size: 12px;padding: 0;">
                     <select id="selectAbility" style="width: 100%;">
                         <option value="6" selected>生命</option>
                         <option value="7">物攻</option>
@@ -175,9 +176,9 @@
             var speed = parseInt(data["7圍"][5 + 7 * j]);
             var column2 = [hp, atk, def, satk, sdef, speed];// / 255 * x
             if (j == 0)
-                r += `<table id="型態${data['number']}_${j}" style="font-size:20px;display:block;overflow:auto"><tr style="background-color:#ffcc7f;font-weight:700;"><th colspan="2" style="text-align:center;">種族值</th><th style="text-align:center;">Lv.50</th></tr>`;
+                r += `<table id="型態${data['number']}_${j}" style="font-size:20px;display:block;overflow:auto"><tr style="background-color:#ffcc7f;font-weight:700;"><th colspan="2" style="font-size:14px;text-align:center;">種族值</th><th style="font-size:14px;text-align:center;">Lv.50</th></tr>`;
             else
-                r += `<table id="型態${data['number']}_${j}" style="font-size:20px;display:none;overflow:auto"><tr style="background-color:#ffcc7f;font-weight:700;"><th colspan="2" style="text-align:center;">種族值</th><th style="text-align:center;">Lv.50</th></tr>`;
+                r += `<table id="型態${data['number']}_${j}" style="font-size:20px;display:none;overflow:auto"><tr style="background-color:#ffcc7f;font-weight:700;"><th colspan="2" style="font-size:14px;text-align:center;">種族值</th><th style="font-size:14px;text-align:center;">Lv.50</th></tr>`;
 
             var indexofHp = column.indexOf("生命");
             for (var i = 0; i < column2.length; i++) {
@@ -192,30 +193,30 @@
                     hight = parseInt(((column2[i] * 2 + 31 + 63) / 2 + 5) * 1.1);
                 }
                 r += `<tr style="background-color:${colorList[i]}">
-                    <td style="padding:0 0 0 4px;width:80px;vertical-align:middle;text-align:left;font-weight:500;">
+                    <td style="font-size:14px;padding:0 0 0 4px;width:80px;vertical-align:middle;text-align:left;font-weight:500;">
                         ${column[i + indexofHp]}：&nbsp&nbsp${column2[i]}&nbsp
                     </td>
-                    <td style="padding:4px;width:150px;">
+                    <td style="font-size:14px;padding:4px;width:150px;">
                         <div style="width:${column2[i] / 255 * x}px;height:${y}px;background-color:${colorList2[i]};border:1px ${colorBorder[i]} solid;top:0px;"></div>
                     </td>
-                    <td style="padding:0px;width:80px;vertical-align:middle;text-align:center;font-weight:500">
+                    <td style="font-size:14px;padding:0px;width:80px;vertical-align:middle;text-align:center;font-weight:500">
                         ${low}~${hight}
                     </td>
                 </tr>`;
             }
             r += `<tr style="background-color:#d9b3ff">
-                <td colspan="3" style="padding:0 0 0 6px;vertical-align:middle;font-weight:500;">總和：${data['7圍'][6 + 7 * j]}</td>
+                <td colspan="3" style="font-size:14px;padding:0 0 0 6px;vertical-align:middle;font-weight:500;">總和：${data['7圍'][6 + 7 * j]}</td>
               </tr></table>`;
         }
         return r;
     }
     var Get屬性相剋 = function (data) {
         var 屬性18 = ['一般', '格鬥', '飛行', '毒', '地面', '岩石', '蟲', '幽靈', '鋼', '火', '水', '草', '電', '超能力', '冰', '龍', '惡', '妖精'];
-        var r = `<table style="font-size:20px;display:block;overflow:auto;white-space: nowrap;">
+        var r = `<table style="display:block;overflow:auto;white-space: nowrap;">
             <tr style="background-color:#ffcc7f">
               <th colspan="3"></th>`;
         屬性18.forEach(i => {
-            r += `<th style="padding:2px;text-align:center;">${i}</th>`
+            r += `<th style="font-size:14px;padding:2px;text-align:center;">${i}</th>`
         });
         r += `</tr>`;
         for (var i = 0; i < data["屬性相剋"].length / 21; i++) {
@@ -230,7 +231,7 @@
                     字體顏色 = 'blue';
                 if (data['屬性相剋'][j + i * 21] == '未知')
                     data['屬性相剋'][j + i * 21] = "";
-                r += `<td style="padding:2px;text-align:center;color:${字體顏色}">${data['屬性相剋'][j + i * 21]}</td>`;
+                r += `<td style="font-size:13px;padding:2px;text-align:center;color:${字體顏色}">${data['屬性相剋'][j + i * 21]}</td>`;
             }
             r += `</tr>`;
         };
@@ -279,13 +280,13 @@
             else
                 r += `<table id="招式表${data['number']}_${k}" style="font-size:21px;white-space:nowrap;text-align:center;display:none;overflow:auto">`;
             r += `<tr class="header" style="background-color:#ffcc7f">
-              <th style="padding:5px">等級</th>
-              <th style="padding:5px">招式</th>
-              <th style="padding:5px">屬性</th>
-              <th style="padding:5px">分類</th>
-              <th style="padding:5px">傷害</th>
-              <th style="padding:5px">命中</th>
-              <th style="padding:5px">PP</th>
+              <th style="font-size:14px;padding:5px">等級</th>
+              <th style="font-size:14px;padding:5px">招式</th>
+              <th style="font-size:14px;padding:5px">屬性</th>
+              <th style="font-size:14px;padding:5px">分類</th>
+              <th style="font-size:14px;padding:5px">傷害</th>
+              <th style="font-size:14px;padding:5px">命中</th>
+              <th style="font-size:14px;padding:5px">PP</th>
             </tr>`;
             for (var i = 0; i < 蛋招式; i++) {
                 for (var j = 0; j < data['招式'][i + k * 蛋招式].length; j += 7) {
@@ -298,13 +299,13 @@
                     else if (data['招式'][i + k * 蛋招式][3 + j] == '變化')
                         分類招式顏色 = '#f2f2f2';
                     r += `<tr>
-                    <td style="padding:2px">${data['招式'][i + k * 蛋招式][j]}</td>
-                    <td style="padding:2px">${data['招式'][i + k * 蛋招式][1 + j]}</td>
-                    <td style="padding:2px">${data['招式'][i + k * 蛋招式][2 + j]}</td>
-                    <td style="padding:2px;background-color:${分類招式顏色}">${data['招式'][i + k * 蛋招式][3 + j]}</td>
-                    <td style="padding:2px">${data['招式'][i + k * 蛋招式][4 + j]}</td>
-                    <td style="padding:2px">${data['招式'][i + k * 蛋招式][5 + j]}</td>
-                    <td style="padding:2px">${data['招式'][i + k * 蛋招式][6 + j]}</td>
+                    <td style="font-size:14px;padding:2px">${data['招式'][i + k * 蛋招式][j]}</td>
+                    <td style="font-size:14px;padding:2px">${data['招式'][i + k * 蛋招式][1 + j]}</td>
+                    <td style="font-size:14px;padding:2px">${data['招式'][i + k * 蛋招式][2 + j]}</td>
+                    <td style="font-size:14px;padding:2px;background-color:${分類招式顏色}">${data['招式'][i + k * 蛋招式][3 + j]}</td>
+                    <td style="font-size:14px;padding:2px">${data['招式'][i + k * 蛋招式][4 + j]}</td>
+                    <td style="font-size:14px;padding:2px">${data['招式'][i + k * 蛋招式][5 + j]}</td>
+                    <td style="font-size:14px;padding:2px">${data['招式'][i + k * 蛋招式][6 + j]}</td>
                 </tr>`
                 }
             }
@@ -324,7 +325,7 @@
             "data": "number", class: 'dt-control', "type": "num", "render": function (data, type, row) {
                 return type === 'sort' ? data.replace('#', '') : data;
             },
-            "width": "24px",
+            "width": "28px",
         },
         { "data": null, "width": "28px", render: GetPic },
         { "data": "cName", "width": "35px", "class": "txtcenter" },
