@@ -32,7 +32,7 @@
 </head>
 
 <body>
-    <table id="all" class="table-striped table-bordered" style="max-width: 400px;width:95%">
+    <table id="all" class="table-striped table-bordered" style="max-width: 400px;width:98%">
         <thead>
             <tr id="theadtr">
                 <th rowspan="2" style="font-size: 12px;">編號</th>
@@ -155,9 +155,7 @@
         colorList2 = ["#ff9999", "#ffcc99", "#e6e600", "#99e699", "#7acde9", "#4086b1"]
         colorBorder = ["#ff8080", "#ffbf80", "#cccc00", "#85e085", "#77c5e0", "#3b769a  "]
         var r = "";
-        var N種型態 = data['7圍'].length / 7;
-        if (data['特性'].length > N種型態)
-            N種型態 = data['特性'].length
+        var N種型態 = data['特性'].length;
         if (N種型態 > 1) {
             for (var i = 0; i < N種型態; i++) {
                 if (i == 0)
@@ -359,6 +357,10 @@
         },
         {
             "data": "招式",
+            visible: false
+        },
+        {
+            "data": "型態列表",
             visible: false
         }
     ];
