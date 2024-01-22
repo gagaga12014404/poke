@@ -239,11 +239,14 @@
         //console.log(number, N種型態, 誰要被顯示);
         for (var i = 0; i < N種型態; i++) {
             let id = `招式表${number}_${i}`;
+            let aid = `a${number}${i}`;
             if (誰要被顯示 == i) {
                 document.getElementById(id).style.display = 'block';
+                document.getElementById(aid).style = 'font-size:13px;text-decoration:underline;font-weight:700';
             }
             else {
                 document.getElementById(id).style.display = 'none';
+                document.getElementById(aid).style = 'none';
             }
         }
     }
@@ -266,9 +269,9 @@
                 if (型態name.includes('超級'))
                     型態name = data['型態列表'][i + 1];
                 if (i == 0)
-                    r += `<a onclick="change招式表('${data['number']}','${N種型態}','${i}')" style="user-select: none;">${型態name}</a>`;
+                    r += `<a id="a${data['number']}${i}" style="font-size:13px;text-decoration:underline;font-weight:700" onclick="change招式表('${data['number']}','${N種型態}','${i}')" style="user-select: none;">${型態name}</a>`;
                 else
-                    r += `<a onclick="change招式表('${data['number']}','${N種型態}','${i}')" style="user-select: none;">${型態name}</a>`;
+                    r += `<a id="a${data['number']}${i}" onclick="change招式表('${data['number']}','${N種型態}','${i}')" style="user-select: none;">${型態name}</a>`;
                 if (i != N種型態 - 1) r += `｜`;
             }
         }
