@@ -40,6 +40,10 @@
     width: 30px;
   }
 
+  #damage {
+    width: 60px;
+  }
+
   th {
     font-size: 12px;
   }
@@ -207,7 +211,7 @@
     </tr>
     <tr>
       <th>傷害計算</th>
-      <th><input type="number" class="inputnumber" value="37.2" id="damage"></th>
+      <th><input type="text" class="inputnumber" value="37.2" id="damage"></th>
     </tr>
   </table>
 
@@ -658,7 +662,7 @@
     var staffplus = parseFloat($('#staffplus').val());
     var characterplus = parseFloat($('#characterplus').val());
     var calculatedamage = ((2 * level + 10) / 250 * atk / def * power + 2) * selfplus * attrplus * weatherplus * staffplus * characterplus;
-    $('#damage').val(calculatedamage.toString());
+    $('#damage').val(Math.floor(calculatedamage * 0.85).toString() + "~" + Math.floor(calculatedamage).toString());
   }
   //改變值立刻計算結果
   $('#race,#personal,#effort,#level,#racerangeInput,#personalrangeInput,#effortrangeInput,#levelrangeInput,#atkrangeInput,#defrangeInput,#powerrangeInput,#atk,#def,#power').on('input', calculate);
