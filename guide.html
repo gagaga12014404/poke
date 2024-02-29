@@ -28,11 +28,24 @@
         #all tr.dt-hasChild td.dt-control {
             background-position: center bottom 9px;
         }
+
+        #all_wrapper {
+            margin: 0 auto;
+        }
+
+        @media only screen and (min-width: 600px) {
+
+            /* 600px以上的屏幕样式 */
+            #all_wrapper {
+                width: 600px;
+            }
+
+        }
     </style>
 </head>
 
 <body>
-    <table id="all" class="table-striped table-bordered" style="max-width: 400px;width:98%">
+    <table id="all" class="table-striped table-bordered" style="width:98%">
         <thead>
             <tr id="theadtr">
                 <th rowspan="2" style="font-size: 12px;">編號</th>

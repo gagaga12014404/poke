@@ -90,136 +90,153 @@
   .hidden公式 {
     display: none;
   }
+
+  #calculate_wrapper {
+    margin: 0 auto;
+  }
+
+  @media only screen and (min-width: 600px) {
+
+    /* 600px以上的屏幕样式 */
+    #calculate_wrapper {
+      width: 600px;
+    }
+
+  }
 </style>
 
 <body>
-  <!-- 計算器table -->
-  <table>
-    <tr>
-      <td id="atker" style="padding: 0px;">
-        <h6 style="text-align: center;">攻擊方</h6>
-        <select name="" id="atkerName" style="width:100px"></select>
-      </td>
+  <div id="calculate_wrapper">
 
-      <td id="defer" style="padding: 0px;">
-        <h6 style="text-align: center;">防守方</h6>
-        <select name="" id="deferName" style="width:100px"></select>
-      </td>
-    </tr>
-  </table>
-  <table style="display: block;margin:10px">
-    <tr>
-      <th>Level</th>
-      <th>
-        <input type="range" id="levelrangeInput" min="0" max="100" value="50">
-        <input type="button" class="_btn-" value="-" id="level-">
-        <input type="number" class="inputnumber" value="50" id="level" style="width: 50px;">
-        <input type="button" class="_btn" value="+" id="levelplus">
-      </th>
-    </tr>
-    <tr>
-      <th>能力提升</th>
-      <th><select name="" id="upplus">
-          <option value="0.5" selected>0.5</option>
-          <option value="0.66" selected>0.66</option>
-          <option value="1" selected>1</option>
-          <option value="1.3">1.3</option>
-          <option value="1.5">1.5</option>
-          <option value="2">2</option>
-          <option value="2.5">2.5</option>
-          <option value="3">3</option>
-          <option value="3.5">3.5</option>
-          <option value="4">4</option>
-        </select>
-      </th>
-    </tr>
-    <!-- <tr>
+    <!-- 計算器table -->
+    <table>
+      <tr>
+        <td id="atker" style="padding: 0px;">
+          <h6 style="text-align: center;">攻擊方</h6>
+          <select name="" id="atkerName" style="width:100px"></select>
+        </td>
+
+        <td id="defer" style="padding: 0px;">
+          <h6 style="text-align: center;">防守方</h6>
+          <select name="" id="deferName" style="width:100px"></select>
+        </td>
+      </tr>
+    </table>
+    <table style="display: block;margin:10px">
+      <tr>
+        <th>Level</th>
+        <th>
+          <input type="range" id="levelrangeInput" min="0" max="100" value="50">
+          <input type="button" class="_btn-" value="-" id="level-">
+          <input type="number" class="inputnumber" value="50" id="level" style="width: 50px;">
+          <input type="button" class="_btn" value="+" id="levelplus">
+        </th>
+      </tr>
+      <tr>
+        <th>能力提升</th>
+        <th><select name="" id="upplus">
+            <option value="0.5" selected>0.5</option>
+            <option value="0.66" selected>0.66</option>
+            <option value="1" selected>1</option>
+            <option value="1.3">1.3</option>
+            <option value="1.5">1.5</option>
+            <option value="2">2</option>
+            <option value="2.5">2.5</option>
+            <option value="3">3</option>
+            <option value="3.5">3.5</option>
+            <option value="4">4</option>
+          </select>
+        </th>
+      </tr>
+      <!-- <tr>
       <th>其他結果</th>
       <th><input type="text" class="inputnumber" value="167.6125" id="otherResult"></th>
     </tr> -->
-    <tr>
-      <th>atk</th>
-      <th><input type="range" id="atkrangeInput" min="0" max="332" value="100">
-        <input type="button" class="_btn-" value="-" id="atk-">
-        <input type="number" style="width: 50px;padding: 0 0 5px 5px;" class="inputnumber" value="100" id="atk">
-        <input type="button" class="_btn" value="+" id="atkplus"></button>
-      </th>
-    </tr>
-    <tr>
-      <th>def</th>
-      <th><input type="range" id="defrangeInput" min="0" max="332" value="100">
-        <input type="button" class="_btn-" value="-" id="def-">
-        <input type="number" style="width: 50px;" class="inputnumber" value="100" id="def">
-        <input type="button" class="_btn" value="+" id="defplus"></button>
-      </th>
-    </tr>
-    <tr>
-      <th>威力</th>
-      <th><input type="range" id="powerrangeInput" min="0" max="200" value="80">
-        <input type="button" class="_btn-" value="-" id="power-">
-        <input type="number" style="width: 50px;" class="inputnumber" value="80" id="power">
-        <input type="button" class="_btn" value="+" id="powerplus"></button>
-      </th>
-    </tr>
-    <tr>
-      <th>本系加成</th>
-      <th><select name="" id="selfplus">
-          <option value="1" selected>1</option>
-          <option value="1.5">1.5</option>
-          <option value="2">2</option>
-        </select>
-      </th>
-    </tr>
-    <tr>
-      <th>屬性相剋</th>
-      <th><select name="" id="attrplus">
-          <option value="0.25">0.25</option>
-          <option value="0.5">0.5</option>
-          <option value="1" selected>1</option>
-          <option value="2">2</option>
-          <option value="4">4</option>
-        </select></th>
-    </tr>
-    <tr>
-      <th>天氣加成</th>
-      <th><select name="" id="weatherplus">
-          <option value="0.5">0.5</option>
-          <option value="1" selected>1</option>
-          <option value="1.5">1.5</option>
-        </select></th>
-    </tr>
-    <tr>
-      <th>道具</th>
-      <th>
-        <select name="" id="staffplus">
-          <option value="1.5">講究系列</option>
-          <option value="1" selected>無</option>
-          <option value="1.3">生命寶珠</option>
-          <option value="1.1">1.1</option>
-          <option value="1.2">1.2</option>
-        </select>
-      </th>
-    </tr>
-    <tr>
-      <th>特性</th>
-      <th>
-        <select name="" id="characterplus">
-          <option value="1" selected>無</option>
-          <option value="1.3">強行</option>
-        </select>
-      </th>
-    </tr>
-    <tr>
-      <th>傷害計算</th>
-      <th><input type="text" class="inputnumber" value="37.2" id="damage"></th>
-    </tr>
-  </table>
+      <tr>
+        <th>atk</th>
+        <th><input type="range" id="atkrangeInput" min="0" max="332" value="100">
+          <input type="button" class="_btn-" value="-" id="atk-">
+          <input type="number" style="width: 50px;padding: 0 0 5px 5px;" class="inputnumber" value="100" id="atk">
+          <input type="button" class="_btn" value="+" id="atkplus"></button>
+        </th>
+      </tr>
+      <tr>
+        <th>def</th>
+        <th><input type="range" id="defrangeInput" min="0" max="332" value="100">
+          <input type="button" class="_btn-" value="-" id="def-">
+          <input type="number" style="width: 50px;" class="inputnumber" value="100" id="def">
+          <input type="button" class="_btn" value="+" id="defplus"></button>
+        </th>
+      </tr>
+      <tr>
+        <th>威力</th>
+        <th><input type="range" id="powerrangeInput" min="0" max="200" value="80">
+          <input type="button" class="_btn-" value="-" id="power-">
+          <input type="number" style="width: 50px;" class="inputnumber" value="80" id="power">
+          <input type="button" class="_btn" value="+" id="powerplus"></button>
+        </th>
+      </tr>
+      <tr>
+        <th>本系加成</th>
+        <th><select name="" id="selfplus">
+            <option value="1" selected>1</option>
+            <option value="1.5">1.5</option>
+            <option value="2">2</option>
+          </select>
+        </th>
+      </tr>
+      <tr>
+        <th>屬性相剋</th>
+        <th><select name="" id="attrplus">
+            <option value="0.25">0.25</option>
+            <option value="0.5">0.5</option>
+            <option value="1" selected>1</option>
+            <option value="2">2</option>
+            <option value="4">4</option>
+          </select></th>
+      </tr>
+      <tr>
+        <th>天氣加成</th>
+        <th><select name="" id="weatherplus">
+            <option value="0.5">0.5</option>
+            <option value="1" selected>1</option>
+            <option value="1.5">1.5</option>
+          </select></th>
+      </tr>
+      <tr>
+        <th>道具</th>
+        <th>
+          <select name="" id="staffplus">
+            <option value="1.5">講究系列</option>
+            <option value="1" selected>無</option>
+            <option value="1.3">生命寶珠</option>
+            <option value="1.1">1.1</option>
+            <option value="1.2">1.2</option>
+          </select>
+        </th>
+      </tr>
+      <tr>
+        <th>特性</th>
+        <th>
+          <select name="" id="characterplus">
+            <option value="1" selected>無</option>
+            <option value="1.3">強行</option>
+          </select>
+        </th>
+      </tr>
+      <tr>
+        <th>傷害計算</th>
+        <th><input type="text" class="inputnumber" value="37.2" id="damage"></th>
+      </tr>
+    </table>
 
-  <div style="font-size: 0.7em;text-align:right">
-    <h6 onclick="open公式()" style="margin: 0px 10px;">公式</h6>
-    <p class="hidden公式" style="margin: 0px 10px;">HP：(種*2+個體+努力/4)*Lv/100+Lv+10</p>
-    <p class="hidden公式" style="margin: 0px 10px;">其他：[(種*2+個體+努力/4)*(Lv/100)+5]*性格</p>
-    <p class="hidden公式" style="margin: 0px 10px;">傷害計算：[(2*Lv+10)/250*atk/def*威力+2]*加成</p>
+    <div style="font-size: 0.7em;text-align:right">
+      <h6 onclick="open公式()" style="margin: 0px 10px;">公式</h6>
+      <p class="hidden公式" style="margin: 0px 10px;">HP：(種*2+個體+努力/4)*Lv/100+Lv+10</p>
+      <p class="hidden公式" style="margin: 0px 10px;">其他：[(種*2+個體+努力/4)*(Lv/100)+5]*性格</p>
+      <p class="hidden公式" style="margin: 0px 10px;">傷害計算：[(2*Lv+10)/250*atk/def*威力+2]*加成</p>
+    </div>
+
   </div>
 </body>
 <script>
