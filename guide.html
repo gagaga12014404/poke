@@ -501,7 +501,19 @@
                     });
             },
             "columnDefs": [
-
+                {
+                    target: [3, 4], createdCell: function (td, cellData, rowData, row, col) {
+                        let attr18 = ['一般', '格鬥', '飛行', '毒', '地面', '岩石', '蟲', '幽靈', '鋼', '火', '水', '草', '電', '超能力', '冰', '龍', '惡', '妖精'];
+                        let attr18backgroundcolor = ['LightGray', 'orange', 'LightSkyBlue', 'MediumOrchid', 'SaddleBrown', 'Tan', 'PaleGreen', 'DarkSlateBlue', 'LightSlateGray', 'Tomato', 'RoyalBlue', 'YellowGreen', 'Yellow', 'MediumVioletRed', 'Aqua', 'MediumSlateBlue', 'Brown', 'Violet'];
+                        let attr18color = ['DarkSlateGray', 'DarkSlateGray', 'DarkSlateGray', 'white', 'white', 'DarkSlateGray', 'DarkSlateGray', 'white', 'white', 'white', 'white', 'DarkSlateGray', 'DarkSlateGray', 'white', 'DarkSlateGray', 'white', 'white', 'white'];
+                        for (var i = 0; i < attr18.length; i++) {
+                            if (cellData == attr18[i]) {
+                                $(td).css('background-color', attr18backgroundcolor[i]);
+                                $(td).css('color', attr18color[i]);
+                            }
+                        }
+                    }
+                }
             ],
         });
         //option的value要注意
