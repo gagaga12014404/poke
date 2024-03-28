@@ -74,7 +74,9 @@
     margin-left: 0;
     background: transparent;
   }
-
+  #其他{
+    width: 60px;
+  }
   /* input[type=text] {
     width: 30px;
     border: 0;
@@ -134,7 +136,7 @@
       </tr>
       <tr>
         <th>能力提升</th>
-        <th><select name="" id="upplus">
+        <th><select name="" id="能力提升">
             <option value="0.5" selected>0.5</option>
             <option value="0.66" selected>0.66</option>
             <option value="1" selected>1</option>
@@ -178,7 +180,7 @@
       </tr>
       <tr>
         <th>本系加成</th>
-        <th><select name="" id="selfplus">
+        <th><select name="" id="本系加成">
             <option value="1" selected>1</option>
             <option value="1.5">1.5</option>
             <option value="2">2</option>
@@ -225,8 +227,14 @@
         </th>
       </tr>
       <tr>
+        <th>其他</th>
+        <th>
+          <input type="text" name="" id="其他">
+        </th>
+      </tr>
+      <tr>
         <th>傷害計算</th>
-        <th><input type="text" class="inputnumber" value="37.2" id="damage"></th>
+        <th><input type="text" class="inputnumber" value="31~37" id="damage"></th>
       </tr>
     </table>
 
@@ -638,9 +646,9 @@
       var effort = parseInt($('#' + i + j + 'Effort').val());
       var level = 50;
       var charact = GetCharact(i, j);
-      var upplus = 1;
+      var 能力提升 = 1;
       var hpResult = ((race * 2 + personal + effort / 4) * (level / 100)) + level + 10;
-      var result = ((race * 2 + personal + effort / 4) * (level / 100) + 5) * charact * upplus;
+      var result = ((race * 2 + personal + effort / 4) * (level / 100) + 5) * charact * 能力提升;
       if (j == 'HP')
         $('#' + i + 'HPstrength').val(parseInt(hpResult));
       else
@@ -666,24 +674,26 @@
     var level = parseInt($('#level').val());
     var charact = natureVal;
     var res = (race * 2 + personal + effort / 4) * (level / 100) + level + 10;
-    var upplus = parseFloat($('#upplus').val());
-    var otherres = ((race * 2 + personal + effort / 4) * (level / 100) + 5) * charact * upplus;
+    // var 能力提升 = parseFloat($('#能力提升').val());
+    // console.log(parseFloat($('#能力提升').val()));
+    var otherres = ((race * 2 + personal + effort / 4) * (level / 100) + 5) * charact * parseFloat($('#能力提升').val());
     $('#Result').val(res.toString());
     $('#otherResult').val(otherres.toString());
     var atk = parseInt($('#atk').val());
     var def = parseInt($('#def').val());
     var power = parseInt($('#power').val());
-    var selfplus = parseFloat($('#selfplus').val());
+    var 本系加成 = parseFloat($('#本系加成').val());
     var attrplus = parseFloat($('#attrplus').val());
     var weatherplus = parseFloat($('#weatherplus').val());
     var staffplus = parseFloat($('#staffplus').val());
     var characterplus = parseFloat($('#characterplus').val());
-    var calculatedamage = ((2 * level + 10) / 250 * atk / def * power + 2) * selfplus * attrplus * weatherplus * staffplus * characterplus;
+    var 自訂義加成 = parseFloat($('#其他').val());
+    var calculatedamage = ((2 * level + 10) / 250 * atk / def * power + 2) * 本系加成 * attrplus * weatherplus * staffplus * characterplus * 自訂義加成;
     $('#damage').val(Math.floor(calculatedamage * 0.85).toString() + "~" + Math.floor(calculatedamage).toString());
   }
   //改變值立刻計算結果
   $('#race,#personal,#effort,#level,#racerangeInput,#personalrangeInput,#effortrangeInput,#levelrangeInput,#atkrangeInput,#defrangeInput,#powerrangeInput,#atk,#def,#power').on('input', calculate);
-  $('#upplus,#selfplus,#attrplus,#weatherplus,#staffplus,#characterplus').on('change', calculate);
+  $('#能力提升,#本系加成,#attrplus,#weatherplus,#staffplus,#characterplus,#其他').on('change', calculate);
 
   $('#atkerATKbutton,#atkerSATKbutton,#deferATKbutton,#deferSATKbutton').click(function () {
     let id = '#' + this.id.replace('button', 'strength');
