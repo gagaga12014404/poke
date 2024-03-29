@@ -135,7 +135,7 @@
     var 去特性列表找此特性 = function (name) {
         switchTab('attribute');
         name = name.replace(/隱藏特性/g, '');
-        $("#attributeTable_filter input[type='search']").val(name);
+        $("#輸入特性中文名").val(name);
         $("#attributeTable").DataTable().search(name).draw();
     }
     var Get特性 = function (data) {
@@ -333,7 +333,11 @@
         // return `<button onclick="ClickAddToTable('${data["number"].replace('\n','')}')">加入</button>`;
         return `<input type="button" value="加入" class="ClickAddToTable">`;
     }
-
+    var GetName = function(data)
+    {
+        
+        return `<span style="font-size:8px">${data["jName"]}</span><br><span>${data["cName"]}</span><br><span style="font-size:8px">${data["eName"]}</span>`;
+    }
     var columns = [
         {
             "data": "number", class: 'dt-control', "type": "num", "render": function (data, type, row) {
@@ -342,7 +346,7 @@
             "width": "28px",
         },
         { "data": null, "width": "28px", render: GetPic },
-        { "data": "cName", "width": "35px", "class": "txtcenter" },
+        { "data": null, "width": "35px", "class": "txtcenter",render:GetName },
         { "data": "attr1", "class": "txtcenter", "width": "35px" },
         { "data": "attr2", "class": "txtcenter", "width": "35px" },
         {
