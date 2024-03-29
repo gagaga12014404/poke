@@ -135,8 +135,9 @@
     var 去特性列表找此特性 = function (name) {
         switchTab('attribute');
         name = name.replace(/隱藏特性/g, '');
-        $("#輸入特性中文名").val(name);
-        $("#attributeTable").DataTable().search(name).draw();
+        $("#輸入特性中文名").val(name).trigger('keyup');
+        // $("#attributeTable").DataTable().search(name).draw();
+        // $("#輸入特性中文名").DataTable().search(name).draw();
     }
     var Get特性 = function (data) {
         var r = "";
@@ -333,9 +334,7 @@
         // return `<button onclick="ClickAddToTable('${data["number"].replace('\n','')}')">加入</button>`;
         return `<input type="button" value="加入" class="ClickAddToTable">`;
     }
-    var GetName = function(data)
-    {
-        
+    var GetName = function (data) {
         return `<span style="font-size:8px">${data["jName"]}</span><br><span>${data["cName"]}</span><br><span style="font-size:8px">${data["eName"]}</span>`;
     }
     var columns = [
@@ -346,7 +345,7 @@
             "width": "28px",
         },
         { "data": null, "width": "28px", render: GetPic },
-        { "data": null, "width": "35px", "class": "txtcenter",render:GetName },
+        { "data": null, "width": "35px", "class": "txtcenter", render: GetName },
         { "data": "attr1", "class": "txtcenter", "width": "35px" },
         { "data": "attr2", "class": "txtcenter", "width": "35px" },
         {
@@ -472,7 +471,7 @@
                     .columns([0, 2])//用column指定
                     .every(function () {
                         var that = this;
-                        $('input', this.footer()).on('keyup change clear', function () {
+                        $('input', this.footer()).on('keyup', function () {
                             if (that.search() !== this.value) {
                                 that.search(this.value).draw();
                             }

@@ -55,8 +55,8 @@
 <script>
     function 尋找含有此特性寶可夢(name) {
         switchTab('guide');
-        $("#all_filter input[type='search']").val(name);
-        $("#all").DataTable().search(name).draw();
+        $("#all_filter input[type='search']").val(name).trigger('keyup');
+        // $("#all").DataTable().search(name).draw();
 
     }
     function 特性效果format(data) {
@@ -77,7 +77,7 @@
                     .columns([1])//用column指定
                     .every(function () {
                         var that = this;
-                        $('input', this.footer()).on('keyup change clear', function () {
+                        $('input', this.footer()).on('keyup', function () {
                             if (that.search() !== this.value) {
                                 that.search(this.value).draw();
                             }
