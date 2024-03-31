@@ -8,66 +8,112 @@
     <title>Document</title>
 </head>
 <style>
-    #movesTable_wrapper {
-        margin: 0 auto;
-    }
-
-    @media only screen and (min-width: 600px) {
-
-        /* 600px以上的屏幕样式 */
-        #movesTable_wrapper {
-            width: 600px;
+        #movesTable td.dt-control {
+            text-align: center;
+            padding-top: 5px;
+            background-position: left 5px center;
+            height: 30px;
         }
 
-    }
+        #movesTable tr.dt-hasChild td.dt-control {
+            background-position: left 5px center;
+        }
+
+        #movesTable_wrapper {
+            margin: 0 auto;
+        }
+
+        @media only screen and (min-width: 600px) {
+
+            /* 600px以上的屏幕样式 */
+            #movesTable_wrapper {
+                width: 600px;
+            }
+
+        }
+
 </style>
 
 <body>
-    <table id="movesTable" class="table table-striped table-bordered dt-responsive" style="width: 100%;">
+    <table id="movesTable" class="table-striped table-bordered" style="width: 98%;">
         <thead>
-            <th>編號</th>
-            <th>名稱</th>
-            <th></th>
+            <tr style="height: 40px;">
+                <th style="font-size:14px">編號</th>
+                <th style="font-size:14px">名稱</th>
+                <th></th>
+            </tr>
         </thead>
         <tfoot>
-            <th></th>
-            <th id="movesThName">名稱</th>
-            <th id="movesThDescription"></th>
+            <tr>
+
+                <th></th>
+                <th><input type="text" id="搜尋招式名稱" placeholder="名稱"></th>
+                <th id="movesThDescription"></th>
+            </tr>
         </tfoot>
     </table>
 </body>
 <script>
     //tfoot的搜尋功能
-    $('#movesThName,#movesThDescription').each(function () {
-        var title = $(this).text();
-        $(this).html('<input type="text" class="inputSearch" placeholder="' + title + '" />');
-    });
+    // $('#movesThName,#movesThDescription').each(function () {
+    //     var title = $(this).text();
+    //     $(this).html('<input type="text" class="inputSearch" placeholder="' + title + '" />');
+    // });
+    function 招式表format(data) {
+        return '<p class="ft14">' + data['說明'] + `</p><a onclick="尋找含有此特性寶可夢('${data['招式中文']}')" style="color:blue;text-decoration:underline">含有此招式寶可夢</a>`;
+    }
+    var Get招式名稱 = function (data) {
+        return `<span style="font-size:8px">${data["招式日文"]}</span>&nbsp&nbsp<span>${data["招式中文"]}</span>&nbsp&nbsp<span style="font-size:8px">${data["招式英文"]}</span>`;
+    }
+
     $(document).ready(function () {
-        var table2 = $('#movesTable').DataTable({
+        var movesDataTable = $('#movesTable').DataTable({
             "language": {
                 "lengthMenu": "_MENU_",
             },
-            "dom": `<'row'<'col-4 col-sm-6 col-md-6'l><'col-8 col-sm-6 col-md-6'f>>
+            "ajax": "招式表.json",
+            "dom": `<'row'<'col-4 col-sm-4 col-md-4'l><'col-8 col-sm-8 col-md-8'f>>
             <'row'<'col-sm-12'tr>>
             <'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>`,
-            "ajax": "特性.json",
-            "pagingType": "numbers",
             "autoWidth": false,
-            "columns": [{ 'data': '編號', "width": "20%" }, { 'data': '中文名', "width": "80%" }, { 'data': '效果', className: 'none' }],
-            initComplete: function () {
+            initComplete: function (settings, json) {
                 // Apply the search
                 //指定欄位搜尋
                 this.api()
-                    .columns([0, 1])//用column指定
+                    .columns([1])//用column指定
                     .every(function () {
-                        var that = this
-                        $('input', this.footer()).on('keyup change clear', function () {
+                        var that = this;
+                        $('input', this.footer()).on('keyup', function () {
                             if (that.search() !== this.value) {
                                 that.search(this.value).draw();
                             }
                         });
                     });
             },
+            "columns": [
+                /*{
+                    "data": null,"width":"20%", orderable: false, class: 'dt-control',defaultContent: ''
+                },*/
+
+                { 'data': '編號', class: 'dt-control', "width": "50px" },
+                { "data": null, "width": "100px", "class": "txtcenter", render: Get招式名稱 },
+                { 'data': '說明', "visible": false},
+            ],
+            "pagingType": "numbers",
+
+        });
+        movesDataTable.on('click', 'td.dt-control', function (e) {
+            let tr = e.target.closest('tr');
+            let row = movesDataTable.row(tr);
+
+            if (row.child.isShown()) {
+                // This row is already open - close it
+                row.child.hide();
+            }
+            else {
+                // Open this row
+                row.child(招式表format(row.data())).show();
+            }
         });
     });
 </script>

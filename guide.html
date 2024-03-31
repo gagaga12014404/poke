@@ -139,6 +139,13 @@
         // $("#attributeTable").DataTable().search(name).draw();
         // $("#輸入特性中文名").DataTable().search(name).draw();
     }
+    var 去招式列表找此招式 = function (name) {
+        switchTab('moves');
+        // name = name.replace(/隱藏特性/g, '');
+        $("#搜尋招式名稱").val(name).trigger('keyup');
+        // $("#attributeTable").DataTable().search(name).draw();
+        // $("#輸入特性中文名").DataTable().search(name).draw();
+    }
     var Get特性 = function (data) {
         var r = "";
         for (var i = 0; i < data['特性'].length; i++) {
@@ -315,7 +322,7 @@
                         分類招式顏色 = '#f2f2f2';
                     r += `<tr>
                     <td style="font-size:14px;padding:2px">${data['招式'][i + k * 蛋招式][j]}</td>
-                    <td style="font-size:14px;padding:2px">${data['招式'][i + k * 蛋招式][1 + j]}</td>
+                    <td style="font-size:14px;padding:2px"><a onclick="去招式列表找此招式('${data['招式'][i + k * 蛋招式][1 + j]}')">${data['招式'][i + k * 蛋招式][1 + j]}</a></td>
                     <td style="font-size:14px;padding:2px">${data['招式'][i + k * 蛋招式][2 + j]}</td>
                     <td style="font-size:14px;padding:2px;background-color:${分類招式顏色}">${data['招式'][i + k * 蛋招式][3 + j]}</td>
                     <td style="font-size:14px;padding:2px">${data['招式'][i + k * 蛋招式][4 + j]}</td>

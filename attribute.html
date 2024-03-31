@@ -65,6 +65,9 @@
 
     $(document).ready(function () {
         var attributeTable2 = $('#attributeTable').DataTable({
+            "language": {
+                "lengthMenu": "_MENU_",
+            },
             "ajax": "特性.json",
             "dom": `<'row'<'col-4 col-sm-4 col-md-4'l><'col-8 col-sm-8 col-md-8'f>>
             <'row'<'col-sm-12'tr>>
@@ -90,7 +93,7 @@
                 },*/
 
                 { 'data': '編號', class: 'dt-control', "width": "50px" },
-                { 'data': '中文名', "width": "100px" },
+                { 'data': '中文名', "class": "txtcenter", "width": "100px" },
                 { 'data': '效果', "visible": false},
             ],
             "pagingType": "numbers",
