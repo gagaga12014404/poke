@@ -51,6 +51,11 @@
 
                 <th></th>
                 <th><input type="text" id="搜尋招式名稱" placeholder="名稱" style="width: 100%;"></th>
+                <th></th>
+                <th></th>
+                <th><input type="text" placeholder="傷害" style="width: 100%;"></th>
+                <th><input type="text" placeholder="命中" style="width: 100%;"></th>
+                <th><input type="text" placeholder="PP" style="width: 100%;"></th>
             </tr>
         </tfoot>
     </table>
@@ -67,6 +72,24 @@
     var Get招式名稱 = function (data) {
         return `<span style="font-size:8px">${data["招式日文"]}</span><br><span>${data["招式中文"]}</span><br><span style="font-size:8px">${data["招式英文"]}</span>`;
     }
+    jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+        "chinese-numeric-pre": function (a) {
+            if (!a || typeof a !== 'string') return 0; // 添加检查以确保输入值不是 null 或 undefined
+            var match = a.match(/[\d\-\.]+/);
+            if (!match) return 0; // 添加检查以确保可以找到数字部分
+            var x = parseFloat(match[0]);
+            return isNaN(x) ? -Infinity : x;
+        },
+
+        "chinese-numeric-asc": function (a, b) {
+            return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+        },
+
+        "chinese-numeric-desc": function (a, b) {
+            return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+        }
+    });
+
     $(document).ready(function () {
         var movesDataTable = $('#movesTable').DataTable({
             "language": {
@@ -90,6 +113,27 @@
                             }
                         });
                     });
+                this.api()
+                    .columns([2, 3])
+                    .every(function () {
+                        var column = this;
+                        var select = $('<select style=" height: 25px; " ><option value=""></option></select>')
+                            .appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                if (column.search() !== this.value) {
+                                    column.search(this.value).draw();
+                                }
+                            });
+                        column
+                            .data()
+                            .unique()
+                            .sort()
+                            .each(function (d, j) {
+                                if (typeof (d) == 'string')
+                                    select.append('<option value="' + d + '">' + d + '</option>');
+                            });
+                    });
+
             },
             "columns": [
                 /*{
@@ -100,9 +144,9 @@
                 { "data": null, "width": "100px", "class": "txtcenter", render: Get招式名稱 },
                 { 'data': '屬性', "class": "txtcenter" },
                 { 'data': '分類', "class": "txtcenter" },
-                { 'data': '威力', "class": "txtcenter" },
-                { 'data': '命中', "class": "txtcenter" },
-                { 'data': 'PP', "class": "txtcenter" },
+                { 'data': '威力', "class": "txtcenter", "type": "chinese-numeric" },
+                { 'data': '命中', "class": "txtcenter", "type": "chinese-numeric" },
+                { 'data': 'PP', "class": "txtcenter", "type": "num" },
                 { 'data': '說明', "class": "txtcenter", "visible": false },
             ],
             "pagingType": "numbers",
