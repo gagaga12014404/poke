@@ -8,30 +8,29 @@
     <title>Document</title>
 </head>
 <style>
-        #movesTable td.dt-control {
-            text-align: center;
-            padding-top: 5px;
-            background-position: left 5px center;
-            height: 30px;
-        }
+    #movesTable td.dt-control {
+        text-align: center;
+        padding-top: 5px;
+        background-position: left 5px center;
+        height: 30px;
+    }
 
-        #movesTable tr.dt-hasChild td.dt-control {
-            background-position: left 5px center;
-        }
+    #movesTable tr.dt-hasChild td.dt-control {
+        background-position: left 5px center;
+    }
 
+    #movesTable_wrapper {
+        margin: 0 auto;
+    }
+
+    @media only screen and (min-width: 600px) {
+
+        /* 600px以上的屏幕样式 */
         #movesTable_wrapper {
-            margin: 0 auto;
+            width: 600px;
         }
 
-        @media only screen and (min-width: 600px) {
-
-            /* 600px以上的屏幕样式 */
-            #movesTable_wrapper {
-                width: 600px;
-            }
-
-        }
-
+    }
 </style>
 
 <body>
@@ -40,15 +39,18 @@
             <tr style="height: 40px;">
                 <th style="font-size:14px">編號</th>
                 <th style="font-size:14px">名稱</th>
-                <th></th>
+                <th style="font-size:14px">屬性</th>
+                <th style="font-size:14px">分類</th>
+                <th style="font-size:14px">傷害</th>
+                <th style="font-size:14px">命中</th>
+                <th style="font-size:14px">PP</th>
             </tr>
         </thead>
         <tfoot>
             <tr>
 
                 <th></th>
-                <th><input type="text" id="搜尋招式名稱" placeholder="名稱"></th>
-                <th id="movesThDescription"></th>
+                <th><input type="text" id="搜尋招式名稱" placeholder="名稱" style="width: 100%;"></th>
             </tr>
         </tfoot>
     </table>
@@ -63,9 +65,8 @@
         return '<p class="ft14">' + data['說明'] + `</p><a onclick="尋找含有此特性寶可夢('${data['招式中文']}')" style="color:blue;text-decoration:underline">含有此招式寶可夢</a>`;
     }
     var Get招式名稱 = function (data) {
-        return `<span style="font-size:8px">${data["招式日文"]}</span>&nbsp&nbsp<span>${data["招式中文"]}</span>&nbsp&nbsp<span style="font-size:8px">${data["招式英文"]}</span>`;
+        return `<span style="font-size:8px">${data["招式日文"]}</span><br><span>${data["招式中文"]}</span><br><span style="font-size:8px">${data["招式英文"]}</span>`;
     }
-
     $(document).ready(function () {
         var movesDataTable = $('#movesTable').DataTable({
             "language": {
@@ -97,9 +98,41 @@
 
                 { 'data': '編號', class: 'dt-control', "width": "50px" },
                 { "data": null, "width": "100px", "class": "txtcenter", render: Get招式名稱 },
-                { 'data': '說明', "visible": false},
+                { 'data': '屬性', "class": "txtcenter" },
+                { 'data': '分類', "class": "txtcenter" },
+                { 'data': '威力', "class": "txtcenter" },
+                { 'data': '命中', "class": "txtcenter" },
+                { 'data': 'PP', "class": "txtcenter" },
+                { 'data': '說明', "class": "txtcenter", "visible": false },
             ],
             "pagingType": "numbers",
+            "columnDefs": [
+                {
+                    target: [2], createdCell: function (td, cellData, rowData, row, col) {
+                        let attr18 = ['一般', '格鬥', '飛行', '毒', '地面', '岩石', '蟲', '幽靈', '鋼', '火', '水', '草', '電', '超能力', '冰', '龍', '惡', '妖精'];
+                        let attr18backgroundcolor = ['LightGray', 'orange', 'LightSkyBlue', 'MediumOrchid', 'SaddleBrown', 'Tan', 'PaleGreen', 'DarkSlateBlue', 'LightSlateGray', 'Tomato', 'RoyalBlue', 'YellowGreen', 'Yellow', 'MediumVioletRed', 'Aqua', 'MediumSlateBlue', 'Brown', 'Violet'];
+                        let attr18color = ['DarkSlateGray', 'DarkSlateGray', 'DarkSlateGray', 'white', 'white', 'DarkSlateGray', 'DarkSlateGray', 'white', 'white', 'white', 'white', 'DarkSlateGray', 'DarkSlateGray', 'white', 'DarkSlateGray', 'white', 'white', 'white'];
+                        for (var i = 0; i < attr18.length; i++) {
+                            if (cellData == attr18[i]) {
+                                $(td).css('background-color', attr18backgroundcolor[i]);
+                                $(td).css('color', attr18color[i]);
+                            }
+                        }
+                    }
+                },
+                {
+                    target: [3], createdCell: function (td, cellData, rowData, row, col) {
+                        let attr18 = ['特殊', '物理', '變化'];
+                        let attr18backgroundcolor = ['#4d94ff', '#ff8080', '#f2f2f2'];
+                        for (var i = 0; i < attr18.length; i++) {
+                            if (cellData == attr18[i]) {
+                                $(td).css('background-color', attr18backgroundcolor[i]);
+                            }
+                        }
+                    }
+                },
+
+            ],
 
         });
         movesDataTable.on('click', 'td.dt-control', function (e) {
