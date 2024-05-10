@@ -48,27 +48,17 @@
     <table id="all" class="table-striped table-bordered" style="width:98%">
         <thead>
             <tr id="theadtr">
-                <th rowspan="2" style="font-size: 12px;">編號</th>
-                <th rowspan=" 2" style="font-size: 12px;">圖片</th>
-                <th rowspan=" 2" style="font-size: 12px;">名稱</th>
-                <th colspan=" 2" style="font-size: 12px;text-align: center;height: 10px;padding: 0px;">屬性</th>
-                <th colspan="1" style="font-size: 12px;padding: 0;">
-                    <select id="selectAbility" style="width: 100%;">
-                        <option value="6" selected>生命</option>
-                        <option value="7">物攻</option>
-                        <option value="8">物防</option>
-                        <option value="9">特攻</option>
-                        <option value="10">特防</option>
-                        <option value="11">速度</option>
-                        <option value="12">種族值</option>
-                    </select>
-                </th>
-            </tr>
-            <tr>
-                <!--colspan 是複數的下面那層  -->
-                <th style="text-align: center;padding: 0px;width: 28px;">1</th>
-                <th style="text-align: center;padding: 0px;width: 28px;">2</th>
-                <th></th>
+                <th style="font-size: 12px;">編號</th>
+                <th style="font-size: 12px;">圖片</th>
+                <th style="font-size: 12px;">名稱</th>
+                <th style="font-size: 12px;text-align: center;height: 10px;padding: 0px;">屬性</th>
+                <th style="font-size: 12px;text-align: center;height: 10px;padding: 0px;">生命</th>
+                <th style="font-size: 12px;text-align: center;height: 10px;padding: 0px;">物攻</th>
+                <th style="font-size: 12px;text-align: center;height: 10px;padding: 0px;">物防</th>
+                <th style="font-size: 12px;text-align: center;height: 10px;padding: 0px;">特攻</th>
+                <th style="font-size: 12px;text-align: center;height: 10px;padding: 0px;">特防</th>
+                <th style="font-size: 12px;text-align: center;height: 10px;padding: 0px;">速度</th>
+                <th style="font-size: 12px;text-align: center;height: 10px;padding: 0px;">種族值</th>
             </tr>
         </thead>
         <tfoot>
@@ -76,9 +66,15 @@
                 <th id="nu" style="padding: 0;">編號</th>
                 <th id="nu" style="padding: 0;">圖片</th>
                 <th id="na" style="padding: 0;">名稱</th>
-                <th colspan="2" style="padding: 0;text-align: center;"></th>
+                <th style="padding: 0;text-align: center;"></th>
                 <!-- <th style="padding: 0;height: 10px;width: 45px;text-align: center;">2</th> -->
-                <th colspan="1"></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
             </tr>
         </tfoot>
     </table>
@@ -344,6 +340,18 @@
     var GetName = function (data) {
         return `<span style="font-size:8px">${data["jName"]}</span><br><span>${data["cName"]}</span><br><span style="font-size:8px">${data["eName"]}</span>`;
     }
+    var Get屬性 = function (data) {
+        let attr18 = ['一般', '格鬥', '飛行', '毒', '地面', '岩石', '蟲', '幽靈', '鋼', '火', '水', '草', '電', '超能力', '冰', '龍', '惡', '妖精'];
+        let attr18backgroundcolor = ['LightGray', 'orange', 'LightSkyBlue', 'MediumOrchid', 'SaddleBrown', 'Tan', 'PaleGreen', 'DarkSlateBlue', 'LightSlateGray', 'Tomato', 'RoyalBlue', 'YellowGreen', 'Yellow', 'MediumVioletRed', 'Aqua', 'MediumSlateBlue', 'Brown', 'Violet'];
+        let attr18color = ['DarkSlateGray', 'DarkSlateGray', 'DarkSlateGray', 'white', 'white', 'DarkSlateGray', 'DarkSlateGray', 'white', 'white', 'white', 'white', 'DarkSlateGray', 'DarkSlateGray', 'white', 'DarkSlateGray', 'white', 'white', 'white'];
+        getattr1index = attr18.indexOf(data.attr1);
+        getattr2index = attr18.indexOf(data.attr2);
+        if (data.attr2 == null)
+            return `<div style="background-color:${attr18backgroundcolor[getattr1index]};color:${attr18color[getattr1index]}">` + data.attr1 + '</div>';
+        else
+            return `<div style="background-color:${attr18backgroundcolor[getattr1index]};color:${attr18color[getattr1index]}">` + data.attr1 + `</div><div style="background-color:${attr18backgroundcolor[getattr2index]};color:${attr18color[getattr2index]}">` + data.attr2 + '</div>';
+
+    }
     var columns = [
         {
             "data": "number", class: 'dt-control', "type": "num", "render": function (data, type, row) {
@@ -353,30 +361,37 @@
         },
         { "data": null, "width": "28px", render: GetPic },
         { "data": null, "width": "35px", "class": "txtcenter", render: GetName },
-        { "data": "attr1", "class": "txtcenter", "width": "35px" },
-        { "data": "attr2", "class": "txtcenter", "width": "35px" },
-        {
-            "data": null, "width": "35px", "class": "txtcenter", render: function (data, type, row, meta) {
-                // 此处根据所选属性值进行渲染
-                var selectedAttribute = $('#selectAbility').val();
-                switch (selectedAttribute) {
-                    case "6":
-                        return row.hp;
-                    case "7":
-                        return row.atk;
-                    case "8":
-                        return row.def;
-                    case "9":
-                        return row.satk;
-                    case "10":
-                        return row.sdef;
-                    case "11":
-                        return row.speed;
-                    case "12":
-                        return row.race;
-                }
-            }
-        },
+        { "data": null, "class": "txtcenter", "width": "50px", render: Get屬性 },
+        // { "data": "attr2", "class": "txtcenter", "width": "35px" },
+        { "data": "hp", "class": "txtcenter"},
+        { "data": "atk", "class": "txtcenter" },
+        { "data": "def", "class": "txtcenter" },
+        { "data": "satk", "class": "txtcenter" },
+        { "data": "sdef", "class": "txtcenter" },
+        { "data": "speed", "class": "txtcenter" },
+        { "data": "race", "class": "txtcenter" },
+        // {
+        //     "data": null, "width": "35px", "class": "txtcenter", render: function (data, type, row, meta) {
+        //         // 此处根据所选属性值进行渲染
+        //         var selectedAttribute = $('#selectAbility').val();
+        //         switch (selectedAttribute) {
+        //             case "6":
+        //                 return row.hp;
+        //             case "7":
+        //                 return row.atk;
+        //             case "8":
+        //                 return row.def;
+        //             case "9":
+        //                 return row.satk;
+        //             case "10":
+        //                 return row.sdef;
+        //             case "11":
+        //                 return row.speed;
+        //             case "12":
+        //                 return row.race;
+        //         }
+        //     }
+        // },
         {
             "data": "特性",
             visible: false
@@ -439,39 +454,39 @@
                     }
                 });
 
-                $('#selectAbility').on('change', function () {
-                    var selectedAttribute = $('#selectAbility').val();
-                    alltable.rows().every(function (rowIdx, tableLoop, rowLoop) {
-                        var rowData = this.data();
-                        var updatedValue = "";
-                        // 根据所选属性值设置更新的值
-                        switch (selectedAttribute) {
-                            case "6":
-                                updatedValue = rowData.hp;
-                                break;
-                            case "7":
-                                updatedValue = rowData.atk;
-                                break;
-                            case "8":
-                                updatedValue = rowData.def;
-                                break;
-                            case "9":
-                                updatedValue = rowData.satk;
-                                break;
-                            case "10":
-                                updatedValue = rowData.sdef;
-                                break;
-                            case "11":
-                                updatedValue = rowData.speed;
-                                break;
-                            case "12":
-                                updatedValue = rowData.race;
-                                break;
-                        }
-                        // 更新第6列的值
-                        alltable.cell(rowIdx, 5).data(updatedValue);
-                    });
-                });
+                // $('#selectAbility').on('change', function () {
+                //     var selectedAttribute = $('#selectAbility').val();
+                //     alltable.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                //         var rowData = this.data();
+                //         var updatedValue = "";
+                //         // 根据所选属性值设置更新的值
+                //         switch (selectedAttribute) {
+                //             case "6":
+                //                 updatedValue = rowData.hp;
+                //                 break;
+                //             case "7":
+                //                 updatedValue = rowData.atk;
+                //                 break;
+                //             case "8":
+                //                 updatedValue = rowData.def;
+                //                 break;
+                //             case "9":
+                //                 updatedValue = rowData.satk;
+                //                 break;
+                //             case "10":
+                //                 updatedValue = rowData.sdef;
+                //                 break;
+                //             case "11":
+                //                 updatedValue = rowData.speed;
+                //                 break;
+                //             case "12":
+                //                 updatedValue = rowData.race;
+                //                 break;
+                //         }
+                //         // 更新第6列的值
+                //         alltable.cell(rowIdx, 5).data(updatedValue);
+                //     });
+                // });
                 // Apply the search
                 //指定欄位搜尋
                 this.api()
@@ -485,44 +500,30 @@
                         });
                     });
                 //指定欄位下拉選單
-                var 屬性搜尋 = alltable.columns([4]);
                 this.api()
-                    .columns([4, 3])
+                    .columns([3])
                     .every(function () {
+
                         var column = this;
                         var select = $('<select style=" height: 25px; " ><option value=""></option></select>')
                             .appendTo($(column.footer()).empty())
                             .on('change', function () {
-                                屬性搜尋.search($(this).val()).draw();
+                                var searchValue = $(this).val().toLowerCase();
+                                alltable.columns([3]).search(searchValue, false, false).draw();
                                 // filterColumn23(val);
                                 // (column.search(val,false, true)+column3.search(val,false, true)).draw();
                                 // console.log(typeof(column.search(val,false, true)));
                                 // column3.search("^" + val,true,false,true).draw();
                                 // column3.search(val).draw();
                             });
-                        column
-                            .data()
-                            .unique()
-                            .sort()
-                            .each(function (d, j) {
-                                if (typeof (d) == 'string')
-                                    select.append('<option value="' + d + '">' + d + '</option>');
-                            });
+                        let attr18 = ['一般', '格鬥', '飛行', '毒', '地面', '岩石', '蟲', '幽靈', '鋼', '火', '水', '草', '電', '超能力', '冰', '龍', '惡', '妖精'];
+                        for (let i = 0; i < attr18.length; i++) {
+                            select.append('<option value="' + attr18[i] + '">' + attr18[i] + '</option>');
+                        }
                     });
             },
             "columnDefs": [
                 {
-                    target: [3, 4], createdCell: function (td, cellData, rowData, row, col) {
-                        let attr18 = ['一般', '格鬥', '飛行', '毒', '地面', '岩石', '蟲', '幽靈', '鋼', '火', '水', '草', '電', '超能力', '冰', '龍', '惡', '妖精'];
-                        let attr18backgroundcolor = ['LightGray', 'orange', 'LightSkyBlue', 'MediumOrchid', 'SaddleBrown', 'Tan', 'PaleGreen', 'DarkSlateBlue', 'LightSlateGray', 'Tomato', 'RoyalBlue', 'YellowGreen', 'Yellow', 'MediumVioletRed', 'Aqua', 'MediumSlateBlue', 'Brown', 'Violet'];
-                        let attr18color = ['DarkSlateGray', 'DarkSlateGray', 'DarkSlateGray', 'white', 'white', 'DarkSlateGray', 'DarkSlateGray', 'white', 'white', 'white', 'white', 'DarkSlateGray', 'DarkSlateGray', 'white', 'DarkSlateGray', 'white', 'white', 'white'];
-                        for (var i = 0; i < attr18.length; i++) {
-                            if (cellData == attr18[i]) {
-                                $(td).css('background-color', attr18backgroundcolor[i]);
-                                $(td).css('color', attr18color[i]);
-                            }
-                        }
-                    }
                 }
             ],
         });
