@@ -363,7 +363,7 @@
         { "data": null, "width": "35px", "class": "txtcenter", render: GetName },
         { "data": null, "class": "txtcenter", "width": "50px", render: Get屬性 },
         // { "data": "attr2", "class": "txtcenter", "width": "35px" },
-        { "data": "hp", "class": "txtcenter"},
+        { "data": "hp", "class": "txtcenter" },
         { "data": "atk", "class": "txtcenter" },
         { "data": "def", "class": "txtcenter" },
         { "data": "satk", "class": "txtcenter" },
@@ -524,6 +524,9 @@
             },
             "columnDefs": [
                 {
+                    target: [4, 5, 6, 7, 8, 9, 10], createdCell: function (td, cellData, rowData, row, col) {
+                        $(td).css('font-size', '12px');
+                    }
                 }
             ],
         });
