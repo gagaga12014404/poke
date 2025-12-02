@@ -81,6 +81,7 @@
 </body>
 <script>
     var table;
+    var alltable;
     //table 1的資料表
     var column = ["編號", "圖片", "名稱", "屬性", "生命", "物攻", "物防", "特攻", "特防", "速度"];
     var countatkerName = 1;
@@ -98,7 +99,7 @@
     }
     var GetPic = function (data) {
         var r = "";
-        r += `<div style="background-image: url('pic/MSP_Normal2.webp');background-size: 2240px 2240px;background-position: ${data['background-position']};background-repeat: no-repeat;width:56px;height:56px"></div>`;//width:22px;不給就是欄位的寬度
+        r += `<div id="pic_${data['number']}" data-original-pos="${data['background-position']}" style="background-image: url('pic/MSP_Normal2.webp');background-size: 2240px 2240px;background-position: ${data['background-position']};background-repeat: no-repeat;width:56px;height:56px"></div>`;//width:22px;不給就是欄位的寬度
         return r;
     }
     var GetFiveTotal = function (data) {
@@ -126,6 +127,37 @@
                 getElementid特性.style.display = 'none';
                 getElementspan的textid.style = 'none';
             }
+        }
+        // --- 2. 更新主表格中的精靈圖片 ---
+        let imageDiv = document.getElementById(`pic_${number}`);
+
+        if (imageDiv) {
+            // 抓取儲存的原始位置字串 (例如 "-168px -112px")
+            let originalPosition = imageDiv.getAttribute('data-original-pos');
+
+            // 精靈圖的寬度
+            const spriteWidth = 56;
+
+            // 解析原始位置
+            let positions = originalPosition.split(' ');
+
+            // 假設 positions[0] 是 X 座標，positions[1] 是 Y 座標
+            let xPos = positions[0]; // 包含單位 (e.g. "-168px")
+            let yPos = positions[1]; // 包含單位 (e.g. "-112px")
+
+            // 提取 X 座標的數值
+            // 使用 parseFloat() 確保能正確處理負數
+            let base_x = parseFloat(xPos);
+
+            // 關鍵：從原始 X 座標計算新的 X 座標
+            // 偏移量總是基於 原始 X 位置 減去 (寬度 * 型態索引)
+            let new_x = base_x - (spriteWidth * 誰要被顯示);
+
+            // 應用新的 background-position
+            let newPosition = `${new_x}px ${yPos}`;
+            imageDiv.style.backgroundPosition = newPosition;
+
+            console.log(`Updated image ${number} to position: ${newPosition}`);
         }
     }
     var 去特性列表找此特性 = function (name) {
@@ -411,7 +443,7 @@
         $(this).html('<input type="text" class="inputSearch" placeholder="' + title + '" />');
     });
     $(document).ready(function () {
-        var alltable = $('#all').DataTable({
+        alltable = $('#all').DataTable({
             "scrollX": true,
             //"scrollCollapse": true,
             "language": {
