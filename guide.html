@@ -152,7 +152,10 @@
             // 關鍵：從原始 X 座標計算新的 X 座標
             // 偏移量總是基於 原始 X 位置 減去 (寬度 * 型態索引)
             let new_x = base_x - (spriteWidth * 誰要被顯示);
-
+            if (new_x <= -2240) {
+                new_x = 0 + (new_x + 2240);
+                yPos = (parseFloat(yPos) - 56) + 'px';
+            }
             // 應用新的 background-position
             let newPosition = `${new_x}px ${yPos}`;
             imageDiv.style.backgroundPosition = newPosition;
